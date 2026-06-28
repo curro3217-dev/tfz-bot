@@ -1,0 +1,62 @@
+name: TFZ Bot Paper
+
+# Se dispara CADA HORA desde cron-job.org (llamando a la API workflow_dispatch),
+# igual que tu scanner. El cron de GitHub queda de respaldo (puede retrasarse).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 * * * *"   # respaldo: a y 5 de cada hora (puede llegar tarde)
+
+# Permite que el job suba (commit/push) el estado del paper al repo.
+permissions:
+  contents: write
+
+# Evita que dos ejecuciones se solapen.
+concurrency:
+  group: tfz-paper
+  cancel-in-progress: false
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    steps:
+      - name: Descargar repo
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Bucle de paper (~50 min, un ciclo cada 5 min)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PYTHONIOENCODING: utf-8
+        run: |
+          git config user.name "tfz-bot"
+          git config user.email "tfz-bot@users.noreply.github.com"
+          END=$((SECONDS + 3000))   # parar a los 50 min (dentro del timeout de 58)
+          i=0
+          while [ $SECONDS -lt $END ]; do
+            i=$((i + 1))
+            echo "===== ciclo $i ($(date -u +%H:%M:%S) UTC) ====="
+            python main.py paper \
+              --timeframe 1m,5m,15m --fresh 3 \
+              --filter profit --min-score 60 --min-rr 6 \
+              --enable-f1 --f1-retest --no-ml || echo "ciclo fallo, sigo"
+            # Subir el estado (BD de trades + cartera). Estan en .gitignore -> -f.
+            git add -f tfz_data.db portfolio_state.json 2>/dev/null || true
+            if ! git diff --cached --quiet 2>/dev/null; then
+              git commit -m "estado paper ciclo $i [skip ci]" || true
+              for try in 1 2 3; do
+                git pull --rebase --autostash && git push && break || sleep 5
+              done
+            fi
+            [ $SECONDS -lt $END ] && sleep 300
+          done
+          echo "fin del bucle: $i ciclos"

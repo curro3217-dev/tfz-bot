@@ -1,0 +1,45 @@
+name: TFZ Diag VPN
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - vpn_pick.py
+      - diag_vpn_after.py
+      - .github/workflows/diag_vpn.yml
+permissions:
+  contents: write
+jobs:
+  vpn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar openvpn
+        run: sudo apt-get update && sudo apt-get install -y openvpn
+      - name: Elegir servidor VPN gratis (Japon)
+        run: python vpn_pick.py JP
+      - name: Conectar la VPN
+        run: |
+          sudo openvpn --config vpn.ovpn --daemon --log vpn.log --writepid vpn.pid
+          echo "esperando al tunel tun0..."
+          for i in $(seq 1 40); do
+            if ip a 2>/dev/null | grep -q tun0; then echo "tun0 ARRIBA"; break; fi
+            sleep 2
+          done
+          sleep 6
+          echo "--- log openvpn (ultimas lineas) ---"; tail -5 vpn.log || true
+      - name: Probar Binance/Bybit a traves de la VPN
+        run: python diag_vpn_after.py | tee diag_vpn_result.txt
+      - name: Desconectar VPN y subir resultado
+        if: always()
+        run: |
+          sudo killall openvpn || true
+          sleep 4
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -f diag_vpn_result.txt || true
+          git commit -m "diag: resultado VPN [skip ci]" || echo "sin cambios"
+          git push || true

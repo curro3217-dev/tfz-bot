@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import json
 from pathlib import Path
@@ -6,7 +7,10 @@ from signals import Signal
 from backtester import TradeResult
 
 
-DB_PATH = Path(__file__).parent / "tfz_data.db"
+# Ruta de la BD. Override por env TFZ_DB para correr una cuenta paper SEPARADA (p.ej.
+# el bot de GitHub usa github_state/tfz_data.db y no pisa la del PC, asi se pueden
+# comparar las dos en paralelo). Sin la env, usa la de siempre junto al codigo.
+DB_PATH = Path(os.environ.get("TFZ_DB") or (Path(__file__).parent / "tfz_data.db"))
 
 
 def get_connection(db_path: str = None) -> sqlite3.Connection:

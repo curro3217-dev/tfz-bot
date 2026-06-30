@@ -13,7 +13,8 @@ Estado en portfolio_state.json. Ver: python main.py portfolio
 import json
 import os
 
-PORTF_FILE = os.path.join(os.path.dirname(__file__), "portfolio_state.json")
+# Override por env TFZ_PORTF para una cartera SEPARADA (el bot de GitHub usa la suya).
+PORTF_FILE = os.environ.get("TFZ_PORTF") or os.path.join(os.path.dirname(__file__), "portfolio_state.json")
 START = 50.0
 MAX_LEV = 10.0
 RISK_PCT = 1.0   # % del equity arriesgado por trade

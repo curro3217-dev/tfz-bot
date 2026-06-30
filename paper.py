@@ -41,6 +41,41 @@ DEFAULT_WATCHLIST = [
 ]
 
 
+_TF_MIN = {"1m": 1, "3m": 3, "5m": 5, "15m": 15, "30m": 30, "1h": 60, "4h": 240}
+
+
+def _intrabar_first(symbol, candle_ts, tf, sl, tp, direction, cfg):
+    """Resolucion INTRAVELA (arreglo A): cuando una sola vela contiene A LA VEZ el SL y
+    el TP, no se sabe cual se toco primero. Antes se asumia SL (pesimista). Aqui miramos
+    las velas de 1m DENTRO de esa vela para decidir el orden real. Devuelve 'sl', 'tp' o
+    None (sin datos 1m -> el llamador mantiene el pesimismo como respaldo seguro)."""
+    try:
+        nmin = _TF_MIN.get(tf, 60)
+        since = int(pd.to_datetime(candle_ts).timestamp() * 1000)
+        end = since + nmin * 60 * 1000
+        m1 = fetch_ohlcv(symbol, "1m", limit=nmin + 2, since=since,
+                         config=config_for_timeframe(cfg, "1m"))
+        if m1 is None or len(m1) == 0:
+            return None
+        h = m1["high"].values
+        l = m1["low"].values
+        for k in range(len(m1)):
+            t = int(pd.to_datetime(m1["timestamp"].iloc[k]).timestamp() * 1000)
+            if t < since or t >= end:
+                continue
+            if direction == "long":
+                hit_sl, hit_tp = l[k] <= sl, h[k] >= tp
+            else:
+                hit_sl, hit_tp = h[k] >= sl, l[k] <= tp
+            if hit_sl:        # SL primero (o ambos en la misma vela de 1m -> pesimista)
+                return "sl"
+            if hit_tp:
+                return "tp"
+        return None
+    except Exception:
+        return None
+
+
 def _check_exit(trade: dict, df, cfg: TFZConfig):
     """Return (exit_price, exit_reason, exit_ts, pnl_pct) if the trade resolved
     in the candles after entry, else None (still open)."""
@@ -81,21 +116,28 @@ def _check_exit(trade: dict, df, cfg: TFZConfig):
         max_runup = max(max_runup, runup)
         max_dd = max(max_dd, dd)
 
-        # Stop-loss
-        if direction == "long" and lows[i] <= current_sl:
-            pnl = (current_sl - entry) / entry * 100
-            reason = "breakeven" if moved_be and abs(pnl) < 0.05 else "sl_hit"
-            return current_sl, reason, ts[i], round(pnl, 4)
-        if direction == "short" and highs[i] >= current_sl:
-            pnl = (entry - current_sl) / entry * 100
-            reason = "breakeven" if moved_be and abs(pnl) < 0.05 else "sl_hit"
-            return current_sl, reason, ts[i], round(pnl, 4)
+        # SL / TP — detectar si la vela toca cada nivel
+        if direction == "long":
+            hit_sl, hit_tp = lows[i] <= current_sl, highs[i] >= tp
+        else:
+            hit_sl, hit_tp = highs[i] >= current_sl, lows[i] <= tp
 
-        # Take-profit
-        if direction == "long" and highs[i] >= tp:
-            return tp, "tp_hit", ts[i], round((tp - entry) / entry * 100, 4)
-        if direction == "short" and lows[i] <= tp:
-            return tp, "tp_hit", ts[i], round((entry - tp) / entry * 100, 4)
+        # Vela AMBIGUA (toca ambos): mirar 1m para saber cual fue primero (arreglo A).
+        if hit_sl and hit_tp:
+            first = _intrabar_first(trade["symbol"], ts[i], trade["timeframe"],
+                                    current_sl, tp, direction, cfg)
+            if first == "tp":
+                hit_sl = False          # el 1m confirma que el TP llego antes
+            else:
+                hit_tp = False          # 'sl' o sin datos -> pesimista (respaldo seguro)
+
+        if hit_sl:
+            pnl = ((current_sl - entry) if direction == "long" else (entry - current_sl)) / entry * 100
+            reason = "breakeven" if moved_be and abs(pnl) < 0.05 else "sl_hit"
+            return current_sl, reason, ts[i], round(pnl, 4)
+        if hit_tp:
+            pnl = ((tp - entry) if direction == "long" else (entry - tp)) / entry * 100
+            return tp, "tp_hit", ts[i], round(pnl, 4)
 
         # Move to breakeven on a confirmed retest (spec §10.3)
         if not moved_be and consol_h is not None and consol_l is not None:
@@ -290,7 +332,10 @@ def fresh_accepted_signals(symbol, tf, cfg: TFZConfig, fresh_lookback=2,
                 continue
         prob = ml_filter.predict_win_prob(sig, trend) if use_ml else None
         if filter_mode == "profit":
-            passed = (sig.total_score >= min_score and sig.rr_ratio >= min_rr)
+            # F3 es la formacion mas floja: pedirle MAS score (validado: F3>=80 da +1.30%/
+            # OOS +1.23% vs +0.85% a >=60, y sube el conjunto +2.31->+2.45%). Las demas en min_score.
+            eff_min = max(min_score, cfg.f3_min_score) if sig.formation_type == "F3" else min_score
+            passed = (sig.total_score >= eff_min and sig.rr_ratio >= min_rr)
         else:
             passed = not (prob is not None and prob < ml_cutoff)
         # Record every evaluated setup (live path only, i.e. when ML prob exists)
@@ -577,6 +622,82 @@ def resolve_watchlist(symbols=None, source="scanner", verbose=True):
     return DEFAULT_WATCHLIST
 
 
+def _scan_setup(conn, symbols, cfg: TFZConfig, detect_fn, tfs, direction,
+                name, candles=600, fresh_lookback=2, verbose=True):
+    """Scan genérico para setups APARTE (fade-short, micro-pullback). NO pasan el filtro
+    score/rr (RR propio) ni dependen del gate de momentum; solo guards basicos:
+    1-por-moneda, cap de correlacion, cooldown, y datos frescos. Devuelve nº abiertas."""
+    opened = 0
+    _open = get_open_paper_trades(conn)
+    open_symbols = {t["symbol"] for t in _open}
+    dir_count = {"long": 0, "short": 0}
+    for t in _open:
+        dir_count[t["direction"]] = dir_count.get(t["direction"], 0) + 1
+    recent_stops = {}
+    if cfg.reentry_cooldown_min > 0:
+        cur = conn.execute("SELECT symbol, direction, MAX(exit_ts) FROM paper_trades "
+                           "WHERE status='closed' AND exit_reason IN ('sl_hit','breakeven') "
+                           "AND exit_ts >= datetime('now','-1 day') GROUP BY symbol, direction")
+        recent_stops = {(s, d): x for s, d, x in cur.fetchall() if x}
+    now_utc = pd.Timestamp(datetime.now(timezone.utc).replace(tzinfo=None))
+    max_age = {"5m": 20, "15m": 60, "1h": 180}
+
+    for symbol in symbols:
+        if symbol in open_symbols:
+            continue
+        for tf in tfs:
+            if symbol in open_symbols:
+                break
+            tf_cfg = config_for_timeframe(cfg, tf)
+            try:
+                df = fetch_ohlcv(symbol, tf, limit=candles, config=tf_cfg)
+            except Exception:
+                continue
+            if len(df) < 100:
+                continue
+            age = (now_utc - pd.to_datetime(df["timestamp"].iloc[-1])).total_seconds() / 60.0
+            if age > max_age.get(tf, 60):
+                continue  # datos viejos
+            cur_idx = len(df) - 1
+            sigs = [s for s in detect_fn(df, symbol, tf, cfg)
+                    if s.trigger_idx >= cur_idx - fresh_lookback]
+            for sig in sigs:
+                if cfg.max_open_per_dir and dir_count.get(direction, 0) >= cfg.max_open_per_dir:
+                    break
+                last_stop = recent_stops.get((symbol, direction))
+                if last_stop:
+                    gap = (pd.to_datetime(str(df["timestamp"].iloc[-1]))
+                           - pd.to_datetime(last_stop)).total_seconds() / 60.0
+                    if 0 <= gap < cfg.reentry_cooldown_min:
+                        continue
+                entry_ts = df["timestamp"].iloc[sig.trigger_idx]
+                save_signal(conn, sig)
+                open_paper_trade(conn, sig, entry_ts)
+                open_symbols.add(symbol)
+                dir_count[direction] = dir_count.get(direction, 0) + 1
+                opened += 1
+                try:
+                    from notify import alert_entry
+                    alert_entry(sig, None)
+                except Exception:
+                    pass
+                if verbose:
+                    print(f"  [opened] {symbol:10s} {tf:>3s} {direction:5s} {name} "
+                          f"entry {sig.entry_price:.5g} SL {sig.stop_loss:.5g} TP {sig.take_profit:.5g}")
+                break
+    return opened
+
+
+def scan_round_fade(conn, symbols, cfg, **kw):
+    from round_fade import detect_round_fade
+    return _scan_setup(conn, symbols, cfg, detect_round_fade, ("1h", "15m"), "short", "round_fade", **kw)
+
+
+def scan_micro_pullback(conn, symbols, cfg, **kw):
+    from micro_pullback import detect_micro_pullback
+    return _scan_setup(conn, symbols, cfg, detect_micro_pullback, ("5m", "15m", "1h"), "long", "micro_pullback", **kw)
+
+
 def run_cycle(symbols=None, timeframes=None, cfg: TFZConfig = None,
               fresh_lookback=2, ml_cutoff=0.55, use_ml=True,
               watchlist_source="scanner", verbose=True,
@@ -623,6 +744,20 @@ def run_cycle(symbols=None, timeframes=None, cfg: TFZConfig = None,
                                 filter_mode=filter_mode, min_score=min_score, min_rr=min_rr,
                                 btc_3h=btc_3h)
     print(f"  -> {n_opened} opened")
+
+    # Setups APARTE (validados, RR propio, fuera del filtro de momentum):
+    _extra = [("micro-pullback", scan_micro_pullback)]
+    if getattr(cfg, "enable_round_fade", False):
+        _extra.insert(0, ("round-fade", scan_round_fade))
+    for _name, _fn in _extra:
+        try:
+            _n = _fn(conn, symbols, cfg, fresh_lookback=fresh_lookback, verbose=verbose)
+            if _n:
+                print(f"  -> {_n} {_name} opened")
+            n_opened += _n
+        except Exception as _e:
+            if verbose:
+                print(f"  [{_name}] {_e}")
 
     print_status(conn)
     conn.close()

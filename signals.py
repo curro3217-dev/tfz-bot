@@ -63,6 +63,16 @@ def generate_signals(
         if trigger_idx is None:
             continue
 
+        # FILTRO RVOL (volumen relativo, idea de Warrior Trading): vol de la vela trigger
+        # / media de las 20 anteriores. Validado OOS: en 1m exigir >=2 casi DOBLA la
+        # expectancy (+2.7->+4.4%) y sube aciertos a 62%; en 15m >=1.5 mejora leve; en 5m
+        # no aporta (rvol_min=0). Limpia las rupturas en volumen bajo (ruido). Por TF.
+        if getattr(cfg, "rvol_min", 0.0) > 0 and trigger_idx >= 20:
+            _vbm = vols[trigger_idx - 20:trigger_idx].mean()
+            _rvol = (vols[trigger_idx] / _vbm) if _vbm > 0 else 0.0
+            if _rvol < cfg.rvol_min:
+                continue
+
         entry_price = closes[trigger_idx]
         current_atr = atr[trigger_idx] if not np.isnan(atr[trigger_idx]) else atr[~np.isnan(atr)][-1]
         sl_offset = current_atr * cfg.sl_atr_offset_mult

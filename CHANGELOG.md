@@ -9,7 +9,105 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
-## 2026-06-28
+## 2026-06-30
+
+### MIGRACIÓN A MEXC (reversible) — para correr 24/7 en GitHub
+- **Por qué:** Binance(451) y Bybit(403) geo-bloquean a GitHub. Verificado a fondo: 3 librerías
+  (ccxt, connector oficial, python-binance) chocan igual (es por IP, no por librería); 11 endpoints
+  probados DESDE el runner (diag_regions.py): los 8 dominios de Bybit (com, bytick.com, .eu, .nl,
+  -tr.com, .kz, global) dan 403 CloudFront; fapi.binance 451; solo data-api.binance.vision SPOT
+  responde (no sirve, es spot). MEXC es el ÚNICO con futuros en vivo NO bloqueado (diag_mexc.py
+  desde GitHub: 814 perp, 29/30 monedas, 85.619 velas OK). Velas idénticas a Binance (<=0.014%).
+- **Cambios:** `config.default_exchange="mexc"`, `fallback_exchange="binance"` (REVERSIBLE: volver a
+  "binance" deshace todo, no se quitó nada de Binance). `data_fetcher.create_exchange`: mexc->swap.
+  Nuevo `data_fetcher._resolve_symbol`: traduce el símbolo interno del bot al de MEXC (acciones
+  con sufijo STOCK: MSTR->MSTRSTOCK, MU->MUSTOCK, QQQ->QQQSTOCK, CRCL->CRCLSTOCK; memes sin 1000:
+  1000PEPE->PEPE, misma %). fetch_ohlcv usa el símbolo traducido. Solo CL (crudo) no existe en MEXC
+  (en el PC cae a Binance por el fallback; en GitHub se pierde 1 moneda).
+- Verificado en el PC: ciclo completo `main.py paper` corre OK con MEXC, abre/cierra normal, los 6
+  trades abiertos resuelven a MEXC sin problema de escala (no había 1000PEPE abierto).
+- Cache se separa por exchange -> no mezcla con la de Binance/Bybit.
+
+### ARREGLO A: resolución INTRAVELA (cierres más realistas)
+- `paper._check_exit`: cuando UNA sola vela contiene a la vez el SL y el TP, antes se asumía SL
+  (pesimista) -> falseaba muchos cierres, sobre todo en 1h. Ahora, en ese caso ambiguo, mira las
+  velas de 1m DENTRO (`_intrabar_first`) para saber cuál se tocó primero. Si no hay datos de 1m,
+  mantiene el pesimismo como respaldo seguro. Motivado por C (medido): los trades cierran en
+  mediana 1 vela de su TF; en 1h el 83% entra con la señal ya 2-3 velas vieja.
+
+### MEJORA B: stop ENSANCHADO en micro-pullback (x2) — valida y aplicado
+- `micro_pullback.MPB_SL_MULT=2.0`: el SL se aleja x2 la distancia a la pausa (TP sobre el riesgo
+  original). Validado en la MISMA tanda (2281 señales), por TF y OOS: win 32->44%, expectancy
+  +0.131->+0.320% (OOS +0.29->+0.62%); además los trades RESPIRAN más (mediana 2->4 velas; cierres
+  en 1 vela 41->21%). El TRAILING se probó y se DESCARTÓ (empeora: corta ganadores). Nota: el
+  micro-pullback en 5m es flojo/negativo incluso ensanchado; el edge vive en 1h/15m. REVERSIBLE:
+  MPB_SL_MULT=1.0 vuelve al stop ceñido.
+
+### Pendiente detectado (no aplicado): entradas tardías (raíz de "se cierra al instante")
+- C confirmó que en 1h/15m el bot entra con la señal vieja (1h: mediana 3 velas tarde, 83% >2
+  velas) -> entra a un precio ya pasado -> cierre casi inmediato. Propuesta a validar: GUARD de
+  "precio de entrada cerca del precio actual" (no entrar si el mercado ya se fue del nivel).
+
+## 2026-06-29
+
+### FADE-SHORT pausado + tope de tendencia (sangraba en régimen de pumps)
+- En vivo el fade-short se hundió (win 44% vs 66-76% validado, sum -26%): regimen reciente de pumps fuertes ->
+  los numeros redondos ROMPEN en vez de rechazar (RAVE rompio 0.4->0.45, CBRS 200->219). El fade se salta el gate
+  de tendencia (por diseño) -> shortea subidas fuertes. NOTA: NO era bug; los SL cierran a -1.2% (los -10% eran
+  marcador en vivo; RAVE/CBRS cerraron a -1.20% al correr el ciclo). Cartera cayo a ~$39.66 (-20%, throttle activo).
+- Medido por fuerza de tendencia: el fade pierde en trend 3-10% (la zona donde rompen); cap a <=3% (subidas suaves)
+  recupera a +0.154% win 64% (vs +0.037% sin tope, ya con los pumps en los datos). `config.round_fade_trend_max=3`
+  aplicado en detect_round_fade. `config.enable_round_fade=False` -> PAUSADO; el micro-pullback (long, a favor de
+  tendencia) sigue activo (es el bueno para regimen alcista; sus runners TAC/SYN abiertos en verde).
+- TAMBIEN: FADE_TOL 0.6%->1.0% (el coste ~0.2% se comia 1/3 del objetivo de 0.6% -> siempre +0.40/-0.80; a 1.0%
+  pesa 1/5 y la expectancy validada sube +0.15->+0.21%).
+
+### MEJORA F3: umbral de score propio (>=80 en vez de 60)
+- F3 (cascada) era la formacion mas floja (+0.85%/trade). Análisis: el F3 con score>=80 da +1.30% (OOS +1.23%,
+  win 44%) vs el de 60-80 que arrastra (+0.55%). Validado limpio sobre el conjunto: pedir F3>=80 sube el TODO
+  de +2.313% a +2.454%/trade (OOS +2.074->+2.227), robusto a umbrales cercanos (75/80/85 suben suave; >=85 ya
+  deja 4 trades = sobreajuste, 80 es el punto). `config.f3_min_score=80`; aplicado en `fresh_accepted_signals`
+  (eff_min = 80 solo si formation_type=='F3'; las demas siguen en 60). Live: ciclo limpio.
+
+### AÑADIDO throttle de drawdown ("Trader Rehab", Warrior Trading) en la cartera
+- `portfolio.DD_THROTTLE`: si el equity cae >=10% del pico -> riesgo a 1/2; >=20% -> 1/4; vuelve a normal al
+  recuperar pico. Reduce la profundidad del bache (preserva capital) a cambio de recuperar mas despacio. Es
+  RIESGO, no edge (no cambia expectancy/trade). Track de "peak" en el estado.
+
+### AÑADIDO setup MICRO-PULLBACK (Warrior Trading), LONG de continuación — 5m/15m/1h
+- Nuevo `micro_pullback.py`: en tendencia, pausa de 1 vela (maximo mas bajo) sobre la 9 EMA, entrada al romper el
+  maximo de la pausa; stop=minimo pausa; TP=RR3. VALIDADO fuerte: +0.23-0.28%/trade, OOS +0.37-0.41%, y el
+  CONTROL (long aleatorio en tendencia) es NEGATIVO -> el patron aporta. Por TF: 1h +0.51% (mejor), 15m +0.13%,
+  5m marginal pero OOS+. 3451 trades. Integrado via `paper._scan_setup` (generico) -> scan_micro_pullback, fuera
+  del filtro rr>=6. Smoke test: abrio TAC/GWEI/RE long.
+
+### AÑADIDO setup FADE-SHORT en resistencia de número redondo (1h/15m)
+- Nuevo `round_fade.py`: detect_round_fade replica el setup validado (en tendencia alcista, precio 0.3-1.2% bajo
+  un entero -> lo TOCA -> short al nivel, TP/SL +/-0.6%). Validado: 1h win 66% exp +0.076% OOS +0.047%; 15m leve
+  +0.031%/+0.042%; 5m negativo (no se usa). Modesto pero real, OOS, control plano.
+- Integrado en `paper.scan_round_fade` (1h+15m), llamado desde run_cycle. Va por su PROPIO camino: NO pasa el
+  filtro score>=60 & rr>=6 (es high-winrate/RR~1) ni el gate de tendencia (es fade counter-trend validado);
+  solo guards basicos (1-por-moneda, cap correlacion, cooldown). Smoke test: abrio ENA short en 0.08 y SUI en 0.7.
+
+### AÑADIDO filtro RVOL (volumen relativo, idea de Warrior Trading) — por temporalidad
+- Investigado Warrior Trading; el RVOL (vol vela / media 20 velas) resultó el candidato top. Test 1: post-hoc
+  sobre CSV salió ENGAÑOSO (solo 172/1709 trades por límite de caché) -> parecía no aportar. Test 2 BIEN HECHO:
+  RVOL calculado DENTRO del backtest (columna 'rvol' en ml_dataset, los 1825 trades). Resultado MONÓTONO: a más
+  RVOL, más expectancy y mejor OOS. Confirmado POR TEMPORALIDAD: el edge está concentrado en 1m (RVOL>=2 casi
+  DOBLA: +2.74->+4.38%/trade, winrate 53->62%, OOS +4.44%), leve en 15m (>=1.5), NULO en 5m.
+- Implementado: `config.rvol_min` por TF en TIMEFRAME_PARAMS (1m:2.0, 15m:1.5, 5m/1h:0=off). Filtro en
+  `signals.generate_signals`: descarta la señal si rvol(trigger) < rvol_min. Mismo sitio -> backtest y vivo igual.
+- Lección (otra vez): el test rápido decía "no sirve"; el bien hecho (muestra completa + por TF) dice "sí, en 1m".
+  Verificar a fondo antes de un veredicto. La mejora de winrate (1m 62%) ataca justo la preocupación del usuario.
+
+### GitHub Actions DESCARTADO: runners geo-bloqueados por Binance(451)/Bybit(403)
+- Tras montarlo y subirlo (repo curro3217-dev/tfz-bot), prueba de reproducibilidad (selftest.py, idea del
+  usuario) cazó que en GitHub salían 0 señales: TODOS los símbolos daban "Could not connect to any exchange".
+- diag_net.py confirmó: desde el runner, Binance HTTP 451 (geo) y Bybit HTTP 403 en todos los endpoints (incl.
+  fapi.binance.com/ticker, el del scanner). El bot no puede bajar datos en GitHub -> no opera.
+- Acciones: workflow del bot DESACTIVADO en GitHub (repo queda como backup de código, antes no había git).
+  Bot del PC REACTIVADO como stopgap (Binance sí funciona desde la red de casa). 24/7 real -> Oracle Cloud en
+  región permitida (Frankfurt) o VPS. Ver memoria github-actions-geobloqueo.
 
 ### Preparado para correr 24/7 en GitHub Actions (como el scanner del usuario)
 - Motivo: el bot solo corría ~48% del tiempo (PC apagado ~178h de 340h; ~7h cada noche). Sin 24/7 la muestra

@@ -42,7 +42,7 @@ def create_exchange(name: str) -> ccxt.Exchange:
     # Tipo de mercado por exchange: queremos perps lineales USDT (BASE/USDT:USDT).
     # Binance necesita defaultType 'future'; Bybit 'swap'. Sin esto, Binance carga
     # SPOT y los simbolos perp no resuelven.
-    dtype = {"binance": "future", "bybit": "swap"}.get(name)
+    dtype = {"binance": "future", "bybit": "swap", "mexc": "swap"}.get(name)
     if dtype:
         opts["options"] = {"defaultType": dtype}
     exchange = cls(opts)
@@ -67,6 +67,27 @@ def _get_exchange(name: str):
     return ex
 
 
+def _resolve_symbol(name: str, exchange, symbol: str) -> str:
+    """Traduce el simbolo INTERNO del bot al nombre que usa el exchange. El bot guarda
+    todo como BASE/USDT:USDT (estilo Binance); MEXC nombra distinto algunas: acciones
+    tokenizadas con sufijo STOCK (MSTR -> MSTRSTOCK) y memes sin el prefijo 1000
+    (1000PEPE -> PEPE; misma evolucion en %). Si ya coincide o no es MEXC, no toca nada."""
+    if symbol in exchange.markets:
+        return symbol
+    if name != "mexc":
+        return symbol
+    base, _, quote = symbol.partition("/")
+    rest = "/" + quote
+    cands = []
+    if base.startswith("1000"):
+        cands.append(base[4:] + rest)        # 1000PEPE -> PEPE
+    cands.append(base + "STOCK" + rest)      # MSTR -> MSTRSTOCK
+    for c in cands:
+        if c in exchange.markets:
+            return c
+    return symbol
+
+
 def fetch_ohlcv(
     symbol: str,
     timeframe: str = "15m",
@@ -77,10 +98,15 @@ def fetch_ohlcv(
     cfg = config or TFZConfig()
 
     exchange = None
+    ex_symbol = symbol
     for name in [cfg.default_exchange, cfg.fallback_exchange]:
         try:
-            exchange = _get_exchange(name)
-            if symbol in exchange.markets:
+            cand = _get_exchange(name)
+            exchange = cand                       # recuerda el ultimo valido como fallback
+            s = _resolve_symbol(name, cand, symbol)
+            if s in cand.markets:
+                exchange = cand
+                ex_symbol = s
                 break
         except Exception:
             continue
@@ -101,7 +127,7 @@ def fetch_ohlcv(
     # 999 for a full window, which would otherwise abort after one request.
     last_ts = None
     while True:
-        candles = exchange.fetch_ohlcv(symbol, timeframe, since=fetch_since, limit=1000)
+        candles = exchange.fetch_ohlcv(ex_symbol, timeframe, since=fetch_since, limit=1000)
         if not candles:
             break
         if all_candles and candles[0][0] <= all_candles[-1][0]:

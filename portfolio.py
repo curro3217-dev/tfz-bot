@@ -18,6 +18,12 @@ START = 50.0
 MAX_LEV = 10.0
 RISK_PCT = 1.0   # % del equity arriesgado por trade
 
+# Throttle por drawdown ("Trader Rehab", Warrior Trading): en rachas malas, reducir el
+# tamaño (riesgo) para preservar capital; vuelve a normal al recuperar el pico. Reduce
+# la profundidad del bache a cambio de recuperar mas despacio (es RIESGO, no edge).
+# (drawdown desde el pico) -> factor sobre RISK_PCT
+DD_THROTTLE = [(0.20, 0.25), (0.10, 0.5)]   # >=20% dd -> 1/4 riesgo; >=10% -> 1/2
+
 
 def _load():
     if os.path.exists(PORTF_FILE):
@@ -58,16 +64,26 @@ def update_portfolio(conn):
         "SELECT id,symbol,direction,risk_pct,pnl_pct,exit_reason,opened_at "
         "FROM paper_trades WHERE status='closed' ORDER BY exit_ts")
     new = []
+    if "peak" not in st:
+        st["peak"] = max(st["equity"], st["start_equity"])
     for tid, sym, dr, rp, pnl, er, oa in cur.fetchall():
         if tid in excl or tid in cnt or pnl is None:
             continue
         rp = rp if (rp and rp > 0) else 1.0
-        lev = min(RISK_PCT / rp, MAX_LEV)        # apalancamiento para arriesgar 1% dado el stop
+        # Throttle por drawdown: factor sobre el riesgo segun lo lejos del pico
+        dd = (st["peak"] - st["equity"]) / st["peak"] if st["peak"] > 0 else 0.0
+        factor = 1.0
+        for thr, f in DD_THROTTLE:
+            if dd >= thr:
+                factor = f
+                break
+        lev = min((RISK_PCT * factor) / rp, MAX_LEV)   # riesgo reducido en racha mala
         dollar = st["equity"] * lev * (pnl / 100.0)
         st["equity"] += dollar
+        st["peak"] = max(st["peak"], st["equity"])
         st["counted"].append(tid); cnt.add(tid)
         rec = {"id": tid, "symbol": sym, "dir": dr, "pnl_pct": round(pnl, 3),
-               "lev": round(lev, 2), "dollar": round(dollar, 4),
+               "lev": round(lev, 2), "throttle": factor, "dollar": round(dollar, 4),
                "equity": round(st["equity"], 4), "reason": er, "opened_at": oa}
         st["history"].append(rec)
         new.append(rec)

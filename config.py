@@ -74,6 +74,27 @@ class TFZConfig:
     be_lock_runup_r: float = 0.0
     be_lock_to_r: float = 0.0  # a dónde mover el SL al activar: 0=entrada (sin pérdida), 3=asegura +3R
 
+    # TP en numero redondo: si el objetivo cae a <=round_tp_tol de un numero redondo
+    # (multiplo de 10^floor(log10)), salir en el redondo (resistencia validada). En prueba.
+    round_tp_snap: bool = False
+    round_tp_tol: float = 0.01
+
+    # Filtro de volumen relativo (RVOL = vol vela / media 20 velas). Se setea por TF
+    # en TIMEFRAME_PARAMS (1m:2.0, 15m:1.5, 5m/1h:0=off). 0 = sin filtro.
+    rvol_min: float = 0.0
+
+    # F3 (cascada) es la formacion mas floja: exige mas score que las demas (validado:
+    # F3>=80 sube de +0.85% a +1.30%/trade y el conjunto +2.31->+2.45%). Las otras en 60.
+    f3_min_score: float = 80.0
+
+    # Fade-short en numero redondo: PAUSADO (sangraba en regimen de pumps fuertes, los
+    # redondos rompen en vez de rechazar). Se reactiva con tope de tendencia si valida.
+    enable_round_fade: bool = False
+    # Tope de tendencia para el fade: no fadear si la subida es mas fuerte que esto (en
+    # subidas moderadas-fuertes el redondo ROMPE). Validado: cap <=3% recupera a +0.15%
+    # win 64% (vs +0.037% sin tope). 0 = sin tope.
+    round_fade_trend_max: float = 3.0
+
     # --- Toma de beneficios PARCIAL (método de Mark) ---
     # Al alcanzar partial_frac del camino al TP, cerrar partial_size de la posición
     # y mover el stop del resto a breakeven; el resto sigue hasta el TP/stale.
@@ -177,11 +198,15 @@ class TFZConfig:
     btc_block_pct: float = 1.0
 
     # --- Data ---
-    # BINANCE como fuente principal (volumen más fiable + cubre acciones/materias
-    # primas tokenizadas, no solo cripto). La caché se separa por exchange, así que
-    # no se mezcla con la antigua de Bybit. Bybit queda de respaldo (solo cripto).
-    default_exchange: str = "binance"
-    fallback_exchange: str = "bybit"
+    # MEXC como fuente principal: es el UNICO exchange con futuros en vivo que NO
+    # geo-bloquea a GitHub (Binance da 451 y Bybit 403 desde los runners de EEUU;
+    # verificado contra 11 endpoints). Asi el bot puede correr 24/7 en GitHub igual
+    # que en el PC (misma fuente -> selftest identico). Cobertura ~29/30 monedas; velas
+    # identicas a Binance (<=0.014% dif). Binance queda de respaldo (solo funciona desde
+    # el PC). REVERSIBLE: para volver a Binance, poner default_exchange="binance".
+    # La cache se separa por exchange, asi que no se mezcla con la de Binance/Bybit.
+    default_exchange: str = "mexc"
+    fallback_exchange: str = "binance"
     default_timeframes: list = field(default_factory=lambda: ["5m", "15m"])
 
     def get_dist_max(self, symbol: str) -> float:
@@ -199,6 +224,7 @@ TIMEFRAME_PARAMS: Dict[str, dict] = {
         "consolidation_max_range": 2.0,
         "max_sweep_depth": 1.0,
         "noise_threshold_mult": 0.2,
+        "rvol_min": 2.0,   # filtro volumen relativo (Warrior Trading): casi DOBLA expectancy en 1m
     },
     "5m": {
         "swing_order": 3,
@@ -215,6 +241,7 @@ TIMEFRAME_PARAMS: Dict[str, dict] = {
         "consolidation_max_range": 4.0,
         "max_sweep_depth": 3.0,
         "noise_threshold_mult": 0.3,
+        "rvol_min": 1.5,   # filtro volumen relativo: mejora leve en 15m
     },
     "1h": {
         "swing_order": 5,

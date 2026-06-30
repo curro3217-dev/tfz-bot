@@ -152,9 +152,13 @@ def collect(df, symbol, tf, tf_cfg, step, bypass_quality=False):
                 vv = vol_full[a:gi+1]
                 vwap = float((tp * vv).sum() / vv.sum()) if vv.sum() > 0 else closes_full[gi]
                 row["vwap_dist"] = round((closes_full[gi] - vwap) / vwap * 100, 3) if vwap > 0 else 0.0
+                vb = vol_full[max(0, gi - 20):gi]
+                vbm = vb.mean() if len(vb) else 0.0
+                row["rvol"] = round(vol_full[gi] / vbm, 3) if vbm > 0 else 0.0
             else:
                 row["trend_intraday"] = 0.0
                 row["vwap_dist"] = 0.0
+                row["rvol"] = 0.0
             row["quality_pass"] = quality_at.get(s.id, 1)
             row["f4_has_consol"] = 1 if getattr(s, "f4_has_consol", False) else 0
             rows.append(row)
@@ -193,6 +197,8 @@ def main():
                     help="A dónde mover el SL al activar el be-lock, en R (0=breakeven, 3=asegura +3R)")
     ap.add_argument("--trail-activate", type=float, default=None,
                     help="Activar el trailing solo tras +N R de runup (def 1.0; tardío = 5/6)")
+    ap.add_argument("--round-tp", type=float, default=None,
+                    help="TP en numero redondo: tolerancia (ej 0.01 = ajusta si el TP esta a <=1%% de un redondo)")
     ap.add_argument("--no-quality", action="store_true",
                     help="Bypass the chart-quality filter (tag each trade with quality_pass 1/0)")
     ap.add_argument("--partial", default=None,
@@ -242,6 +248,9 @@ def main():
     if args.be_lock is not None:
         base.be_lock_runup_r = args.be_lock
         base.be_lock_to_r = args.be_lock_to
+    if args.round_tp is not None:
+        base.round_tp_snap = True
+        base.round_tp_tol = args.round_tp
     if args.perp:
         base.funding_pct_per_8h = args.funding
     if args.symbols:
@@ -255,7 +264,7 @@ def main():
                    for s in symbols]
 
     out = os.path.join(os.path.dirname(__file__), args.out)
-    cols = FEATURES + ["trend_intraday", "vwap_dist", "quality_pass", "f4_has_consol", "pnl_pct", "win", "symbol", "timeframe", "entry_ts"]
+    cols = FEATURES + ["trend_intraday", "vwap_dist", "rvol", "quality_pass", "f4_has_consol", "pnl_pct", "win", "symbol", "timeframe", "entry_ts"]
     timeframes = [t.strip() for t in args.timeframes.split(",")] if args.timeframes else list(TIMEFRAMES)
     n = len(symbols) * len(timeframes)
     total_rows = 0

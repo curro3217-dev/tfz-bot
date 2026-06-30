@@ -89,6 +89,22 @@ def _simulate_trade(
     entry = sig.entry_price
     sl = sig.stop_loss
     tp = sig.take_profit
+    # TP en NUMERO REDONDO: si el objetivo queda a <=round_tp_tol de un numero redondo
+    # (multiplo de 10^floor(log10)), ajustarlo a ese redondo -> el precio frena ahi
+    # (resistencia validada). Solo de salida; no cambia que el trade pase el filtro.
+    if getattr(cfg, "round_tp_snap", False):
+        def _rb(x):
+            d = 10 ** np.floor(np.log10(x)); return np.floor(x / d) * d
+        def _ra(x):
+            d = 10 ** np.floor(np.log10(x)); return np.ceil(x / d) * d
+        if sig.direction == "long":
+            r = _rb(tp)
+            if r > entry and (tp - r) / tp <= cfg.round_tp_tol:
+                tp = float(r)
+        else:
+            r = _ra(tp)
+            if r < entry and (r - tp) / tp <= cfg.round_tp_tol:
+                tp = float(r)
     current_sl = sl
     moved_be = False
     be_candle = 0

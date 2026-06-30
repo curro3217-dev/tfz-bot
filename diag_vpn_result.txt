@@ -1,6 +1,11 @@
-IP de salida: 172.208.152.215 | pais: US | AS8075 Microsoft Corporation
+IP de salida: 64.236.135.133 | pais: US | AS8075 Microsoft Corporation
 
 Prueba de endpoints a traves de la VPN:
   BLOCK Binance fapi klines: HTTP 451 | {   "code": 0,   "msg": "Service unavailable from a restricted location according to 'b. E
   BLOCK Bybit v5 klines: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your cou
 FIN
+
+--- diagnostico tunel ---
+tun0: NO SUBIO
+--- vpn.log (ultimas lineas) ---
+(sin log)

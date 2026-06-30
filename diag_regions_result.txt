@@ -1,0 +1,18 @@
+== BYBIT: dominio principal (control, esperamos 403) ==
+  BLOCK api.bybit.com: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your country }
+
+== BYBIT: dominios alternativos / regionales ==
+  BLOCK api.bytick.com: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your country }
+  BLOCK api.bybit.eu: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your country }
+  FAIL  api.bytick.nl: URLError - <urlopen error [Errno -2] Name or service not known>
+  BLOCK api.bybit.nl: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your country }
+  BLOCK api.bybit-tr.com: HTTP 403 | {     error:The Amazon CloudFront distribution is configured to block access from your country }
+  BLOCK api.bybit.kz: HTTP 403 | <!doctype html><html lang=zh-CN><meta charset=UTF-8><meta content="width=device-width,initial-scale=1" name=vi
+  BLOCK api.bybitglobal.com: HTTP 403 | 403 Forbidden for your country
+
+== BINANCE: alternativos (por comparar) ==
+  VELAS data-api.binance.vision SPOT: HTTP 200, 804b, 0.7s | [[1782810900000,"0.07241000","0.07241000","0.07224000","0.07234000","2893216.000
+  BLOCK fapi.binance.com FUT (control 451): HTTP 451 | {   "code": 0,   "msg": "Service unavailable from a restricted location according to 'b. Eligibility' in https
+  RESP  fapi1.binance.com: HTTP 202, 0b, 0.7s | 
+
+FIN

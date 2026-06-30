@@ -1,0 +1,42 @@
+MEXC load_markets OK: 3147 mercados, 814 perp USDT, 1.6s
+
+MONEDA     SIMBOLO MEXC             1h    15m     5m  ultima_close
+----------------------------------------------------------------------
+SOL        SOL/USDT:USDT          1000   1000   1000  73.73
+VELVET     VELVET/USDT:USDT       1000   1000   1000  1.5483
+LAB        LAB/USDT:USDT          1000   1000   1000  12.776
+AGLD       AGLD/USDT:USDT         1000   1000   1000  0.1925
+HYPE       HYPE/USDT:USDT         1000   1000   1000  65.19
+SPCX       SPCXSTOCK/USDT:USDT     962   1000   1000  162.39  (SPCXSTOCK)
+ZEC        ZEC/USDT:USDT          1000   1000   1000  394.9
+XRP        XRP/USDT:USDT          1000   1000   1000  1.0438
+SOXL       SOXL/USDT:USDT          485   1000   1000  238.75
+SNDK       SNDKSTOCK/USDT:USDT    1000   1000   1000  2097.09  (SNDKSTOCK)
+MU         MUSTOCK/USDT:USDT      1000   1000   1000  1142.57  (MUSTOCK)
+SLX        SLX/USDT:USDT           860   1000   1000  0.5209
+AAVE       AAVE/USDT:USDT         1000   1000   1000  89.22
+CL         (no existe)             -      -      -
+RE         RE/USDT:USDT            312   1000   1000  0.7527
+DOGE       DOGE/USDT:USDT         1000   1000   1000  0.07241
+WLD        WLD/USDT:USDT          1000   1000   1000  0.4154
+SYN        SYN/USDT:USDT          1000   1000   1000  0.5884
+NEAR       NEAR/USDT:USDT         1000   1000   1000  1.839
+BNB        BNB/USDT:USDT          1000   1000   1000  551.4
+BEAT       BEAT/USDT:USDT         1000   1000   1000  2.772
+JTO        JTO/USDT:USDT          1000   1000   1000  0.7581
+MAGMA      MAGMA/USDT:USDT        1000   1000   1000  0.4645
+SUI        SUI/USDT:USDT          1000   1000   1000  0.6923
+1000PEPE   PEPE/USDT:USDT         1000   1000   1000  2.3358e-06  (PEPE)
+MSTR       MSTRSTOCK/USDT:USDT    1000   1000   1000  89.72  (MSTRSTOCK)
+ALLO       ALLO/USDT:USDT         1000   1000   1000  0.27941
+PUNDIX     PUNDIX/USDT:USDT       1000   1000   1000  0.0801
+WIF        WIF/USDT:USDT          1000   1000   1000  0.173
+AVAX       AVAX/USDT:USDT         1000   1000   1000  6.628
+----------------------------------------------------------------------
+
+RESUMEN:
+  Monedas con datos en MEXC: 29/30 (96%)
+  No encontradas: CL
+  Total velas descargadas: 85619
+  MEXC alcanzable desde GitHub: SI
+FIN

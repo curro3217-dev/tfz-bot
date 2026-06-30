@@ -1,0 +1,28 @@
+name: TFZ Diag MEXC
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - diag_mexc.py
+      - .github/workflows/diag_mexc.yml
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ccxt
+      - name: Ejecutar test MEXC y guardar resultado
+        run: python diag_mexc.py | tee diag_mexc_result.txt
+      - name: Subir resultado al repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -f diag_mexc_result.txt
+          git commit -m "diag: resultado test MEXC [skip ci]" || echo "sin cambios"
+          git push

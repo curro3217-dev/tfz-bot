@@ -1,18 +1,20 @@
 name: TFZ Bot Paper
 
-# AUTO-RELANZADO: al terminar, cada run lanza el siguiente via workflow_dispatch con un
-# PAT (secret GH_PAT) -> corre solo cada ~hora SIN depender del cron de GitHub (que es
-# poco fiable y a veces no salta). El cron de GitHub queda de respaldo por si el PAT falta.
+# SIN TOKEN: en repos publicos los Actions son gratis e ILIMITADOS y un run puede durar
+# hasta 6h. En vez de depender de un re-lanzado, cada run corre ~5h40m (un ciclo cada
+# 5 min). El cron re-encola cada 30 min (en :17 y :47, minutos "tranquilos" para esquivar
+# la saturacion de GitHub a en punto). Con concurrency, si salta el cron mientras corre un
+# run, queda en cola y arranca en cuanto el run acaba -> cobertura casi continua, sin PAT.
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 * * * *"   # respaldo (el cron de GitHub puede retrasarse o no saltar)
+    - cron: "17,47 * * * *"
 
 # Permite que el job suba (commit/push) el estado del paper al repo.
 permissions:
   contents: write
 
-# Evita que dos ejecuciones se solapen.
+# Solo un run a la vez; si salta otro mientras, queda en cola (no se cancela el activo).
 concurrency:
   group: tfz-paper
   cancel-in-progress: false
@@ -20,7 +22,7 @@ concurrency:
 jobs:
   paper:
     runs-on: ubuntu-latest
-    timeout-minutes: 58
+    timeout-minutes: 350
     steps:
       - name: Descargar repo
         uses: actions/checkout@v4
@@ -33,11 +35,12 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Bucle de paper (~50 min, un ciclo cada 5 min)
+      - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PYTHONIOENCODING: utf-8
+          TZ: Europe/Madrid
           # Cuenta paper SEPARADA de la del PC -> se pueden comparar en paralelo.
           # MEXC es la fuente (default en config) -> funciona desde GitHub.
           TFZ_DB: github_state/tfz_data.db
@@ -46,11 +49,11 @@ jobs:
           git config user.name "tfz-bot"
           git config user.email "tfz-bot@users.noreply.github.com"
           mkdir -p github_state
-          END=$((SECONDS + 3000))   # parar a los 50 min (dentro del timeout de 58)
+          END=$((SECONDS + 20400))   # ~5h40m (buffer bajo el timeout de 350 min)
           i=0
           while [ $SECONDS -lt $END ]; do
             i=$((i + 1))
-            echo "===== ciclo $i ($(date -u +%H:%M:%S) UTC) ====="
+            echo "===== ciclo $i ($(date +%H:%M:%S) hora local) ====="
             python main.py paper \
               --timeframe 1m,5m,15m --fresh 3 \
               --filter profit --min-score 60 --min-rr 6 \
@@ -66,21 +69,3 @@ jobs:
             [ $SECONDS -lt $END ] && sleep 300
           done
           echo "fin del bucle: $i ciclos"
-
-      - name: Auto-relanzar el siguiente run (cada ~hora, sin depender del cron de GitHub)
-        if: always()
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          if [ -n "$GH_PAT" ]; then
-            echo "Re-lanzando el proximo run via workflow_dispatch..."
-            code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST \
-              -H "Authorization: token $GH_PAT" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/bot.yml/dispatches" \
-              -d '{"ref":"main"}')
-            if [ "$code" = "204" ]; then echo "OK: siguiente run encolado"; else echo "fallo el re-lanzamiento (HTTP $code) - revisa el PAT"; fi
-          else
-            echo "SIN secret GH_PAT -> no puedo auto-relanzar; dependera del cron de GitHub (poco fiable)."
-            echo "Anade un PAT (Fine-grained, permiso Actions: Read & Write) como secret GH_PAT."
-          fi

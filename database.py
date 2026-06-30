@@ -153,8 +153,19 @@ def save_backtest_batch(
         save_result(conn, res)
 
 
-def open_paper_trade(conn: sqlite3.Connection, sig: "Signal", entry_ts: str):
-    """Record a new open paper position from a fresh signal."""
+def open_paper_trade(conn: sqlite3.Connection, sig: "Signal", entry_ts: str) -> bool:
+    """Record a new open paper position from a fresh signal. Devuelve True si la abrio,
+    False si esa MISMA señal ya se habia operado (mismo símbolo+TF+vela de disparo+
+    dirección+formación). ANTI-DUPLICADOS: sin esto, una señal que abria y cerraba en el
+    mismo ciclo (entrada a una vela vieja) se reabria cada ciclo mientras siguiera dentro
+    de la ventana 'fresca', inflando el conteo y el PnL (caso TAC x15)."""
+    dup = conn.execute(
+        "SELECT 1 FROM paper_trades WHERE symbol=? AND timeframe=? AND entry_ts=? "
+        "AND direction=? AND formation_type=? LIMIT 1",
+        (sig.symbol, sig.timeframe, str(entry_ts), sig.direction, sig.formation_type),
+    ).fetchone()
+    if dup:
+        return False
     consol = sig.consolidation or {}
     conn.execute(
         """INSERT OR IGNORE INTO paper_trades
@@ -171,6 +182,7 @@ def open_paper_trade(conn: sqlite3.Connection, sig: "Signal", entry_ts: str):
         ),
     )
     conn.commit()
+    return True
 
 
 def get_open_paper_trades(conn: sqlite3.Connection, symbol: str = None,

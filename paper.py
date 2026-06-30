@@ -462,7 +462,8 @@ def scan_new_signals(conn, symbols, timeframes, cfg: TFZConfig,
                 # previas a la apertura -> exit_ts imposible + bucle de re-entradas.
                 entry_ts = df["timestamp"].iloc[-1]
                 save_signal(conn, sig)
-                open_paper_trade(conn, sig, entry_ts)
+                if not open_paper_trade(conn, sig, entry_ts):
+                    continue                            # ANTI-DUPLICADOS: señal ya operada
                 open_keys.add(key)
                 open_symbols.add(symbol)
                 dir_count[sig.direction] = dir_count.get(sig.direction, 0) + 1
@@ -659,6 +660,7 @@ def _scan_setup(conn, symbols, cfg: TFZConfig, detect_fn, tfs, direction,
             if age > max_age.get(tf, 60):
                 continue  # datos viejos
             cur_idx = len(df) - 1
+            current_price = float(df["close"].iloc[-1])
             sigs = [s for s in detect_fn(df, symbol, tf, cfg)
                     if s.trigger_idx >= cur_idx - fresh_lookback]
             for sig in sigs:
@@ -670,9 +672,31 @@ def _scan_setup(conn, symbols, cfg: TFZConfig, detect_fn, tfs, direction,
                            - pd.to_datetime(last_stop)).total_seconds() / 60.0
                     if 0 <= gap < cfg.reentry_cooldown_min:
                         continue
-                entry_ts = df["timestamp"].iloc[sig.trigger_idx]
+                # FIDELIDAD (igual que el path principal): abrir AHORA al precio ACTUAL,
+                # no a la vela del trigger (que puede ser de varias velas atras). Si el
+                # movimiento YA paso (precio fuera de [SL,TP]) se descarta -> esto evita
+                # "revivir" una señal vieja y los TP/SL instantaneos que inflaban el conteo
+                # (caso TAC: el precio ya estaba por encima del TP -> moved-skip).
+                sl, tp = sig.stop_loss, sig.take_profit
+                if direction == "long":
+                    valid_side = sl < current_price < tp
+                    risk_now = (current_price - sl) / current_price * 100 if current_price > 0 else 999
+                else:
+                    valid_side = tp < current_price < sl
+                    risk_now = (sl - current_price) / current_price * 100 if current_price > 0 else 999
+                if (not valid_side) or risk_now <= 0:
+                    if verbose:
+                        print(f"  [moved-skip] {symbol:10s} {tf:>3s} {direction:5s} {name} "
+                              f"(precio ya en {current_price:.4g}, entry {sig.entry_price:.4g} caduco)")
+                    continue
+                denom = abs(current_price - sl)
+                sig.entry_price = current_price        # precio real de apertura
+                sig.risk_pct = round(risk_now, 4)
+                sig.rr_ratio = round(abs(tp - current_price) / denom, 2) if denom > 1e-12 else 0
+                entry_ts = df["timestamp"].iloc[-1]    # vela ACTUAL, no la del trigger
                 save_signal(conn, sig)
-                open_paper_trade(conn, sig, entry_ts)
+                if not open_paper_trade(conn, sig, entry_ts):
+                    continue                            # ANTI-DUPLICADOS: señal ya operada
                 open_symbols.add(symbol)
                 dir_count[direction] = dir_count.get(direction, 0) + 1
                 opened += 1

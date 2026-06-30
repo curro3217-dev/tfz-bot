@@ -11,6 +11,11 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-06-30
 
+### Avisos de Telegram PAUSADOS (PC y GitHub)
+- A petición: no recibir avisos de ninguno de los dos bots de momento. `notify.ALERTS_PAUSED=True`
+  -> `send_telegram` corta el envío de raíz (entradas y cierres). REVERSIBLE: poner False. Escape:
+  env `TFZ_TELEGRAM=1` lo fuerza activo en un sitio concreto si algún día se quiere.
+
 ### DESPLIEGUE DUAL: PC y GitHub en paralelo (cuentas paper SEPARADAS para comparar)
 - A petición: correr el bot en el PC Y en GitHub a la vez para comparar cuál va mejor.
 - Para que NO se pisen: `database.DB_PATH` y `portfolio.PORTF_FILE` ahora aceptan override por

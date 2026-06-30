@@ -4,6 +4,12 @@ name: TFZ Selftest
 # y muestra el HASH. Debe coincidir con el hash de tu PC -> el bot opera igual.
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - selftest.py
+      - .github/workflows/selftest.yml
+permissions:
+  contents: write
 
 jobs:
   selftest:
@@ -17,4 +23,11 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
       - name: Ejecutar selftest
-        run: python selftest.py
+        run: python selftest.py | tee selftest_result.txt
+      - name: Subir resultado al repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -f selftest_result.txt
+          git commit -m "selftest: resultado desde GitHub [skip ci]" || echo "sin cambios"
+          git push

@@ -11,6 +11,15 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-06-30
 
+### GitHub corre continuo SIN token (runs largos)
+- El auto-relanzado con PAT no funcionó fiable y el usuario no quiere depender de un token.
+  Nuevo enfoque (repos publicos = Actions gratis e ILIMITADOS, runs hasta 6h): cada run dura
+  ~5h40m (`END=SECONDS+20400`, `timeout-minutes: 350`), un ciclo cada 5 min. Cron cada 30 min
+  en `:17,:47` (minutos "tranquilos" para esquivar la saturacion de GitHub a en punto). Con
+  `concurrency` (cancel-in-progress:false), si el cron salta durante un run queda en cola y
+  arranca al acabar -> cobertura casi continua, sin PAT. Quitado el paso de auto-relanzado por
+  PAT. Logs del runner ahora en hora local (TZ=Europe/Madrid). El secret GH_PAT ya no se usa.
+
 ### FIX duplicados + auto-relanzado de GitHub
 - **DUPLICADOS (grave, inflaba el PnL):** `_scan_setup` (micro_pullback/round_fade) abria la señal
   fechada en la vela del TRIGGER (pasada) y la reabria CADA ciclo mientras siguiera "fresca" ->

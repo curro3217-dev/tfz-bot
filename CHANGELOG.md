@@ -11,6 +11,31 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-06-30
 
+### DESPLIEGUE DUAL: PC y GitHub en paralelo (cuentas paper SEPARADAS para comparar)
+- A petición: correr el bot en el PC Y en GitHub a la vez para comparar cuál va mejor.
+- Para que NO se pisen: `database.DB_PATH` y `portfolio.PORTF_FILE` ahora aceptan override por
+  env `TFZ_DB` / `TFZ_PORTF`. El PC usa los de siempre (tfz_data.db); GitHub (bot.yml) usa
+  `github_state/tfz_data.db` y `github_state/portfolio_state.json` (carpeta propia, commiteada al
+  repo cada ciclo). Así el PC puede hacer `git pull` sin sobrescribir su cuenta.
+- Selftest CONFIRMADO idéntico: hash PC == hash GitHub (1bd9e6bf90d2ce5e), 7 señales iguales ->
+  con MEXC el bot opera EXACTAMENTE igual en ambos sitios.
+- PENDIENTE (acción del usuario): el workflow "TFZ Bot Paper" está `disabled_manually` en GitHub;
+  hay que darle a "Enable workflow" en la pestaña Actions (no se puede por API sin token).
+- NOTAS de comparación honesta: (1) la cuenta de GitHub arranca FRESCA en $50; la del PC arrastra
+  su historial (~$39) -> comparar expectancy de aquí en adelante, no el equity absoluto. (2) GitHub
+  corre ~cada hora (50 min de ciclos cada 5 min + hueco); el PC cada 5 min continuo -> cadencia
+  parecida pero no exacta. (3) el bot.yml usa flags 1m,5m,15m/F1/profit; si la tarea del PC usa
+  otros, la comparación no es 100% limpia (alinear si se quiere rigor).
+
+### TEST DE VPN en GitHub (idea del usuario): inconcluso, VPN gratis no conecta
+- Probado de verdad (no descartado de palabra): vpn_pick.py baja config de VPN Gate (servidores
+  gratis, Japón) -> OK genera vpn.ovpn. Pero el túnel openvpn NO sube en el runner (2 intentos, con
+  arreglo de cifrados BF-CBC): las configs gratis usan opciones legacy (comp-lzo/cifrados viejos)
+  que OpenVPN 2.6 rechaza, y los servidores son flojos. IP de salida seguía siendo US -> 451/403.
+  CONCLUSIÓN: el principio es válido (salir por país no bloqueado esquivaría el bloqueo), pero una
+  VPN gratis fiable en CI no se sostiene; haría falta una de PAGO (config limpia) -> cuesta dinero
+  y su IP podría estar también en lista negra. MEXC sigue siendo mejor (gratis, ya verificado).
+
 ### MIGRACIÓN A MEXC (reversible) — para correr 24/7 en GitHub
 - **Por qué:** Binance(451) y Bybit(403) geo-bloquean a GitHub. Verificado a fondo: 3 librerías
   (ccxt, connector oficial, python-binance) chocan igual (es por IP, no por librería); 11 endpoints

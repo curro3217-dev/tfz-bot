@@ -8,7 +8,8 @@ name: TFZ Bot Paper
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17,47 * * * *"
+    - cron: "8,21,34,47 * * * *"   # 4 intentos/hora en minutos repartidos (el cron de
+                                   # GitHub es poco fiable; mas intentos = mas chance de saltar)
 
 # Permite que el job suba (commit/push) el estado del paper al repo.
 permissions:

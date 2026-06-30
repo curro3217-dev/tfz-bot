@@ -1,0 +1,17 @@
+name: TFZ Diag Regiones Bybit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - diag_regions.py
+      - .github/workflows/diag_regions.yml
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python diag_regions.py

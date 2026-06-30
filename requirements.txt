@@ -4,6 +4,7 @@ numpy>=1.24
 pyarrow>=12.0
 requests>=2.31       # notify / scanner_bridge
 urllib3>=2.0         # data_fetcher (disable_warnings)
-scikit-learn>=1.4    # Fase 2: filtro ML de calidad de señal
+scikit-learn==1.9.0  # Fase 2: filtro ML. FIJADO a la version del PC para que el modelo
+                     # ml_model.joblib cargue igual en GitHub (evita mismatch de version)
 joblib>=1.3          # persistencia del modelo (ml_model.joblib)
 plotly>=5.15         # main.py importa snapshot.py (lo usa) -> necesario aunque no en la nube

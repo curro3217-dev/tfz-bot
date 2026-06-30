@@ -53,7 +53,7 @@ jobs:
             python main.py paper \
               --timeframe 1m,5m,15m --fresh 3 \
               --filter profit --min-score 60 --min-rr 6 \
-              --enable-f1 --f1-retest --no-ml || echo "ciclo fallo, sigo"
+              --enable-f1 --f1-retest || echo "ciclo fallo, sigo"
             # Subir el estado de ESTA cuenta (carpeta github_state). En .gitignore -> -f.
             git add -f github_state/ 2>/dev/null || true
             if ! git diff --cached --quiet 2>/dev/null; then

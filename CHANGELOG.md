@@ -16,6 +16,16 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
   -> `send_telegram` corta el envío de raíz (entradas y cierres). REVERSIBLE: poner False. Escape:
   env `TFZ_TELEGRAM=1` lo fuerza activo en un sitio concreto si algún día se quiere.
 
+### Arranque desde CERO + igualar estrategia (PC y GitHub idénticos para comparar)
+- A petición: las dos cuentas paper empiezan de cero. PC: borrado paper_trades (274) + trade_review
+  (272) + portfolio_state.json (backup en *.bak_*). GitHub: arrancaba fresco solo (github_state no
+  existía; verificado: 0 runs del bot). Los dos parten de $50, sin historial.
+- IGUALADA la estrategia: el PC corría CON ML y GitHub con --no-ml (el modelo estaba gitignorado).
+  Elegido "los dos CON ML": `ml_model.joblib` subido al repo (force-add), quitado --no-ml de bot.yml
+  (ahora el comando es idéntico al del PC), y `scikit-learn==1.9.0` fijado en requirements para que
+  el modelo cargue igual que en el PC. Resultado: misma estrategia + misma fuente (MEXC) + mismo
+  arranque -> comparación limpia (solo difiere la cadencia: GitHub ~cada hora, PC cada 5 min).
+
 ### DESPLIEGUE DUAL: PC y GitHub en paralelo (cuentas paper SEPARADAS para comparar)
 - A petición: correr el bot en el PC Y en GitHub a la vez para comparar cuál va mejor.
 - Para que NO se pisen: `database.DB_PATH` y `portfolio.PORTF_FILE` ahora aceptan override por

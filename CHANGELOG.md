@@ -11,6 +11,22 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-06-30
 
+### FIX duplicados + auto-relanzado de GitHub
+- **DUPLICADOS (grave, inflaba el PnL):** `_scan_setup` (micro_pullback/round_fade) abria la señal
+  fechada en la vela del TRIGGER (pasada) y la reabria CADA ciclo mientras siguiera "fresca" ->
+  la misma señal contada hasta 15 veces (TAC ×15, +125% falso). Demostrado con datos crudos. Fix:
+  (1) `database.open_paper_trade` ahora DEDUPLICA (mismo símbolo+TF+entry_ts+dir+formación -> no
+  reabre) y devuelve bool; (2) `_scan_setup` reancla precio y entry_ts a la vela ACTUAL (igual que
+  el path principal) y descarta si el precio ya se salió de [SL,TP] ("moved-skip") -> mata el
+  backdating y los TP/SL instantáneos. Verificado: test unitario (1ª abre, 2ª/3ª rechazadas) y los
+  dos call-sites respetan el retorno. NOTA: el path principal (F-formaciones) YA tenía el reanclaje;
+  solo _scan_setup faltaba. Reset limpio de PC y GitHub tras el fix.
+- **GitHub no saltaba solo:** verificado que el cron de GitHub no disparó (sin runs a las 13/14/15:05
+  pese a estar `active`). El cron de GitHub es poco fiable. Fix en bot.yml: paso final que
+  AUTO-RELANZA el siguiente run via `workflow_dispatch` con un PAT (`secrets.GH_PAT`) al acabar cada
+  run (~cada hora), sin depender del cron. Requiere que el usuario añada el secret GH_PAT (PAT
+  fine-grained con Actions: Read&Write). Sin él, cae al cron de GitHub (respaldo poco fiable).
+
 ### Avisos de Telegram PAUSADOS (PC y GitHub)
 - A petición: no recibir avisos de ninguno de los dos bots de momento. `notify.ALERTS_PAUSED=True`
   -> `send_telegram` corta el envío de raíz (entradas y cierres). REVERSIBLE: poner False. Escape:

@@ -21,21 +21,28 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y openvpn
       - name: Elegir servidor VPN gratis (Japon)
         run: python vpn_pick.py JP
-      - name: Conectar la VPN
+      - name: Conectar la VPN (con cifrados viejos habilitados)
         run: |
-          sudo openvpn --config vpn.ovpn --daemon --log vpn.log --writepid vpn.pid
+          sudo openvpn --config vpn.ovpn --daemon --log vpn.log --writepid vpn.pid \
+            --data-ciphers-fallback BF-CBC \
+            --data-ciphers 'AES-256-GCM:AES-128-GCM:AES-256-CBC:AES-128-CBC:BF-CBC' \
+            --connect-retry-max 5 --connect-timeout 25 --allow-compression yes || true
           echo "esperando al tunel tun0..."
-          for i in $(seq 1 40); do
+          for i in $(seq 1 60); do
             if ip a 2>/dev/null | grep -q tun0; then echo "tun0 ARRIBA"; break; fi
             sleep 2
           done
           sleep 6
-          echo "--- log openvpn (ultimas lineas) ---"; tail -5 vpn.log || true
       - name: Probar Binance/Bybit a traves de la VPN
         run: python diag_vpn_after.py | tee diag_vpn_result.txt
-      - name: Desconectar VPN y subir resultado
+      - name: Desconectar VPN y subir resultado (con diagnostico)
         if: always()
         run: |
+          echo "" >> diag_vpn_result.txt
+          echo "--- diagnostico tunel ---" >> diag_vpn_result.txt
+          (ip a 2>/dev/null | grep -q tun0 && echo "tun0: ARRIBA" || echo "tun0: NO SUBIO") >> diag_vpn_result.txt
+          echo "--- vpn.log (ultimas lineas) ---" >> diag_vpn_result.txt
+          tail -18 vpn.log >> diag_vpn_result.txt 2>/dev/null || echo "(sin log)" >> diag_vpn_result.txt
           sudo killall openvpn || true
           sleep 4
           git config user.name "github-actions"

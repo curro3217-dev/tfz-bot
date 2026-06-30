@@ -27,7 +27,15 @@ def _ctx():
     return ctx
 
 
+# PAUSA de avisos: con True, el bot NO envia NADA a Telegram (ni entradas ni cierres),
+# en el PC y en GitHub. Para reactivar los avisos, poner False. (Se puede forzar tambien
+# con la env TFZ_TELEGRAM=1, util si algun dia quieres avisos solo en un sitio.)
+ALERTS_PAUSED = True
+
+
 def send_telegram(text: str) -> bool:
+    if ALERTS_PAUSED and os.environ.get("TFZ_TELEGRAM") != "1":
+        return False
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat = os.environ.get("TELEGRAM_CHAT_ID")
     if not (token and chat):

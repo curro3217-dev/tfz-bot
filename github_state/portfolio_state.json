@@ -1,5 +1,5 @@
 {
-  "equity": 45.16432728723253,
+  "equity": 44.616089519285985,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -12,7 +12,8 @@
     "6f36c703-0bc7-498a-b329-bc38c361a25e",
     "92002f58",
     "ffcfd744-f1ce-4631-9db3-7f25c8c8f44f",
-    "8d8ec838-ba41-48bf-8883-a3a0f43f3372"
+    "8d8ec838-ba41-48bf-8883-a3a0f43f3372",
+    "fa590e48-4176-49a0-9fee-2d9a1b90697b"
   ],
   "history": [
     {
@@ -134,6 +135,18 @@
       "equity": 45.1643,
       "reason": "tp_hit",
       "opened_at": "2026-06-30 23:50:36"
+    },
+    {
+      "id": "fa590e48-4176-49a0-9fee-2d9a1b90697b",
+      "symbol": "DOGE/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -1.178,
+      "lev": 1.03,
+      "throttle": 1.0,
+      "dollar": -0.5482,
+      "equity": 44.6161,
+      "reason": "sl_hit",
+      "opened_at": "2026-06-30 19:28:41"
     }
   ],
   "peak": 50.0

@@ -1,5 +1,5 @@
 {
-  "equity": 42.24327450956274,
+  "equity": 41.933072083151266,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -26,7 +26,8 @@
     "54229990-f6b7-40f5-8a2a-3641d49f65ce",
     "fae0f42e-588d-47df-ac1c-96a19ae91653",
     "20051905-545c-40b1-82a2-a88ada686e20",
-    "9e539221-d181-4305-9f71-cb54f51d5f4f"
+    "9e539221-d181-4305-9f71-cb54f51d5f4f",
+    "f948d2a6-4983-4c21-ab6b-61f4f3ad47bd"
   ],
   "history": [
     {
@@ -316,6 +317,18 @@
       "equity": 42.2433,
       "reason": "sl_hit",
       "opened_at": "2026-07-01 12:19:33"
+    },
+    {
+      "id": "f948d2a6-4983-4c21-ab6b-61f4f3ad47bd",
+      "symbol": "JUP/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.628,
+      "lev": 1.17,
+      "throttle": 0.5,
+      "dollar": -0.3102,
+      "equity": 41.9331,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-01 12:26:04"
     }
   ],
   "peak": 50.0

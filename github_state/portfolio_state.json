@@ -1,5 +1,5 @@
 {
-  "equity": 44.68914773363927,
+  "equity": 44.432953077082935,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -14,7 +14,10 @@
     "ffcfd744-f1ce-4631-9db3-7f25c8c8f44f",
     "8d8ec838-ba41-48bf-8883-a3a0f43f3372",
     "fa590e48-4176-49a0-9fee-2d9a1b90697b",
-    "f6693917-7d31-4aec-b373-b2579690e431"
+    "f6693917-7d31-4aec-b373-b2579690e431",
+    "be76a70e-d271-474f-8e40-e575bab61120",
+    "ca506361-1e0f-4463-ae20-1af1e951479e",
+    "af6386ff"
   ],
   "history": [
     {
@@ -160,6 +163,42 @@
       "equity": 44.6891,
       "reason": "tp_hit",
       "opened_at": "2026-07-01 03:30:33"
+    },
+    {
+      "id": "be76a70e-d271-474f-8e40-e575bab61120",
+      "symbol": "SUI/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -1.404,
+      "lev": 0.42,
+      "throttle": 0.5,
+      "dollar": -0.2627,
+      "equity": 44.4264,
+      "reason": "sl_hit",
+      "opened_at": "2026-06-30 17:03:29"
+    },
+    {
+      "id": "ca506361-1e0f-4463-ae20-1af1e951479e",
+      "symbol": "JUP/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.272,
+      "lev": 0.53,
+      "throttle": 0.5,
+      "dollar": 0.0638,
+      "equity": 44.4902,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-01 04:02:54"
+    },
+    {
+      "id": "af6386ff",
+      "symbol": "LDO/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.207,
+      "lev": 0.62,
+      "throttle": 0.5,
+      "dollar": -0.0572,
+      "equity": 44.433,
+      "reason": "breakeven",
+      "opened_at": "2026-07-01 03:55:50"
     }
   ],
   "peak": 50.0

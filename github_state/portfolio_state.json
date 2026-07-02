@@ -1,5 +1,5 @@
 {
-  "equity": 39.42280390416746,
+  "equity": 39.383766986914125,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -58,7 +58,8 @@
     "e1c06fc2-2f91-48db-94ca-11799e0ef537",
     "d53eaa2c-69a4-4a73-8bb2-0bb5106d09e2",
     "44435046-055e-4616-b06c-10915179c8b2",
-    "36462f9e-7e81-4db9-85b6-ee9aaaac074e"
+    "36462f9e-7e81-4db9-85b6-ee9aaaac074e",
+    "c85a8067"
   ],
   "history": [
     {
@@ -732,6 +733,18 @@
       "equity": 39.4228,
       "reason": "tp_hit",
       "opened_at": "2026-07-02 12:45:59"
+    },
+    {
+      "id": "c85a8067",
+      "symbol": "SOL/USDT:USDT",
+      "dir": "short",
+      "pnl_pct": -0.2,
+      "lev": 0.49,
+      "throttle": 0.25,
+      "dollar": -0.039,
+      "equity": 39.3838,
+      "reason": "breakeven",
+      "opened_at": "2026-07-02 15:19:31"
     }
   ],
   "peak": 50.0

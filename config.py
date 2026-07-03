@@ -119,9 +119,15 @@ class TFZConfig:
     f4_consol_window: int = 20  # velas máx entre fin de consolidación y el sweep
 
     # --- Trading costs (commissions + slippage) ---
-    commission_pct: float = 0.075  # taker fee per side, % (bybit/binance spot ~0.075-0.1)
-    slippage_pct: float = 0.025    # estimated slippage per side, %
-    funding_pct_per_8h: float = 0.0  # perp funding rate per 8h, %; 0 = spot (no funding)
+    # Ajustados a MEXC perps (2026-07-03, verificado contra la API: maker 0%,
+    # taker 0.02% en BTC/ETH; varios pares en 0%/0% por promo, no se cuenta con ella).
+    # Se asume TAKER en entrada y salida (conservador). Los 0.075 anteriores eran de
+    # Bybit/Binance y sobre-castigaban ~0.11%/trade la ida y vuelta.
+    commission_pct: float = 0.02   # taker fee per side, % (MEXC USDT-M perps)
+    slippage_pct: float = 0.025    # estimated slippage per side, % (estimacion, sin cambiar)
+    # Funding baseline 0.01%/8h (tasa estandar; BTC verificado 0.0001/8h en la API).
+    # Antes 0 = no se cobraba nada pese a operar perps; long paga funding positivo.
+    funding_pct_per_8h: float = 0.01
 
     # --- Scoring (spec §13) ---
     # Recalibrated 70 -> 60 after fixing trend scoring: an OOS/IS threshold sweep

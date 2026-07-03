@@ -11,6 +11,34 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### COSTES corregidos a MEXC real (contabilidad, NO estrategia) + doble contabilidad
+- **Hallazgo (verificado contra la API de MEXC con ccxt, no contra marketing):** el bot se
+  cobraba comisiones de otro exchange. `config.commission_pct` era 0.075%/lado (comentario
+  original: "bybit/binance") pero MEXC USDT-M cobra **taker 0.02%** (BTC/ETH; varios pares
+  0%/0% por promo, no se cuenta con ella) y **maker 0%**. Además `funding_pct_per_8h=0`:
+  no se cobraba funding pese a operar perps (BTC verificado: 0.01%/8h).
+- **Cambio en config.py:** `commission_pct 0.075 -> 0.02`, `funding_pct_per_8h 0 -> 0.01`
+  (baseline estándar, conservador para longs), `slippage_pct 0.025` sin tocar (estimación).
+  Ida y vuelta: antes 0.2%, ahora ~0.09% + funding por horas. **Es corrección de
+  CONTABILIDAD al venue real, no aflojar parámetros**: el umbral pre-registrado (+0.3%/trade)
+  no se toca. Se hace HOY porque las cuentas se resetearon hoy mismo (10 trades PC / 1 GitHub
+  cerrados con el modelo viejo; ver recalc_costs.py para unificar al evaluar).
+- **NUEVO recalc_costs.py (solo lectura):** reconstruye el PnL BRUTO desde los precios
+  guardados y reporta expectancy bajo AMBOS modelos (antiguo y MEXC), con control de
+  coincidencia contra el pnl_pct guardado. Verificado: 10/10 trades del PC coinciden
+  exactamente con el modelo antiguo -> la reconstrucción es fiel. Uso: `python
+  recalc_costs.py` (PC) o con `TFZ_DB=<ruta>` (GitHub). El día de los ~200 trades, evaluar
+  el criterio con el modelo MEXC sobre TODOS los trades (unifica los cerrados pre-cambio).
+- **explore_funding.py migrado a MEXC + BUG de timestamps arreglado:** funding del venue
+  real (antes Bybit) vía `create_exchange` de data_fetcher (SSL centralizado); el contrarian
+  (#2) reporta el neto con los DOS costes en la misma tanda (mismas señales, solo cambia el
+  coste). `FUND_EX=bybit` reproduce lo viejo. **BUG:** la columna timestamp llega como
+  datetime64[ms] y el `astype("int64")//10**6` la dejaba 1000x pequeña -> searchsorted nunca
+  casaba -> el test #2 decía "sin señales" SIEMPRE. O sea: el "sin señales" del log viejo de
+  Bybit era el bug, no el mercado (el #3 carry no estaba afectado). Grep: el patrón solo
+  existía en este script, el núcleo del bot está limpio. Resultados nuevos: funding_mexc.log.
+  Limitación conocida: MEXC solo devuelve ~200 eventos de funding (~66 días) por símbolo.
+
 ### Alertas F1-F4 (asistente) con contexto de indicadores — idea de CryptoSignal (GitHub)
 - **Qué:** la alerta de Telegram del MODO ASISTENTE ahora incluye una línea de contexto
   objetivo: `RSI14 | RVOL (vol última vela cerrada / media 20) | lado y distancia a EMA200`.

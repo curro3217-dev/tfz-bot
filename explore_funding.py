@@ -26,15 +26,20 @@ import numpy as np
 import pandas as pd
 import ccxt
 from config import TFZConfig, config_for_timeframe
-from data_fetcher import fetch_ohlcv_cached
+from data_fetcher import fetch_ohlcv_cached, create_exchange
 
-COST = (0.075 + 0.025) * 2  # % ida y vuelta (direccional)
+# 2026-07-03: migrado a MEXC (funding del venue real del bot; antes Bybit) y el
+# neto del contrarian (#2) se reporta con AMBOS modelos de coste en la MISMA tanda
+# (mismas señales, solo cambia el coste -> comparacion limpia):
+COST_OLD  = (0.075 + 0.025) * 2  # % ida y vuelta, modelo antiguo bybit/binance
+COST_MEXC = (0.02  + 0.025) * 2  # % ida y vuelta, MEXC taker verificado por API
+EXCHANGE = os.environ.get("FUND_EX", "mexc")   # FUND_EX=bybit para reproducir lo viejo
 SYMS = ["AAVE","ADA","ATOM","AVAX","DOT","INJ","NEAR","OP","UNI","SOL",
         "LINK","SUI","SEI","TIA","ENA","ONDO","FET","RENDER","CRV","XLM"]
 
 def get_ex():
-    ex = ccxt.bybit({'enableRateLimit':True,'options':{'defaultType':'swap'}})
-    ex.verify=False; ex.load_markets(); return ex
+    ex = create_exchange(EXCHANGE)   # SSL/defaultType centralizados en data_fetcher
+    ex.load_markets(); return ex
 
 def funding_hist(ex, sym, pages=6):
     """~pages*200 eventos de funding (8h c/u). Pagina hacia atrás."""
@@ -77,7 +82,10 @@ def main():
             d=fetch_ohlcv_cached(sym,"1h",limit=20000,config=cfg)
         except Exception:
             continue
-        ts=d["timestamp"].astype("int64").values//10**6
+        # FIX 2026-07-03: la columna llega como datetime64[ms] (parquet), no [ns];
+        # el viejo `astype("int64")//10**6` daba una escala 1000x menor -> searchsorted
+        # nunca casaba y el test #2 reportaba "sin señales" SIEMPRE (tambien en Bybit).
+        ts=d["timestamp"].values.astype("datetime64[ms]").astype("int64")
         cl=d["close"].values
         hold_h=8
         for r,t in zip(rates,fts):
@@ -90,8 +98,7 @@ def main():
             pnl=(entry-ex_px)/entry*100 if direction=="short" else (ex_px-entry)/entry*100
             # el contrarian al funding positivo (short) COBRA funding; negativo (long) tambien cobra
             pnl += abs(r)*100  # cobra ~1 pago de funding a su favor
-            pnl -= COST
-            sig_pnls.append(round(pnl,4))
+            sig_pnls.append(round(pnl,4))  # BRUTO; el coste se aplica al reportar (2 modelos)
         print(f"  {s:7} funding {len(fh)} ev | carry {ann:+.1f}%/año | señales acum {len(sig_pnls)}")
 
     print("\n=== #3 FUNDING CARRY (yield anualizado por cobrar funding, neto aprox) ===")
@@ -101,10 +108,14 @@ def main():
     arr=np.array([a for _,_,a in carry_rows])
     print(f"  MEDIA universo: {arr.mean():+.1f}%/año | positivos: {(arr>0).sum()}/{len(arr)}")
 
-    print("\n=== #2 FUNDING COMO SEÑAL (contrarian, hold 8h), neto ===")
-    p=np.array(sig_pnls)
-    if len(p):
-        print(f"trades {len(p)} | winrate {(p>0).mean()*100:.1f}% | exp {p.mean():+.3f}% | sumPnL {p.sum():.0f}% | avgW {p[p>0].mean():+.2f}% avgL {p[p<0].mean():+.2f}%")
+    print(f"\n=== #2 FUNDING COMO SEÑAL (contrarian, hold 8h) — funding de {EXCHANGE} ===")
+    if sig_pnls:
+        for label, cost in (("coste ANTIGUO (0.2% i/v)", COST_OLD),
+                            ("coste MEXC (0.09% i/v)", COST_MEXC)):
+            p=np.array(sig_pnls)-cost
+            print(f"  [{label}] trades {len(p)} | winrate {(p>0).mean()*100:.1f}% | "
+                  f"exp {p.mean():+.3f}% | sumPnL {p.sum():.0f}% | "
+                  f"avgW {p[p>0].mean():+.2f}% avgL {p[p<0].mean():+.2f}%")
     else:
         print("sin señales")
 

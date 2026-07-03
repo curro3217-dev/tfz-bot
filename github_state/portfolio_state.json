@@ -1,8 +1,23 @@
 {
-  "equity": 50.0,
+  "equity": 50.34198060004512,
   "start_equity": 50.0,
   "excluded": [],
-  "counted": [],
-  "history": [],
-  "peak": 50.0
+  "counted": [
+    "19e3bea5-0be1-4e80-8b95-333b264fae68"
+  ],
+  "history": [
+    {
+      "id": "19e3bea5-0be1-4e80-8b95-333b264fae68",
+      "symbol": "ATOM/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.303,
+      "lev": 2.26,
+      "throttle": 1.0,
+      "dollar": 0.342,
+      "equity": 50.342,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-03 09:02:37"
+    }
+  ],
+  "peak": 50.34198060004512
 }

@@ -11,6 +11,14 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-04
 
+### RONDA 21: macro (SPX/DXY) nulo-refutado + kimchi aparcado
+- **explore_macro.py:** H1 S&P risk-on semanal -> BTC: NULO. H2 "DXY sube -> cripto
+  baja" (folclore): REFUTADO — pierde -1.04%/sem significativo tal como se predica.
+  H3 kimchi premium (Upbit/KRW, FX de Yahoo): IS +3.63%/sem (IC95 excluye 0, 69%
+  win) pero Upbit solo da 616 días con huecos y OOS n=9 -> APARCADO (como Trends);
+  reintentar con historia más profunda de Upbit si algún día hace falta.
+- Nota técnica: yfinance necesita sesión curl_cffi con verify=False en este PC.
+
 ### RONDA 20: aviso Telegram de episodios de prima + amplitud y volumen nulos
 - **premium_paper.py + bot.yml:** al abrirse un episodio de prima (BTC o ETH) se envía
   aviso informativo a Telegram (fail-silent, solo GitHub con TFZ_TELEGRAM=1, mismo

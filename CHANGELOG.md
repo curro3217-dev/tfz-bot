@@ -11,6 +11,19 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 15: ENSAYO GENERAL de la maquinaria forward (QA pre-primer-sábado)
+- **weekend_paper probado END-TO-END contra el sábado real 27-jun** (BD desechable,
+  START retrasado solo en el ensayo): registró 39/42 símbolos; BTC y DOGE contrastados
+  a mano contra los cierres -> EXACTOS. Los 3 que faltan (CRV/OP/TON) son viernes con
+  cierre idéntico al jueves (tick grueso -> retorno 0 -> sin dirección -> no hay trade),
+  misma regla que el backtest -> sin sesgo, por diseño. La BD real no se tocó.
+- **GitHub verificado por API:** run viejo acaba ~22:00 UTC; el siguiente de la cola ya
+  lleva los medidores y para el domingo el run activo tendrá el código completo (las
+  BDs weekend/premium/micro aparecerán en github_state cuando corran sus pasos).
+- Con esto, el primer dato del domingo queda asegurado por cuatro vías: tarea PC
+  (03:15 + catch-up), GitHub (código en camino), ensayo E2E exacto, y mi revisión
+  programada de las 09:30 que detectaría cualquier fallo.
+
 ### RONDA 14: las OTRAS palancas — ejecución (+0.045% real), sizing (nulo), Monte Carlo
 - **explore_execution.py (velas 5m MEXC, 233 trades de 2026):** la orden LIMIT al
   cierre del viernes TOCA el precio el 100% de las veces en la 1ª hora del sábado ->

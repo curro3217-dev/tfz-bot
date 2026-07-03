@@ -109,6 +109,13 @@ def run(conn):
             conn.commit()
             if cur.rowcount:
                 print(f"  [opened] {moneda} {hoy.date()} z={z.iloc[-1]:+.2f}")
+                try:  # aviso informativo (fail-silent; solo donde TFZ_TELEGRAM=1)
+                    from notify import send_telegram
+                    send_telegram(f"📊 <b>Prima Coinbase {moneda}</b>: episodio nuevo "
+                                  f"(z={z.iloc[-1]:+.2f}). Medición paper 7d en curso "
+                                  f"({hoy.date()}). No es orden de operar.")
+                except Exception:
+                    pass
         print(f"  {moneda}: z del último día cerrado ({hoy.date()}) = "
               f"{z.iloc[-1]:+.2f} (umbral +{Z_THR})")
 

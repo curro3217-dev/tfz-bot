@@ -11,6 +11,14 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-04
 
+### RONDA 20: aviso Telegram de episodios de prima + amplitud y volumen nulos
+- **premium_paper.py + bot.yml:** al abrirse un episodio de prima (BTC o ETH) se envía
+  aviso informativo a Telegram (fail-silent, solo GitHub con TFZ_TELEGRAM=1, mismo
+  patrón que las alertas F1-F4). "No es orden de operar" en el propio mensaje.
+- **explore_breadth.py:** (1) amplitud alt-season (% de alts ganando a BTC 30d,
+  régimen >60/<40 -> spread alts-BTC semanal): NULO en todo periodo. (2) volumen
+  creciente (ranking 7d/30d, L-S semanal): NULO. Familias 38 y 39 enterradas.
+
 ### RONDA 19: cola larga de MEXC (3ª réplica del vie->sáb) + efecto estreno (lotería)
 - **explore_friday_universe.py:** vie->sáb en 120 perps de MEXC NUNCA usados (9.202
   trades): +0.297% [+0.151,+0.443] excluye 0; 2024 +0.73*, 2025 +0.27*, 2026 plano

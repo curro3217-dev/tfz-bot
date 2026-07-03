@@ -53,6 +53,10 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           TFZ_PREM_DB: github_state/premium_paper.db
+          # aviso de episodio nuevo por Telegram (informativo, solo GitHub)
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TFZ_TELEGRAM: "1"
         run: |
           python premium_paper.py || echo "premium_paper fallo, sigo"
 

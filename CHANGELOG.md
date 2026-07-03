@@ -11,6 +11,15 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 5: matriz calendario completa — SOLO el viernes pasa el listón
+- **explore_calendar_oou.py:** los 7 días × 3 años × 2 universos (los 20 de siempre +
+  22 nuevos con majors), con 4 candidatos pre-especificados. Resultado:
+  **vie(+): 6/6 celdas positivas y significativas — ÚNICO superviviente.**
+  mie(+) muere (2024 nuevo universo negativo); dom(-) muere (2025 se gira);
+  lun(-) muere (2024 nuevo universo +0.90% momentum, lo contrario).
+- Consecuencia: weekend_paper se queda SOLO con el viernes (42 símbolos) y el
+  pre-registro queda SELLADO. Los demás días quedan enterrados con evidencia.
+
 ### EL PC YA NO ES NECESARIO: recolector también en GitHub
 - A petición (el PC no puede estar siempre encendido): micro_collector acepta
   `TFZ_MICRO_DB` y bot.yml lo ejecuta cada 3 ciclos (~15 min) con cuenta propia

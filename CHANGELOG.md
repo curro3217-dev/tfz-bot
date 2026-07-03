@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 2: dos nulos limpios (xsmom, hora-del-día) + tarea programada del weekend paper
+- **explore_xsmom.py (momentum cross-sectional semanal, top-3/bottom-3 de 20):** L-S
+  positivo en IS (2024-25) y OOS (2026) pero MUY lejos de significativo (n=117 semanas,
+  IC95 [-0.7,+1.0]); long-only NEGATIVO en OOS (-1.6%/sem). Veredicto: nada operable.
+- **explore_hourday.py (estacionalidad por hora UTC y sesiones de 8h):** ninguna hora
+  supera el listón de costes (0.09%) con consistencia IS->OOS. Caso ejemplar: hora 22
+  UTC era la única significativa en IS (+0.10%) y SE GIRA en OOS (-0.03%) -> espejismo
+  de multiple-testing cazado por la disciplina descubrir/validar. Sesiones: nada.
+- **Tarea programada TFZ_Weekend_Paper (PC):** domingos 03:15 hora local ejecuta
+  C:\Users\jarta\run_weekend_paper.cmd -> weekend_paper.py (log en weekend_log.txt).
+  Primer disparo: 2026-07-05 (primer sábado pre-registrado: 2026-07-04).
+- **NOTA (verificado, sin tocar):** run_paper.cmd del repo es un lanzador VIEJO
+  (5m,15m) que ya NO usa la tarea real del PC (\TFZ_Paper -> run_tfz_paper_hidden.vbs
+  -> C:\Users\jarta\run_tfz_paper.cmd con 15m,1h correctos). La BD confirma solo
+  trades 15m/1h de micro_pullback. Ojo con relanzarlo por error.
+- **NOTA reversión a la media:** ya explorada antes (meanrev -0.207%/trade, residual
+  BTC-neutral -0.192%); ni con costes MEXC (~+0.11 de mejora) saldría de negativo.
+
 ### INVESTIGACIÓN NOCTURNA: funding contrarian INVALIDADO; momentum vie->sáb SOBREVIVE
 - **Funding contrarian (batería en explore_funding_deep.py + analyze_funding_deep.py):**
   con el fix de timestamps, el test que siempre decía "sin señales" por fin corrió de

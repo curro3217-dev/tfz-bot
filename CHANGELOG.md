@@ -11,6 +11,19 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 14: las OTRAS palancas — ejecución (+0.045% real), sizing (nulo), Monte Carlo
+- **explore_execution.py (velas 5m MEXC, 233 trades de 2026):** la orden LIMIT al
+  cierre del viernes TOCA el precio el 100% de las veces en la 1ª hora del sábado ->
+  sin selección adversa en esta construcción; ahorro +0.045%/trade solo en la entrada
+  (~+9% relativo; el doble si la salida también es maker). Aplicable el día que se
+  opere en real; el paper sigue con taker (conservador). Aproximación toque=llenado.
+- **explore_sizing_mc.py:** (1) sizing por riesgo igual (1/vol30) es PEOR que pesos
+  iguales (ratio 1.33 vs 1.45): el edge vive en las monedas volátiles -> pesos
+  iguales se quedan. (2) Monte Carlo de la cartera combinada (bloques de 4 semanas,
+  3 años, 10k caminos): 1x mediana x3.54 [p5 x1.76, p95 x8.07], P(DD>30%)=0.3%;
+  2x mediana x10.8 pero P(DD>30%)=15.8%. Foto de riesgo remuestreando 2024-26
+  (in-sample parcial); si el régimen cambia, no aplica.
+
 ### RONDA 13: compuesta nula, horizonte confirmado, y el PLANO DE CARTERA
 - **explore_premium_composite.py:** (1) exigir confirmación de Bitstamp NO añade nada
   (idéntico +2.46%: ambos venues son la misma señal) -> se queda solo Coinbase.

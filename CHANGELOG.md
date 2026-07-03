@@ -11,6 +11,13 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-04
 
+### RONDA 19: cola larga de MEXC (3ª réplica del vie->sáb) + efecto estreno (lotería)
+- **explore_friday_universe.py:** vie->sáb en 120 perps de MEXC NUNCA usados (9.202
+  trades): +0.297% [+0.151,+0.443] excluye 0; 2024 +0.73*, 2025 +0.27*, 2026 plano
+  (cola larga floja este año + spreads peores) -> tercera réplica independiente;
+  el universo sellado NO se toca. Efecto estreno (81 listados desde 2024-07):
+  +11.8% medio días 2-7 pero IC [-1,+25] y win 46% -> lotería de colas, no operable.
+
 ### RONDA 18: FOMC — la última familia pública, y el patrón se cumple hasta el final
 - **explore_fomc.py (44 reuniones 2021-2026, fechas verificadas en federalreserve.gov):**
   BTC: nulo en todas las ventanas. Cesta de alts, deriva pre-FOMC (día antes + día

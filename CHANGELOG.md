@@ -11,6 +11,20 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 11: prima de ETH (2ª regla sellada) + streams independientes + Trends escaso
+- **explore_premium_family.py:** (1) la PRIMA DE ETH propia es aún más fuerte que la
+  de BTC: +3.24% IS / **+3.62% OOS 2024-26 (IC95 excluye 0 ambos)**, n=178, exceso
+  +2.4% sobre deriva; por años 8/9 positivos (2022 y 2025 flojos, patrón familiar).
+  (2) señal de prima BTC -> cesta de alts: +1.44% de exceso pero ns -> no concluyente.
+  (3) **corr(vie->sáb, prima) = +0.08 -> streams prácticamente independientes**:
+  diversificación real de cartera cuando ambos midan positivo.
+- **premium_paper.py AMPLIADO a 2 reglas selladas** (antes de dato alguno): BTC
+  (listón +1.0%/7d) y ETH (listón +1.5%/7d), tabla con columna symbol, cada una a
+  30 episodios. BD local vacía recreada (0 filas, esquema viejo).
+- **explore_trends.py (Google Trends 'bitcoin', 5 años semanales):** H1 atención
+  z>=1 -> semana siguiente: IS +10.4% (n=8, 88% win, excluye 0) pero OOS n=5 y
+  total n=13 -> DEMASIADO ESCASO para afirmar nada. Aparcado, no enterrado.
+
 ### RONDA 10: PRIMA DE COINBASE (candidato serio, en medición) + on-chain nulo
 - **explore_premium.py (prima BTC Coinbase-USD vs Binance-USDT, 2018-2026, episodios
   no solapados z90d solo-pasado):** H1 prima alta (z>=+1) -> long 7d: **+2.67%/7d IS

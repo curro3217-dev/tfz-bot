@@ -39,8 +39,14 @@ DB = os.environ.get("TFZ_WKND_DB",
                     os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                  "weekend_paper.db"))
 START_TS = pd.Timestamp("2026-07-03 12:00:00")   # pre-registro: solo sábados >= aquí
+# Universo AMPLIADO a 42 el 2026-07-03 (ANTES del primer sábado medido, como permitía
+# el pre-registro; ya no se toca): los 20 de siempre + 18 alts fuera-de-universo donde
+# la regla REPLICÓ (+0.49%, IC95 excluye 0 cada año) + 4 majors (+0.29%, 4/4).
 SYMS = ["AAVE","ADA","ATOM","AVAX","DOT","INJ","NEAR","OP","UNI","SOL",
-        "LINK","SUI","SEI","TIA","ENA","ONDO","FET","RENDER","CRV","XLM"]
+        "LINK","SUI","SEI","TIA","ENA","ONDO","FET","RENDER","CRV","XLM",
+        "DOGE","LTC","BCH","ETC","FIL","APT","ARB","WLD","TON","TRX",
+        "1000PEPE","HBAR","ALGO","VET","ICP","GALA","SAND","KAVA",
+        "BTC","ETH","BNB","XRP"]
 COST = (0.02 + 0.025) * 2
 
 

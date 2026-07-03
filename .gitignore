@@ -29,6 +29,9 @@ tfz_data.db.bak*
 tfz_data.db
 portfolio_state.json
 weekend_paper.db
+micro_data.db
+micro_collector_log.txt
+weekend_log.txt
 
 # Python
 __pycache__/

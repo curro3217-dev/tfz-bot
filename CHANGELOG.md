@@ -11,6 +11,25 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 4: vie->sáb REPLICA FUERA DE UNIVERSO (el hallazgo del día) + OI nulo + recolector
+- **explore_weekend_oou.py — REPLICACIÓN INDEPENDIENTE del momentum vie->sáb:** la misma
+  regla, sin tocar nada, en monedas JAMÁS usadas por nosotros: 18 alts nuevas (DOGE, LTC,
+  BCH, ETC, FIL, APT, ARB, WLD, TON, TRX, PEPE, HBAR, ALGO, VET, ICP, GALA, SAND, KAVA):
+  **+0.493%/trade con IC95 excluyendo 0 EN CADA AÑO (2024/25/26: +0.50/+0.48/+0.52),
+  16/18 positivas**. Majors (BTC/ETH/BNB/XRP): +0.285%, IC95 excluye 0 en total, 4/4
+  positivos. Conclusión: es propiedad del mercado cripto, no del universo elegido.
+- **weekend_paper AMPLIADO a 42 símbolos** (los 20 + las 18 replicadas + 4 majors),
+  hecho ANTES del primer sábado medido, como permitía explícitamente el pre-registro
+  (a partir de ahora ya NO se toca). Más datos por sábado -> veredicto antes.
+- **explore_oi.py — open interest (Bybit, ~800 días) NULO:** los 4 cuadrantes clásicos
+  precio×OI (dinero nuevo/cierres) no predicen el día siguiente (signos incoherentes
+  IS/OOS, todo dentro del ruido). El ratio long/short en extremos (contrarian): tilt
+  positivo pero IC95 incluye 0 siempre y el crowd_short se gira en OOS. Enterrado.
+- **NUEVO micro_collector.py + tarea TFZ_Micro_Collector (PC, cada 15 min):** MEXC no da
+  histórico de libro/OI -> se recolecta desde YA (mid, medio-spread, imbalance top-5,
+  funding) en micro_data.db (gitignored) para investigar dentro de unas semanas.
+  Fix al vuelo: el libro de MEXC trae 3 campos por nivel, no 2.
+
 ### RONDA 3: medición weekend blindada + slippage verificado + 2 nulos más (trend, BTC-lead)
 - **weekend_paper blindado:** (1) tarea del PC con StartWhenAvailable=True (si el PC está
   apagado el domingo 03:15, corre al encender); (2) paso nuevo en bot.yml -> GitHub lleva

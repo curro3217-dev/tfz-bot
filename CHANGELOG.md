@@ -11,6 +11,17 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-04
 
+### RONDA 18: FOMC — la última familia pública, y el patrón se cumple hasta el final
+- **explore_fomc.py (44 reuniones 2021-2026, fechas verificadas en federalreserve.gov):**
+  BTC: nulo en todas las ventanas. Cesta de alts, deriva pre-FOMC (día antes + día
+  del anuncio): IS 2021-24 +2.92% por evento (IC95 excluye 0) -> OOS 2025-26 -0.40%
+  (n=12, ruido). Muerta post-institucionalización, como F&G/expiry/TOM/52s/shocks.
+- Con esto: ~41 estrategias/familias examinadas. El catálogo público de datos
+  accesibles (velas 8 años, derivados, flujos, sentimiento, on-chain, calendario,
+  factores, eventos macro) queda barrido COMPLETO. Sobreviven: vie->sáb + filtro,
+  prima BTC/ETH (candidatas), micro_pullback (en examen). Nuevas fronteras = datos
+  nuevos: microestructura propia (en fabricación) y los veredictos forward.
+
 ### RONDA 17: factores académicos (MAX, low-vol, Amihud) — muertos, con lección
 - **explore_factors.py (semanal XS, Binance 2018-26, 42 símbolos):** MAX/lotería
   (short alto): PIERDE -0.76%/sem signif. en IS -> el factor está INVERTIDO en

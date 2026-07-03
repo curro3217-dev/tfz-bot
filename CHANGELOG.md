@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 3: medición weekend blindada + slippage verificado + 2 nulos más (trend, BTC-lead)
+- **weekend_paper blindado:** (1) tarea del PC con StartWhenAvailable=True (si el PC está
+  apagado el domingo 03:15, corre al encender); (2) paso nuevo en bot.yml -> GitHub lleva
+  una cuenta REDUNDANTE (github_state/weekend_paper.db, TFZ_WKND_DB), 1 vez por run;
+  idempotente y forward-only, así que PC y GitHub deben registrar trades IDÉNTICOS
+  (cross-check gratis). (3) Quitado el os.environ.setdefault de INSECURE_SSL del script:
+  en GitHub el SSL va verificado; en el PC lo pone run_weekend_paper.cmd.
+- **Slippage VERIFICADO contra el libro de órdenes de MEXC (foto 2026-07-03):** medio-
+  spread del universo: mediana 0.014%/lado, media 0.021%, peor OP 0.095%. El supuesto
+  del bot (slippage_pct=0.025) es realista/ligeramente conservador -> NO se toca.
+- **explore_trend.py (Donchian D20/10 y D55/20, LS y long-only, diario):** NULO en las
+  cuatro variantes (LS pierde; long-only +5-8% anualizado en IS se gira a -11/-33% en
+  OOS 2026). El trend-following clásico no da en este universo/periodo.
+- **explore_btclead.py (¿BTC manda sobre las alts al día siguiente?):** NULO (IS -27%
+  anualizado, OOS +69%, ambos con IC95 incluyendo 0 -> ruido con cambio de signo).
+  Control (momentum propio de las alts): positivo leve pero no significativo, coherente
+  con que la única rebanada válida del momentum diario es la del vie->sáb.
+
 ### RONDA 2: dos nulos limpios (xsmom, hora-del-día) + tarea programada del weekend paper
 - **explore_xsmom.py (momentum cross-sectional semanal, top-3/bottom-3 de 20):** L-S
   positivo en IS (2024-25) y OOS (2026) pero MUY lejos de significativo (n=117 semanas,

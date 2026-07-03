@@ -36,6 +36,17 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
+      # Medicion forward del momentum viernes->sabado (cuenta REDUNDANTE a la del PC,
+      # por si el PC esta apagado el domingo). Idempotente (INSERT OR IGNORE +
+      # forward-only), 1 vez por run (~cada 6h) basta. Se sube con github_state/.
+      - name: Weekend paper (vie->sab, medicion forward)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_WKND_DB: github_state/weekend_paper.db
+        run: |
+          mkdir -p github_state
+          python weekend_paper.py || echo "weekend_paper fallo, sigo"
+
       - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

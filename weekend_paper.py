@@ -25,7 +25,8 @@ Uso (pensado para tarea programada cualquier momento tras el domingo 01:00 UTC):
 Env: TFZ_WKND_DB para separar cuentas (PC vs GitHub).
 """
 import os
-os.environ.setdefault("INSECURE_SSL", "1")
+# OJO: aqui NO se fuerza INSECURE_SSL (esto corre tambien en GitHub, donde el SSL
+# funciona bien). En el PC lo pone run_weekend_paper.cmd, como run_tfz_paper.cmd.
 
 import sys
 import sqlite3

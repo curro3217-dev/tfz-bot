@@ -11,6 +11,15 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### EL PC YA NO ES NECESARIO: recolector también en GitHub
+- A petición (el PC no puede estar siempre encendido): micro_collector acepta
+  `TFZ_MICRO_DB` y bot.yml lo ejecuta cada 3 ciclos (~15 min) con cuenta propia
+  (github_state/micro_data.db). Estado de dependencias del PC: bot paper = dual
+  (GitHub solo se basta), weekend_paper = dual (GitHub solo se basta), recolector =
+  dual desde ahora. El PC, cuando esté encendido, SUMA cobertura; si está apagado,
+  no se pierde nada esencial. Verificado en la API de GitHub que los runs "cancelled"
+  son el reemplazo normal de la cola (concurrency) y hay run activo.
+
 ### RONDA 4: vie->sáb REPLICA FUERA DE UNIVERSO (el hallazgo del día) + OI nulo + recolector
 - **explore_weekend_oou.py — REPLICACIÓN INDEPENDIENTE del momentum vie->sáb:** la misma
   regla, sin tocar nada, en monedas JAMÁS usadas por nosotros: 18 alts nuevas (DOGE, LTC,

@@ -23,7 +23,9 @@ import sqlite3
 from datetime import datetime, timezone
 from data_fetcher import create_exchange
 
-DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "micro_data.db")
+DB = os.environ.get("TFZ_MICRO_DB",
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                 "micro_data.db"))
 SYMS = ["AAVE","ADA","ATOM","AVAX","DOT","INJ","NEAR","OP","UNI","SOL",
         "LINK","SUI","SEI","TIA","ENA","ONDO","FET","RENDER","CRV","XLM"]
 

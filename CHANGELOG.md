@@ -11,6 +11,19 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 7: profundidad histórica 2018-2026 — el vie->sáb es un RÉGIMEN nacido en 2022
+- **explore_friday_history.py (Binance SPOT diario desde el PC, 42 símbolos, hasta
+  8.5 años):** 2018-2021 el efecto NO existía (2020: -0.60% SIGNIFICATIVAMENTE
+  NEGATIVO — los sábados revertían). **2022/23/24/25/26: positivo con IC95
+  excluyendo 0 los CINCO años** (+0.40/+0.21/+0.64/+0.49/+0.55). Con filtro >=3%:
+  mismo patrón, 2024 hasta +1.56%. Conclusión: anomalía DE RÉGIMEN, 5 años estable,
+  no eterna -> puede morir como nació; el criterio pre-registrado del weekend_paper
+  es el kill-switch. Nota: Binance spot accesible desde el PC (el geo-bloqueo era
+  solo de los runners de GitHub).
+- Verificado en la API de GitHub: run 36 in_progress con código de la ronda 2; los
+  siguientes de la cadena ya cogen el código con weekend_paper y micro_collector
+  (margen de sobra para el primer sábado).
+
 ### RONDA 6: anatomía del vie->sáb + FILTRO DE MAGNITUD validado 6/6 + DVOL nulo
 - **explore_friday_anatomy.py (descriptivo, la regla sellada NO cambia):**
   (1) la continuación se acumula durante TODO el sábado (máximo en la hora 24 ->

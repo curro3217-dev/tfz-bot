@@ -11,6 +11,21 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 12: bootstrap por clústeres (recalibración honesta) + USDT peg y SOL nulos
+- **explore_friday_bootstrap.py (10.000 remuestreos de SÁBADOS enteros — la estadística
+  correcta contra la correlación entre símbolos):** la regla base agrupada SOBREVIVE:
+  +0.508% IC95-cluster [+0.100,+0.958]; el filtro >=3% también: +0.901% [+0.204,+1.666].
+  **PERO los años sueltos ya NO son significativos por separado** (26-52 sábados/año):
+  el "significativo cada año" de rondas anteriores usaba IC inflados por trade. La
+  magnitud anual es clavada (+0.50/+0.51/+0.52). El criterio pre-registrado del
+  weekend_paper ya usaba medias semanales -> el diseño forward era correcto.
+- **explore_usdt_peg.py (USDT/USD Bitfinex 2018-2026, 2.776 días):** prima/descuento
+  del peg -> NULO con historia profunda (el +1.58% "sugerente" con los 721 días de
+  Kraken era ruido de muestra pequeña). Enterrado.
+- **Prima de SOL (scratchpad, CB SOL/USD desde 2021):** +1.85%/7d total pero IC95
+  incluye 0 siempre y el OOS no supera la deriva -> NO validada. La familia de la
+  prima queda en BTC + ETH.
+
 ### RONDA 11: prima de ETH (2ª regla sellada) + streams independientes + Trends escaso
 - **explore_premium_family.py:** (1) la PRIMA DE ETH propia es aún más fuerte que la
   de BTC: +3.24% IS / **+3.62% OOS 2024-26 (IC95 excluye 0 ambos)**, n=178, exceso

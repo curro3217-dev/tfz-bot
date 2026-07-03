@@ -47,6 +47,15 @@ jobs:
           mkdir -p github_state
           python weekend_paper.py || echo "weekend_paper fallo, sigo"
 
+      # Prima de Coinbase (BTC/USD Coinbase vs BTC/USDT MEXC; Binance esta
+      # geo-bloqueado aqui). Episodios z>=+1 -> long BTC 7d. Idempotente.
+      - name: Premium paper (prima Coinbase, medicion forward)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_PREM_DB: github_state/premium_paper.db
+        run: |
+          python premium_paper.py || echo "premium_paper fallo, sigo"
+
       - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

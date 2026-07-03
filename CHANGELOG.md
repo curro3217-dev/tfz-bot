@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 10: PRIMA DE COINBASE (candidato serio, en medición) + on-chain nulo
+- **explore_premium.py (prima BTC Coinbase-USD vs Binance-USDT, 2018-2026, episodios
+  no solapados z90d solo-pasado):** H1 prima alta (z>=+1) -> long 7d: **+2.67%/7d IS
+  y +1.97% OOS 2024-26, ambos IC95 excluyendo 0** (n=176, win 65%). H2 (descuento ->
+  short): no validada. **analyze_premium.py (controles del caso funding):** sobrevive
+  la deriva (exceso +1.67% sobre +0.79% base), dosis-respuesta razonable, transfiere
+  a ETH (+3.0% exceso). **ARRUGA honesta: 2025 fue negativo (-0.45%, ns)** -> 8/9 años
+  positivos pero el último completo flojea; NO alcanza el listón 6/6 del vie-sáb.
+  Veredicto: candidato a medición forward, no edge validado.
+- **NUEVO premium_paper.py (forward, sellado 2026-07-03):** pata MEXC en vez de
+  Binance (geo-bloqueo en GitHub; correlación de primas 0.992, diff media 0.005pp),
+  última vela diaria descartada (puede estar en formación). Criterio: a >=30
+  episodios, media > +1.0%/7d con IC95 excluyendo 0; si no, se retira (~1.5 años al
+  ritmo histórico). En bot.yml (github_state/premium_paper.db, gitignored local).
+- **explore_onchain.py (blockchain.com 2017-2026, direcciones activas y tx/día):**
+  NULO con el mismo esqueleto (aceleración no predice; frenazo->short funcionó IS
+  pero muere OOS). Enterrado.
+
 ### RONDA 9: el test del mecanismo FALLA — retractación de la narrativa institucional
 - **explore_holidays.py (momentum en festivos NYSE, 24 festivos 2024-26, 42 símbolos):**
   la hipótesis "sin instituciones -> continuación como el sábado" predecía positivo;

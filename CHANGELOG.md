@@ -11,6 +11,18 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 9: el test del mecanismo FALLA — retractación de la narrativa institucional
+- **explore_holidays.py (momentum en festivos NYSE, 24 festivos 2024-26, 42 símbolos):**
+  la hipótesis "sin instituciones -> continuación como el sábado" predecía positivo;
+  salió NEGATIVO (-0.47% significativo; festivos-lunes -0.93%, solapa con el patrón
+  dom->lun ya conocido; festivos puros entre semana -0.20% ruido con n pequeño).
+- **RETRACTACIÓN:** la historia de la ronda 8 ("el edge vive donde no hay
+  instituciones") NO se sostiene como mecanismo general. El vie->sáb queda sostenido
+  por sus réplicas empíricas (5 años, 3 universos, dosis-respuesta), con mecanismo
+  DESCONOCIDO -> más razón para vigilarlo con el criterio pre-registrado, no menos.
+  No perseguir la inversa en festivos: sería minar un test fallido (y el dom(-) ya
+  murió en la ronda 5).
+
 ### RONDA 8: el folclore famoso está MUERTO en OOS (F&G, expiry, turn-of-month)
 - **explore_feargreed.py (índice Fear&Greed 2018-2026, episodios no solapados, hold 7d):**
   "comprar el miedo extremo" funcionó 2018-23 (BTC +2.26%/7d, IC95 excluye 0) y desde

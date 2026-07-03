@@ -161,7 +161,41 @@ def _check_exit(trade: dict, df, cfg: TFZConfig):
     return None  # unresolved -> still open
 
 
-def _alert_once(conn, sig, entry_ts) -> bool:
+def _alert_context(df) -> str:
+    """Contexto objetivo para la alerta del modo asistente (patron de CryptoSignal,
+    github.com/CryptoSignal/Crypto-Signal: la alerta lleva varios indicadores y decide
+    el humano). SOLO velas CERRADAS (la ultima del df puede estar en formacion).
+    Es informativo: NO filtra ni altera ninguna señal ni el paper congelado."""
+    try:
+        d = df.iloc[:-1]
+        closes = d["close"].values.astype(float)
+        if len(closes) < 30:
+            return ""
+        # RSI-14 Wilder (misma formula que explore_meanrev.rsi)
+        delta = np.diff(closes, prepend=closes[0])
+        gain = np.where(delta > 0, delta, 0.0)
+        loss = np.where(delta < 0, -delta, 0.0)
+        ag = pd.Series(gain).ewm(alpha=1 / 14, adjust=False).mean().values
+        al = pd.Series(loss).ewm(alpha=1 / 14, adjust=False).mean().values
+        rs = np.divide(ag, al, out=np.zeros_like(ag), where=al != 0)
+        rsi = (100 - 100 / (1 + rs))[-1]
+        # RVOL: volumen de la ultima vela cerrada vs media de las 20 anteriores
+        vols = d["volume"].values.astype(float)
+        vol_ma = vols[-21:-1].mean()
+        rvol = vols[-1] / vol_ma if vol_ma > 0 else 0.0
+        parts = [f"RSI14 {rsi:.0f}", f"RVOL {rvol:.1f}x"]
+        # Lado de la EMA200 (tendencia de fondo), solo si hay historia suficiente
+        if len(closes) >= 200:
+            ema200 = pd.Series(closes).ewm(span=200, adjust=False).mean().values[-1]
+            dist = (closes[-1] - ema200) / ema200 * 100
+            side = "sobre" if dist >= 0 else "bajo"
+            parts.append(f"{side} EMA200 ({dist:+.1f}%)")
+        return " | ".join(parts)
+    except Exception:
+        return ""
+
+
+def _alert_once(conn, sig, entry_ts, df=None) -> bool:
     """MODO ASISTENTE: envia la alerta de un setup UNA sola vez (dedup por
     simbolo+TF+vela+direccion+formacion, igual que el dedup de trades). Devuelve True
     si se envio (primera vez), False si ya se habia alertado."""
@@ -174,7 +208,8 @@ def _alert_once(conn, sig, entry_ts) -> bool:
         return False
     try:
         from notify import alert_entry
-        alert_entry(sig, None)
+        ctx = _alert_context(df) if df is not None else ""
+        alert_entry(sig, None, context=ctx or None)
     except Exception:
         pass
     return True
@@ -484,7 +519,7 @@ def scan_new_signals(conn, symbols, timeframes, cfg: TFZConfig,
                 # (el forense demostro que su edge de backtest era look-ahead). Solo se
                 # ALERTA por Telegram y decide el humano. El paper sigue con micro_pullback.
                 if not getattr(cfg, "trade_formations", True):
-                    if _alert_once(conn, sig, entry_ts) and verbose:
+                    if _alert_once(conn, sig, entry_ts, df) and verbose:
                         print(f"  [alerta] {symbol:10s} {tf:>3s} {sig.direction:5s} "
                               f"{sig.formation_type:16s} score {sig.total_score:.0f} "
                               f"rr {sig.rr_ratio:.1f} (asistente, no opera)")

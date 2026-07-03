@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### Alertas F1-F4 (asistente) con contexto de indicadores — idea de CryptoSignal (GitHub)
+- **Qué:** la alerta de Telegram del MODO ASISTENTE ahora incluye una línea de contexto
+  objetivo: `RSI14 | RVOL (vol última vela cerrada / media 20) | lado y distancia a EMA200`.
+  Patrón tomado de github.com/CryptoSignal/Crypto-Signal (5.6k★): alertar con varios
+  indicadores y que decida el humano. Investigación previa verificó que NINGÚN repo público
+  (Freqtrade 25k★, CryptoSignal, intelligent-trading-bot) demuestra rentabilidad real.
+- **Dónde:** `paper._alert_context(df)` (nueva), `paper._alert_once(..., df)` (pasa el df),
+  `notify.alert_entry(sig, prob, context=None)` (param opcional, retrocompatible: los otros
+  2 call-sites siguen igual).
+- **Garantías:** solo velas CERRADAS (`df.iloc[:-1]`, la última puede estar en formación);
+  RSI con la misma fórmula que `explore_meanrev.rsi`; es SOLO informativo — no filtra ni
+  altera señales, ni toca micro_pullback ni ningún parámetro congelado (permitido: es capa
+  asistente/infraestructura). Test sintético OK incl. verificación anti-look-ahead
+  (modificar la vela en formación no cambia el contexto). Fail-safe: ante cualquier error
+  devuelve "" y la alerta sale como antes.
+- **OJO:** las alertas solo salen desde GitHub (`TFZ_TELEGRAM=1`); para que se note hay que
+  commitear y subir este cambio al repo.
+
 ### PIVOTE tras auditoría externa: MODO ASISTENTE + medición congelada de micro_pullback
 - **Contexto:** auditoría externa (dossier) señaló look-ahead como causa probable de la brecha
   backtest(+2.7%/trade) vs vivo(negativo). VERIFICADO en código: (1) los niveles de una señal en

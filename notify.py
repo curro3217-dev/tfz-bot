@@ -65,10 +65,13 @@ def tv_link(symbol: str, tf: str = None) -> str:
     return url
 
 
-def alert_entry(sig, prob) -> bool:
-    """Format and send a fresh-entry alert."""
+def alert_entry(sig, prob, context: str = None) -> bool:
+    """Format and send a fresh-entry alert. `context` (opcional) es una linea de
+    indicadores objetivos (RSI/RVOL/EMA200, ver paper._alert_context) que se añade
+    a la alerta del modo asistente para que el humano decida con mas datos."""
     arrow = "🟢 LONG" if sig.direction == "long" else "🔴 SHORT"
     wp = f"{prob*100:.0f}%" if prob is not None else "-"
+    ctx_line = f"{context}\n" if context else ""
     msg = (
         f"<b>⚡ TFZ entrada</b>\n"
         f"<b>{sig.symbol}</b>  {arrow}  ({sig.timeframe})\n"
@@ -76,6 +79,7 @@ def alert_entry(sig, prob) -> bool:
         f"SL: <code>{sig.stop_loss:.6g}</code>\n"
         f"TP: <code>{sig.take_profit:.6g}</code>\n"
         f"R:R {sig.rr_ratio} | score {sig.total_score:.0f} | win% {wp}\n"
+        f"{ctx_line}"
         f"{sig.formation_type}\n"
         f'<a href="{tv_link(sig.symbol, sig.timeframe)}">📈 Ver en TradingView</a>'
     )

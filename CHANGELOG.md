@@ -11,6 +11,38 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### INVESTIGACIÓN NOCTURNA: funding contrarian INVALIDADO; momentum vie->sáb SOBREVIVE
+- **Funding contrarian (batería en explore_funding_deep.py + analyze_funding_deep.py):**
+  con el fix de timestamps, el test que siempre decía "sin señales" por fin corrió de
+  verdad (~9.000 señales, 400 días de funding Bybit, costes MEXC). Prometía: exp +0.33%
+  con IC95 excluyendo 0 TAMBIÉN en OOS, 17/18 símbolos, sobrevivía sin crédito de funding
+  y sin solapar. **PERO era artefacto:** el 88% de señales eran shorts y el 67% ni eran
+  extremos (funding clavado en el baseline +0.01% -> el percentil 95 degenera en "short
+  siempre"); el "edge" (+0.33%) ≈ la caída media del mercado en esas ventanas (-0.42%).
+  Los extremos DE VERDAD (|funding|>=0.03%/8h, n=445): negativos o ruido en TODOS los
+  trimestres, 7/18 símbolos. El OOS "pasaba" porque la deriva bajista siguió en ese tramo
+  (el OOS no protege de un factor de confusión). **Retirado ANTES de medirlo en vivo**:
+  funding_paper.py se creó y se BORRÓ (su primer ciclo abrió 14 shorts, todos baseline —
+  eso destapó el sesgo). Tercer artefacto cazado por el método (look-ahead, timestamps,
+  deriva). Lección para futuros umbrales por percentil: comprobar la masa en el baseline.
+- **Efecto día-de-semana (explore_weekend.py, universo propio, 18 símbolos, ~2.9 años):**
+  momentum diario (señal = retorno del día D, mantener el día D+1, neto costes MEXC).
+  OJO etiquetas: "viernes" = señal del viernes OPERADA EL SÁBADO. El agregado L-V vs S-D
+  NO es estable por años (2025 lo contradice) -> descartado. **Lo que sobrevive: señal del
+  VIERNES mantenida el SÁBADO**: +0.55/+0.60/+0.56% por año (2024/25/26), IC95 excluyendo
+  0 los 3 años; longs +0.87% y shorts +0.27% (ambos >0 -> no es sesgo de deriva); 17/18
+  símbolos; sin los top-5 sábados queda +0.18% [+0.02,+0.34] (cola gorda: pocos días
+  grandes ponen la carne); mediana +0.14%. Cautelas: salió de comparar 7 días (multiple
+  testing) y los 18 símbolos comparten sábado (correlación -> IC real más ancho).
+- **NUEVO weekend_paper.py (medición forward pre-registrada, BD propia weekend_paper.db,
+  gitignored):** regla exacta = sábado 00:00 UTC entrar en la dirección del retorno del
+  viernes, salir domingo 00:00 UTC, universo de 20, costes MEXC. FORWARD-ONLY (solo
+  sábados >= 2026-07-03; rellenar el pasado sería otro backtest). CRITERIO PRE-REGISTRADO
+  (propuesta ajustable antes del primer sábado): a >=20 sábados, media de las medias
+  SEMANALES > +0.15% con IC95 excluyendo 0; si no, se retira. Semántica de etiquetas
+  verificada con test sintético. Correr tras el domingo 01:00 UTC (p.ej. domingo/lunes).
+  NO toca la medición congelada de micro_pullback (proceso y BD separados).
+
 ### COSTES corregidos a MEXC real (contabilidad, NO estrategia) + doble contabilidad
 - **Hallazgo (verificado contra la API de MEXC con ccxt, no contra marketing):** el bot se
   cobraba comisiones de otro exchange. `config.commission_pct` era 0.075%/lado (comentario

@@ -11,6 +11,18 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 8: el folclore famoso está MUERTO en OOS (F&G, expiry, turn-of-month)
+- **explore_feargreed.py (índice Fear&Greed 2018-2026, episodios no solapados, hold 7d):**
+  "comprar el miedo extremo" funcionó 2018-23 (BTC +2.26%/7d, IC95 excluye 0) y desde
+  2024 está INVERTIDO (BTC -2.65%, ETH -4.66% significativo). "Vender la codicia": nulo
+  siempre. **explore_month_calendar.py:** rally post-vencimiento (ETH +0.82%/día IS,
+  significativo) y turn-of-month (BTC/ETH significativos IS) -> ambos DESAPARECIDOS o
+  negativos en 2024-26. Las tres anomalías murieron A LA VEZ (~ETFs enero 2024:
+  arbitraje institucional entre semana). Coherente con que el vie->sáb (nacido 2022)
+  viva justo donde las instituciones no operan: el fin de semana.
+- Lección operativa: anomalías públicas de días laborables = presumir muertas post-2024
+  salvo prueba OOS reciente; el hueco está en horario sin instituciones.
+
 ### RONDA 7: profundidad histórica 2018-2026 — el vie->sáb es un RÉGIMEN nacido en 2022
 - **explore_friday_history.py (Binance SPOT diario desde el PC, 42 símbolos, hasta
   8.5 años):** 2018-2021 el efecto NO existía (2020: -0.60% SIGNIFICATIVAMENTE

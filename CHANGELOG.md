@@ -11,6 +11,19 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 13: compuesta nula, horizonte confirmado, y el PLANO DE CARTERA
+- **explore_premium_composite.py:** (1) exigir confirmación de Bitstamp NO añade nada
+  (idéntico +2.46%: ambos venues son la misma señal) -> se queda solo Coinbase.
+  (2) Barrido de horizonte: el edge se concentra en los 3 primeros días (+0.42%/día);
+  los días 8-14 no aportan -> el hold de 7d sellado captura casi todo. Descriptivo.
+- **explore_portfolio.py — simulación 2024-2026 de las 3 mangas selladas (1/3 capital
+  cada una, semanas sin señal = capital parado):** vie->sáb ~+24%/año (ratio 1.45),
+  prima BTC ~+41% (1.36), prima ETH ~+77% (1.67); **COMBINADA ~+47%/año con MENOS
+  drawdown que cualquier pata (-13.6% vs -18..-23%) y ratio 1.93** — la diversificación
+  funciona (fri↔primas corr ~0; BTC↔ETH primas 0.71, cuentan casi como una).
+  ADVERTENCIAS: periodo parcialmente in-sample para las primas (descubiertas en estos
+  datos), sin componer, y NADA de esto es promesa: mandan las mediciones forward.
+
 ### RONDA 12: bootstrap por clústeres (recalibración honesta) + USDT peg y SOL nulos
 - **explore_friday_bootstrap.py (10.000 remuestreos de SÁBADOS enteros — la estadística
   correcta contra la correlación entre símbolos):** la regla base agrupada SOBREVIVE:

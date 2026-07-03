@@ -87,6 +87,13 @@ class TFZConfig:
     # F3>=80 sube de +0.85% a +1.30%/trade y el conjunto +2.31->+2.45%). Las otras en 60.
     f3_min_score: float = 80.0
 
+    # MODO ASISTENTE (2026-07-03, tras auditoria externa + test forense): el test A/B
+    # confirmo que el edge del backtest de F1-F4 era LOOK-AHEAD (sin futuro: negativo en
+    # todas las TFs). Decision: las formaciones F1-F4 ya NO abren trades; solo ALERTAN
+    # por Telegram (decide el humano). El paper sigue midiendo micro_pullback (15m/1h)
+    # congelado. Poner True para volver a operar formaciones automaticamente.
+    trade_formations: bool = False
+
     # Fade-short en numero redondo: PAUSADO (sangraba en regimen de pumps fuertes, los
     # redondos rompen en vez de rechazar). Se reactiva con tope de tendencia si valida.
     enable_round_fade: bool = False

@@ -161,6 +161,25 @@ def _check_exit(trade: dict, df, cfg: TFZConfig):
     return None  # unresolved -> still open
 
 
+def _alert_once(conn, sig, entry_ts) -> bool:
+    """MODO ASISTENTE: envia la alerta de un setup UNA sola vez (dedup por
+    simbolo+TF+vela+direccion+formacion, igual que el dedup de trades). Devuelve True
+    si se envio (primera vez), False si ya se habia alertado."""
+    conn.execute("CREATE TABLE IF NOT EXISTS sent_alerts ("
+                 "key TEXT PRIMARY KEY, sent_at TEXT)")
+    key = f"{sig.symbol}|{sig.timeframe}|{entry_ts}|{sig.direction}|{sig.formation_type}"
+    cur = conn.execute("INSERT OR IGNORE INTO sent_alerts VALUES (?, datetime('now'))", (key,))
+    conn.commit()
+    if cur.rowcount == 0:
+        return False
+    try:
+        from notify import alert_entry
+        alert_entry(sig, None)
+    except Exception:
+        pass
+    return True
+
+
 def update_open_trades(conn, cfg: TFZConfig, verbose=True) -> int:
     """Re-evaluate every open paper trade against fresh candles. Returns #closed."""
     closed = 0
@@ -461,6 +480,15 @@ def scan_new_signals(conn, symbols, timeframes, cfg: TFZConfig,
                 # existe. Anclar al trigger (anterior) provocaba cierres falsos en velas
                 # previas a la apertura -> exit_ts imposible + bucle de re-entradas.
                 entry_ts = df["timestamp"].iloc[-1]
+                # MODO ASISTENTE (auditoria 2026-07-03): las formaciones F1-F4 NO operan
+                # (el forense demostro que su edge de backtest era look-ahead). Solo se
+                # ALERTA por Telegram y decide el humano. El paper sigue con micro_pullback.
+                if not getattr(cfg, "trade_formations", True):
+                    if _alert_once(conn, sig, entry_ts) and verbose:
+                        print(f"  [alerta] {symbol:10s} {tf:>3s} {sig.direction:5s} "
+                              f"{sig.formation_type:16s} score {sig.total_score:.0f} "
+                              f"rr {sig.rr_ratio:.1f} (asistente, no opera)")
+                    continue
                 save_signal(conn, sig)
                 if not open_paper_trade(conn, sig, entry_ts):
                     continue                            # ANTI-DUPLICADOS: señal ya operada
@@ -719,7 +747,9 @@ def scan_round_fade(conn, symbols, cfg, **kw):
 
 def scan_micro_pullback(conn, symbols, cfg, **kw):
     from micro_pullback import detect_micro_pullback
-    return _scan_setup(conn, symbols, cfg, detect_micro_pullback, ("5m", "15m", "1h"), "long", "micro_pullback", **kw)
+    # Solo 15m/1h (auditoria 2026-07-03): en vivo 5m dio 16% de acierto y exp negativa;
+    # la unica señal de vida esta en 1h (56% win) y 15m. Medicion CONGELADA ~200 trades.
+    return _scan_setup(conn, symbols, cfg, detect_micro_pullback, ("15m", "1h"), "long", "micro_pullback", **kw)
 
 
 def run_cycle(symbols=None, timeframes=None, cfg: TFZConfig = None,

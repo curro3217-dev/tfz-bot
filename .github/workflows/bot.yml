@@ -46,6 +46,9 @@ jobs:
           # MEXC es la fuente (default en config) -> funciona desde GitHub.
           TFZ_DB: github_state/tfz_data.db
           TFZ_PORTF: github_state/portfolio_state.json
+          # MODO ASISTENTE: SOLO GitHub envia las alertas de setups a Telegram (el PC
+          # queda mudo para no duplicar avisos). Fuerza el envio pese a ALERTS_PAUSED.
+          TFZ_TELEGRAM: "1"
         run: |
           git config user.name "tfz-bot"
           git config user.email "tfz-bot@users.noreply.github.com"
@@ -56,7 +59,7 @@ jobs:
             i=$((i + 1))
             echo "===== ciclo $i ($(date +%H:%M:%S) hora local) ====="
             python main.py paper \
-              --timeframe 1m,5m,15m --fresh 3 \
+              --timeframe 15m,1h --fresh 3 \
               --filter profit --min-score 60 --min-rr 6 \
               --enable-f1 --f1-retest || echo "ciclo fallo, sigo"
             # Subir el estado de ESTA cuenta (carpeta github_state). En .gitignore -> -f.

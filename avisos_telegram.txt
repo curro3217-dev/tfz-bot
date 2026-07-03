@@ -1,0 +1,979 @@
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.66881
+SL: 0.66377
+TP: 0.67637
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:31:26]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.67637 (TP)
+PnL: +0.93%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:31:28]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 14:31:37]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.66881
+SL: 0.66377
+TP: 0.67637
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:38:39]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.67637 (TP)
+PnL: +0.93%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:38:40]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 14:38:48]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.6748
+SL: 0.66832
+TP: 0.68452
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 14:41:35]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.68452 (TP)
+PnL: +1.24%
+   [entry_ts 2026-06-30 12:40:00 -> exit_ts 2026-06-30 12:55:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:41:36]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 14:41:45]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:48:21]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 14:48:31]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:51:32]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.11631
+SL: 0.11585
+TP: 0.117
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=5
+   [abierto: 2026-06-30 14:51:40]
+
+✅ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.117 (TP)
+PnL: +0.39%
+   [entry_ts 2026-06-30 12:40:00 -> exit_ts 2026-06-30 12:50:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.6748
+SL: 0.66832
+TP: 0.68452
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 14:56:33]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.68452 (TP)
+PnL: +1.24%
+   [entry_ts 2026-06-30 12:40:00 -> exit_ts 2026-06-30 12:55:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 14:56:35]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 14:56:43]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.66881
+SL: 0.66377
+TP: 0.67637
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:01:33]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.67637 (TP)
+PnL: +0.93%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:01:34]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:01:42]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.68657
+SL: 0.68173
+TP: 0.69383
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 15:06:34]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.69383 (TP)
+PnL: +0.86%
+   [entry_ts 2026-06-30 13:05:00 -> exit_ts 2026-06-30 13:15:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:06:35]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:06:42]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+AIGENSYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.0349
+SL: 0.03418
+TP: 0.03598
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:AIGENSYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:11:33]
+
+✅ TFZ cierre
+AIGENSYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.03598 (TP)
+PnL: +2.89%
+   [entry_ts 2026-06-30 12:15:00 -> exit_ts 2026-06-30 12:30:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.11714
+SL: 0.1168
+TP: 0.11765
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=5
+   [abierto: 2026-06-30 15:11:42]
+
+✅ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.11765 (TP)
+PnL: +0.24%
+   [entry_ts 2026-06-30 13:00:00 -> exit_ts 2026-06-30 13:10:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.68657
+SL: 0.68173
+TP: 0.69383
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 15:18:33]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.69383 (TP)
+PnL: +0.86%
+   [entry_ts 2026-06-30 13:05:00 -> exit_ts 2026-06-30 13:15:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:18:44]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.11714
+SL: 0.1168
+TP: 0.11765
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=5
+   [abierto: 2026-06-30 15:18:48]
+
+✅ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.11765 (TP)
+PnL: +0.24%
+   [entry_ts 2026-06-30 13:00:00 -> exit_ts 2026-06-30 13:10:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.68657
+SL: 0.68173
+TP: 0.69383
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 15:23:32]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.69383 (TP)
+PnL: +0.86%
+   [entry_ts 2026-06-30 13:05:00 -> exit_ts 2026-06-30 13:15:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:23:45]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.11748
+SL: 0.1168
+TP: 0.1185
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=5
+   [abierto: 2026-06-30 15:23:46]
+
+✅ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.1185 (TP)
+PnL: +0.67%
+   [entry_ts 2026-06-30 13:20:00 -> exit_ts 2026-06-30 13:35:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.68657
+SL: 0.68163
+TP: 0.69398
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:26:36]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.69398 (TP)
+PnL: +0.88%
+   [entry_ts 2026-06-30 13:15:00 -> exit_ts 2026-06-30 13:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:26:44]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.71098
+SL: 0.70734
+TP: 0.71644
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=5
+   [abierto: 2026-06-30 15:33:35]
+
+❌ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.70734 (Stop)
+PnL: -0.71%
+   [entry_ts 2026-06-30 13:30:00 -> exit_ts 2026-06-30 13:35:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:33:41]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.68657
+SL: 0.68163
+TP: 0.69398
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:36:38]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.69398 (TP)
+PnL: +0.88%
+   [entry_ts 2026-06-30 13:15:00 -> exit_ts 2026-06-30 13:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:36:46]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.68657
+SL: 0.68163
+TP: 0.69398
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=15
+   [abierto: 2026-06-30 15:41:38]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.69398 (TP)
+PnL: +0.88%
+   [entry_ts 2026-06-30 13:15:00 -> exit_ts 2026-06-30 13:30:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:41:44]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.1159
+SL: 0.11568
+TP: 0.11623
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=15
+   [abierto: 2026-06-30 15:41:48]
+
+✅ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.11623 (TP)
+PnL: +0.08%
+   [entry_ts 2026-06-30 12:45:00 -> exit_ts 2026-06-30 13:00:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.59439
+SL: 0.56829
+TP: 0.63354
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=60
+   [abierto: 2026-06-30 15:46:38]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.63354 (TP)
+PnL: +6.39%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:46:44]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+UB/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.11911
+SL: 0.11803
+TP: 0.12073
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:UBUSDT.P&interval=5
+   [abierto: 2026-06-30 15:46:47]
+
+❌ TFZ cierre
+UB/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.11803 (Stop)
+PnL: -1.11%
+   [entry_ts 2026-06-30 13:45:00 -> exit_ts 2026-06-30 13:50:00]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.59439
+SL: 0.56829
+TP: 0.63354
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=60
+   [abierto: 2026-06-30 15:53:32]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.63354 (TP)
+PnL: +6.39%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.06
+SL: 0.059344
+TP: 0.060984
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=60
+   [abierto: 2026-06-30 15:53:37]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.060984 (TP)
+PnL: +1.44%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+VELVET/USDT:USDT  🟢 LONG  (15m)
+Entry: 1.5966
+SL: 1.5726
+TP: 1.6326
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:VELVETUSDT.P&interval=15
+   [abierto: 2026-06-30 15:54:17]
+
+⚡ TFZ entrada
+SYN/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.59439
+SL: 0.56829
+TP: 0.63354
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SYNUSDT.P&interval=60
+   [abierto: 2026-06-30 15:56:35]
+
+✅ TFZ cierre
+SYN/USDT:USDT  🟢 micro_pullback  (1h)
+Salida: 0.63354 (TP)
+PnL: +6.39%
+   [entry_ts 2026-06-30 11:00:00 -> exit_ts 2026-06-30 12:00:00]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.063901
+SL: 0.063439
+TP: 0.064594
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=5
+   [abierto: 2026-06-30 15:56:39]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.064594 (TP)
+PnL: +0.88%
+   [entry_ts 2026-06-30 13:55:00 -> exit_ts 2026-06-30 14:05:00]
+
+⚡ TFZ entrada
+SLX/USDT:USDT  🟢 LONG  (1h)
+Entry: 0.5239
+SL: 0.5133
+TP: 0.5398
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:SLXUSDT.P&interval=60
+   [abierto: 2026-06-30 16:02:14]
+
+⚡ TFZ entrada
+TAC/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.063901
+SL: 0.063439
+TP: 0.064594
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:TACUSDT.P&interval=5
+   [abierto: 2026-06-30 16:06:44]
+
+✅ TFZ cierre
+TAC/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.064594 (TP)
+PnL: +0.88%
+   [entry_ts 2026-06-30 13:55:00 -> exit_ts 2026-06-30 14:05:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.1508
+SL: 0.14008
+TP: 0.16688
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=15
+   [abierto: 2026-06-30 16:13:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.16688 (TP)
+PnL: +10.46%
+   [entry_ts 2026-06-30 13:45:00 -> exit_ts 2026-06-30 14:00:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.1508
+SL: 0.14008
+TP: 0.16688
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=15
+   [abierto: 2026-06-30 16:16:37]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.16688 (TP)
+PnL: +10.46%
+   [entry_ts 2026-06-30 13:45:00 -> exit_ts 2026-06-30 14:00:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.18383
+SL: 0.17983
+TP: 0.18983
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:23:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.18983 (TP)
+PnL: +3.06%
+   [entry_ts 2026-06-30 14:20:00 -> exit_ts 2026-06-30 14:25:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.18383
+SL: 0.17983
+TP: 0.18983
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:26:31]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.18983 (TP)
+PnL: +3.06%
+   [entry_ts 2026-06-30 14:20:00 -> exit_ts 2026-06-30 14:25:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.18383
+SL: 0.17983
+TP: 0.18983
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:31:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.18983 (TP)
+PnL: +3.06%
+   [entry_ts 2026-06-30 14:20:00 -> exit_ts 2026-06-30 14:25:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.18383
+SL: 0.17983
+TP: 0.18983
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:36:36]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.18983 (TP)
+PnL: +3.06%
+   [entry_ts 2026-06-30 14:20:00 -> exit_ts 2026-06-30 14:25:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.20385
+SL: 0.19897
+TP: 0.21117
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:41:33]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.21117 (TP)
+PnL: +3.39%
+   [entry_ts 2026-06-30 14:40:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.20385
+SL: 0.19897
+TP: 0.21117
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:46:35]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.21117 (TP)
+PnL: +3.39%
+   [entry_ts 2026-06-30 14:40:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.20385
+SL: 0.19897
+TP: 0.21117
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:53:28]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.21117 (TP)
+PnL: +3.39%
+   [entry_ts 2026-06-30 14:40:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (5m)
+Entry: 0.20385
+SL: 0.19897
+TP: 0.21117
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=5
+   [abierto: 2026-06-30 16:58:31]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (5m)
+Salida: 0.21117 (TP)
+PnL: +3.39%
+   [entry_ts 2026-06-30 14:40:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.18252
+SL: 0.1821
+TP: 0.18315
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=15
+   [abierto: 2026-06-30 17:01:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.18315 (TP)
+PnL: +0.14%
+   [entry_ts 2026-06-30 14:30:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.18252
+SL: 0.1821
+TP: 0.18315
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=15
+   [abierto: 2026-06-30 17:06:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.18315 (TP)
+PnL: +0.14%
+   [entry_ts 2026-06-30 14:30:00 -> exit_ts 2026-06-30 14:45:00]
+
+⚡ TFZ entrada
+IN/USDT:USDT  🟢 LONG  (15m)
+Entry: 0.18252
+SL: 0.1821
+TP: 0.18315
+R:R 1.5 | score 65 | win% -
+micro_pullback
+📈 https://www.tradingview.com/chart/?symbol=BYBIT:INUSDT.P&interval=15
+   [abierto: 2026-06-30 17:11:34]
+
+✅ TFZ cierre
+IN/USDT:USDT  🟢 micro_pullback  (15m)
+Salida: 0.18315 (TP)
+PnL: +0.14%
+   [entry_ts 2026-06-30 14:30:00 -> exit_ts 2026-06-30 14:45:00]

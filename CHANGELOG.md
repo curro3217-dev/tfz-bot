@@ -9,6 +9,32 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-03
+
+### PIVOTE tras auditoría externa: MODO ASISTENTE + medición congelada de micro_pullback
+- **Contexto:** auditoría externa (dossier) señaló look-ahead como causa probable de la brecha
+  backtest(+2.7%/trade) vs vivo(negativo). VERIFICADO en código: (1) los niveles de una señal en
+  la vela T usaban swings de hasta 150 velas DESPUÉS de T (ventana completa); (2) las formaciones
+  se validaban con el precio del FINAL de la ventana; (3) la tendencia también se medía al final.
+  TEST FORENSE A/B (explore_forensic.py, misma tanda, FREEZE_CACHE): modo A (con look-ahead)
+  ~plano; modo B (solo pasado, como el vivo) NEGATIVO en 1h/15m/5m. Tres evidencias convergen
+  (vivo 63 trades negativo + mecanismo en código + A/B) -> VEREDICTO FIRME: el edge del backtest
+  de F1-F4 era artefacto; el sistema TFZ automático no tiene edge real tal como está.
+- **Decisión (opciones 1+2 del auditor):**
+  (1) **MODO ASISTENTE:** `config.trade_formations=False` -> las señales F1-F4 ya NO abren
+  trades; envían ALERTA a Telegram (una sola vez por setup, tabla `sent_alerts` con dedup) y
+  decide el humano. Alertas SOLO desde GitHub (`TFZ_TELEGRAM=1` en bot.yml; el PC queda mudo,
+  `notify.ALERTS_PAUSED=True` sigue) para no duplicar avisos.
+  (2) **MEDICIÓN CONGELADA de micro_pullback:** único setup que sigue operando en paper, SOLO
+  15m/1h (5m eliminado: 16% win en vivo). `--timeframe 15m,1h` en bot.yml y en el .cmd del PC.
+  Cuentas reseteadas a cero (PC y GitHub).
+- **CRITERIO DE ÉXITO PRE-REGISTRADO (no se toca hasta ~200 trades cerrados):** micro_pullback
+  15m/1h se considera CON edge si expectancy neta > +0.3%/trade con IC95% excluyendo cero; si
+  no, se retira. Durante la medición NO se cambia ningún parámetro de la estrategia (los
+  arreglos de infraestructura sí están permitidos). Si surge la tentación de "aflojar para
+  tener más señales": eso es el fracaso del sistema, no del mercado (auditor, Fase 3).
+- Backup pre-reset: tfz_data.db.bak4_*.
+
 ## 2026-06-30
 
 ### GitHub corre continuo SIN token (runs largos)

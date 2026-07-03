@@ -11,6 +11,25 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-03
 
+### RONDA 6: anatomía del vie->sáb + FILTRO DE MAGNITUD validado 6/6 + DVOL nulo
+- **explore_friday_anatomy.py (descriptivo, la regla sellada NO cambia):**
+  (1) la continuación se acumula durante TODO el sábado (máximo en la hora 24 ->
+  el hold de 24h ya es correcto); (2) DOSIS-RESPUESTA limpia por |ret. viernes|:
+  Q1 (<0.9%) +0.02% ... Q5 (>5.8%) +1.16%/trade; (3) riesgo de la cartera semanal
+  (42 símbolos, 118 sábados): media +0.50%/sem, 47% semanas negativas, peor -4.6%,
+  racha máx 4 perdedoras, drawdown máx -18.6%, acumulado 3 años +59.5%.
+- **explore_friday_filter.py — filtro |viernes| >= 3% (umbral FIJO pre-especificado)
+  pasa 6/6 celdas** (3 años × 2 universos, todas con IC95 excluyendo 0): +0.49..+1.46%
+  por trade con ~40-50% de cobertura. **Pre-registrado como CRITERIO SECUNDARIO en
+  weekend_paper** (mismos datos, fri_ret ya se guarda por trade; evaluación del
+  subconjunto |vie|>=3% con listón > +0.25%). Sellado junto al primario; --status
+  ya muestra los dos.
+- **explore_dvol.py — DVOL de Deribit (901 días, endpoint crudo; ccxt ignora los
+  parámetros y solo da 16 días):** H1 (vol alta predice retorno siguiente) NULA.
+  H2 (efecto viernes más fuerte con vol alta) RECHAZADA: funciona en ambos regímenes
+  (+0.43% alta / +0.66% baja, ambos significativos) -> el efecto NO depende del
+  régimen de volatilidad global. Robustez adicional.
+
 ### RONDA 5: matriz calendario completa — SOLO el viernes pasa el listón
 - **explore_calendar_oou.py:** los 7 días × 3 años × 2 universos (los 20 de siempre +
   22 nuevos con majors), con 4 candidatos pre-especificados. Resultado:

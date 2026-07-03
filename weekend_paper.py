@@ -14,10 +14,15 @@ explore_weekend + robustez; ver CHANGELOG 2026-07-03):
 FORWARD-ONLY: solo se registran sábados POSTERIORES al pre-registro (START_TS).
 Rellenar hacia atrás sería otro backtest, no una medición.
 
-CRITERIO PRE-REGISTRADO (PROPUESTA, ajustable ANTES del primer sábado; después no
-se toca): a >=20 sábados medidos, hay edge si la media de las MEDIAS SEMANALES
-(1 dato por sábado, inmune a la correlación entre símbolos) es > +0.15% con IC95
-excluyendo cero. Si no, se retira.
+CRITERIO PRE-REGISTRADO (sellado 2026-07-03, antes del primer sábado; no se toca):
+  PRIMARIO: a >=20 sábados medidos, hay edge si la media de las MEDIAS SEMANALES
+  (1 dato por sábado, inmune a la correlación entre símbolos) es > +0.15% con IC95
+  excluyendo cero. Si no, se retira.
+  SECUNDARIO (filtro de magnitud, validado 6/6 celdas en explore_friday_filter:
+  +0.49..+1.46%/trade en 3 años x 2 universos): mismo cálculo sobre el SUBCONJUNTO
+  |retorno del viernes| >= 3%; hay edge del filtro si > +0.25% con IC95 excluyendo
+  cero. Los datos son los mismos (fri_ret se guarda por trade); solo cambia la
+  evaluación. Ninguno de los dos criterios se modifica ya.
 
 Uso (pensado para tarea programada cualquier momento tras el domingo 01:00 UTC):
   python weekend_paper.py            # registra los sábados pendientes ya cerrados
@@ -102,19 +107,23 @@ def record_pending(conn, cfg, verbose=True):
 
 
 def status(conn):
-    rows = conn.execute("SELECT sabado, pnl_pct FROM wknd_trades").fetchall()
+    rows = conn.execute("SELECT sabado, fri_ret, pnl_pct FROM wknd_trades").fetchall()
     print(f"\nWEEKEND PAPER — BD {DB}")
     print(f"  trades registrados: {len(rows)} (solo sábados >= {START_TS.date()})")
     if not rows:
         print("  (el primer sábado medible es el siguiente al pre-registro)")
         return
     df = pd.DataFrame([dict(r) for r in rows])
-    weekly = df.groupby("sabado")["pnl_pct"].mean()
-    print(f"  sábados medidos: {len(weekly)}/20 mínimos del criterio")
-    if len(weekly) >= 2:
-        m = weekly.mean(); se = weekly.std(ddof=1) / np.sqrt(len(weekly))
-        print(f"  media de medias semanales {m:+.3f}% "
-              f"[IC95 {m-1.96*se:+.3f},{m+1.96*se:+.3f}] | criterio: > +0.15% excluyendo 0")
+    for nombre, g, umbral in (
+            ("PRIMARIO (todos)", df, 0.15),
+            ("SECUNDARIO (|vie|>=3%)", df[df["fri_ret"].abs() >= 0.03], 0.25)):
+        weekly = g.groupby("sabado")["pnl_pct"].mean()
+        linea = f"  {nombre}: {len(weekly)} sábados"
+        if len(weekly) >= 2:
+            m = weekly.mean(); se = weekly.std(ddof=1) / np.sqrt(len(weekly))
+            linea += (f" | media semanal {m:+.3f}% [IC95 {m-1.96*se:+.3f},"
+                      f"{m+1.96*se:+.3f}] | criterio: > +{umbral:.2f}% excluyendo 0")
+        print(linea)
 
 
 def main():

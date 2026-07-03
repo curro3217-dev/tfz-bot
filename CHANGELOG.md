@@ -11,6 +11,15 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-04
 
+### RONDA 17: factores académicos (MAX, low-vol, Amihud) — muertos, con lección
+- **explore_factors.py (semanal XS, Binance 2018-26, 42 símbolos):** MAX/lotería
+  (short alto): PIERDE -0.76%/sem signif. en IS -> el factor está INVERTIDO en
+  cripto. Low-vol/BAB: pierde en IS, plano OOS -> cripto PAGA la volatilidad.
+  Amihud (long ilíquido): IS +0.78* -> OOS -0.13 ruido -> muerto post-2024.
+- **Lección meta:** los premios de riesgo cripto van al revés que en bolsa (la
+  volatilidad extrema se paga). Ya lo capturamos de forma validada con el filtro
+  |vie|>=3%; invertir el MAX post-hoc sería minería de un test fallido -> no.
+
 ### RONDA 16: seis familias clásicas más, probadas y enterradas
 - **explore_breakouts.py (42 símbolos, 1h, 2024-26):** vol-breakout ATR (Larry
   Williams): PIERDE en OOS (-0.19% signif.). NR7: OOS +0.23* pero IS en ruido ->

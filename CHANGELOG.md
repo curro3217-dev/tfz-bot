@@ -9,7 +9,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
-## 2026-07-03
+## 2026-07-04
+
+### RONDA 16: seis familias clásicas más, probadas y enterradas
+- **explore_breakouts.py (42 símbolos, 1h, 2024-26):** vol-breakout ATR (Larry
+  Williams): PIERDE en OOS (-0.19% signif.). NR7: OOS +0.23* pero IS en ruido ->
+  no pasa el listón (significancia solo-OOS sin IS = espejo del espejismo). Pico de
+  volumen 3x: nulo.
+- **explore_52whigh.py (Binance diario 2018-26, George-Hwang):** long cerca del
+  máx-52s: IS +2.29%/sem signif. -> OOS 24-26 +0.29 ruido. Muerta post-ETF, mismo
+  patrón que F&G/expiry/TOM/shocks.
+- **explore_streaks_shocks.py:** rachas (seguir 3/4/5d): negativo e incoherente
+  entre k (su inversa también incoherente -> ruido). Shocks ±7% (seguir 1-2d):
+  IS positivo signif., OOS girado -> muerto. Reversión ETH/BTC (z90, 2 patas):
+  -2.4%/trade -> muerta.
+- **NOTA pairs:** ya estaban probados (explore_pairs 15m: -0.33%/trade en 32k
+  trades); ni con costes MEXC saldría de negativo. No se repite.
+- Con esto: ~37 estrategias/familias examinadas desde el 2026-07-03. Sobreviven
+  las mismas: vie->sáb (+filtro), prima BTC/ETH, micro_pullback en examen.
 
 ### RONDA 15: ENSAYO GENERAL de la maquinaria forward (QA pre-primer-sábado)
 - **weekend_paper probado END-TO-END contra el sábado real 27-jun** (BD desechable,

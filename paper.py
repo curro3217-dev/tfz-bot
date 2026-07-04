@@ -256,12 +256,8 @@ def update_open_trades(conn, cfg: TFZConfig, verbose=True) -> int:
             except Exception as e:
                 if verbose:
                     print(f"  [review] {trade['symbol']}: {e}")
-            # Telegram alert al cerrar (fail-silent si no esta configurado)
-            try:
-                from notify import alert_exit
-                alert_exit(trade, reason, exit_price, pnl)
-            except Exception:
-                pass
+            # SIN aviso a Telegram al cerrar: los trades del paper son la MEDICION
+            # silenciosa; el movil solo recibe alertas de setups del asistente.
             if verbose:
                 print(f"  [closed] {trade['symbol']:10s} {trade['timeframe']:>3s} "
                       f"{trade['direction']:5s} {trade['formation_type']:16s} "
@@ -763,11 +759,8 @@ def _scan_setup(conn, symbols, cfg: TFZConfig, detect_fn, tfs, direction,
                 open_symbols.add(symbol)
                 dir_count[direction] = dir_count.get(direction, 0) + 1
                 opened += 1
-                try:
-                    from notify import alert_entry
-                    alert_entry(sig, None)
-                except Exception:
-                    pass
+                # SIN aviso a Telegram: esto es la MEDICION silenciosa (paper), no el
+                # asistente. Solo _alert_once (setups F) debe llegar al movil.
                 if verbose:
                     print(f"  [opened] {symbol:10s} {tf:>3s} {direction:5s} {name} "
                           f"entry {sig.entry_price:.5g} SL {sig.stop_loss:.5g} TP {sig.take_profit:.5g}")

@@ -1,5 +1,5 @@
 {
-  "equity": 49.129864845935636,
+  "equity": 49.151505381641584,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -40,7 +40,8 @@
     "234c53db-f182-40a4-89e2-f5f42f57806a",
     "cb50a40d-45b2-4b78-b821-b19ee917ae1c",
     "48935c6b-b9ed-427c-92c2-b3638d11a411",
-    "09c74172-9527-4979-89d5-3775a7d8c7b8"
+    "09c74172-9527-4979-89d5-3775a7d8c7b8",
+    "7be48684-36eb-4ffe-a666-55ef00fe282d"
   ],
   "history": [
     {
@@ -498,6 +499,18 @@
       "equity": 49.1299,
       "reason": "sl_hit",
       "opened_at": "2026-07-06 00:03:44"
+    },
+    {
+      "id": "7be48684-36eb-4ffe-a666-55ef00fe282d",
+      "symbol": "INJ/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.078,
+      "lev": 0.57,
+      "throttle": 0.5,
+      "dollar": 0.0216,
+      "equity": 49.1515,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-06 00:21:15"
     }
   ],
   "peak": 55.813149100058986

@@ -1,5 +1,5 @@
 {
-  "equity": 47.86845734895576,
+  "equity": 48.87446472093513,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -30,7 +30,10 @@
     "02c7371e-bf3c-4e6d-a212-67c523578cd1",
     "9f4cb327-28a9-4873-a9e7-b51c4f489e4a",
     "9575250d-bb04-433b-ad78-c13643c23779",
-    "6022f175-888d-4e88-b331-efee9c6694cd"
+    "6022f175-888d-4e88-b331-efee9c6694cd",
+    "d085b321-bbde-4e62-9a0c-2ea525bd17bf",
+    "e7a25ef7-3e64-45c6-bbb1-990bee068a0e",
+    "f4092add-b397-4dcd-a55f-c3ac654f49ae"
   ],
   "history": [
     {
@@ -368,6 +371,42 @@
       "equity": 47.8685,
       "reason": "sl_hit",
       "opened_at": "2026-07-05 11:45:33"
+    },
+    {
+      "id": "d085b321-bbde-4e62-9a0c-2ea525bd17bf",
+      "symbol": "NEAR/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.316,
+      "lev": 0.82,
+      "throttle": 0.5,
+      "dollar": 0.124,
+      "equity": 47.9924,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-05 15:15:06"
+    },
+    {
+      "id": "e7a25ef7-3e64-45c6-bbb1-990bee068a0e",
+      "symbol": "AVAX/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.371,
+      "lev": 0.8,
+      "throttle": 0.5,
+      "dollar": 0.1428,
+      "equity": 48.1352,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-05 14:34:32"
+    },
+    {
+      "id": "f4092add-b397-4dcd-a55f-c3ac654f49ae",
+      "symbol": "JUP/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 3.104,
+      "lev": 0.49,
+      "throttle": 0.5,
+      "dollar": 0.7392,
+      "equity": 48.8745,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-05 13:01:32"
     }
   ],
   "peak": 55.813149100058986

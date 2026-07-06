@@ -9,6 +9,38 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-06
+
+### Supervisión semanal weekend_paper: 1er sábado registrado, tarea Windows no disparó
+- **Anomalía detectada:** la tarea programada `TFZ_Weekend_Paper` (domingos 03:15) NO
+  se había ejecutado ni una vez desde su creación (2026-07-03): `weekend_log.txt` ni
+  existía, `LastRunTime` marcaba el centinela "nunca ejecutada". Causa: la sesión de
+  usuario (`jarta`) no estaba iniciada el domingo 2026-07-05 a esa hora — la sesión
+  actual arrancó el 2026-07-06 06:35, y la tarea usa LogonType=Interactive (necesita
+  sesión activa). `StartWhenAvailable=True` no la recuperó igualmente.
+  - **Arreglo aplicado (reversible):** se lanzó manualmente
+    `python weekend_paper.py` en el PC (INSECURE_SSL=1) -> registró el sábado
+    2026-07-04 pendiente (41/42 símbolos; TON sin señal real esa semana, ver abajo).
+  - **Pendiente (necesita permisos de admin, denegado en esta sesión):** cambiar el
+    `Principal` de la tarea a `LogonType S4U` para que corra sin sesión interactiva
+    activa. Alternativa más simple: dejar la sesión de Windows iniciada los sábados
+    por la noche.
+- **Comparación PC vs GitHub (cuenta redundante, `github_state/weekend_paper.db`):**
+  ambas cuentas coinciden en 40/41 símbolos del sábado 2026-07-04. Diferencias:
+  - `TON`: ausente en LAS DOS cuentas — no es fallo, MEXC devolvió precio congelado
+    (misma vela repetida, volumen 0) esa semana -> retorno del viernes exactamente 0
+    -> excluido por diseño (`fri_ret == 0` se descarta en `weekend_paper.py:93`).
+  - `FIL`: registrado en el PC (+4.27% viernes -> -1.33% pnl) pero AUSENTE en GitHub
+    pese a docenas de re-ejecuciones del workflow desde entonces (dato real, no
+    congelado). Parece un fallo de red puntual del runner de GitHub hacia MEXC
+    específico de ese símbolo/momento. Impacto en el criterio: mínimo (1 símbolo de
+    42, 1 semana de las >=20 necesarias) — se deja documentado, no se fuerza nada.
+  - Workflow "TFZ Bot Paper" en GitHub: ACTIVO (runs in_progress/cancelled normales
+    por el ciclo de ~5h40m, nada anómalo).
+- **Estado del criterio (informativo, aún NO evaluable):** 1 de los >=20 sábados
+  necesarios. Media pnl de los 41 trades de esta semana (no es aún la métrica del
+  criterio, que promedia por semana): +0.02%. Regla y parámetros SIN TOCAR.
+
 ## 2026-07-04
 
 ### RONDA 21: macro (SPX/DXY) nulo-refutado + kimchi aparcado

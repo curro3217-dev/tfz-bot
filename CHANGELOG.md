@@ -43,6 +43,20 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-06
 
+### RONDA 23: Smart Money Concepts (FVG) — el evangelio pierde; enterrado
+- **Librería smartmoneyconcepts (1.8k*) AUDITADA:** los swings (y BOS/CHoCH/OB/
+  liquidity que dependen de ellos) usan velas futuras (before AND after) ->
+  inutilizables sin re-ingeniería de retardos. El FVG marca t usando t+1 ->
+  corregido con +1 día de retardo.
+- **explore_smc.py — FVG con lectura clásica: PIERDE con significancia en IS y
+  OOS** (alcista->long: -0.49%/-1.06%; bajista->short: -1.25% IS, +0.90% OOS =
+  deriva corta 2026). La INVERSA del alcista (short tras FVG alcista) brillaba,
+  pero el control de deriva sin solapar la tumba: exceso -0.34% en 2024 (pierde),
+  +1.63% en 2025, +0.56% en 2026 -> inconsistente + nacida de invertir una
+  hipótesis fallida = minería. Enterrada. Nota estratégica del día: MEXC no tiene
+  API oficial de órdenes en futuros -> la ejecución del día de graduación será
+  otro venue o manual (1 orden/semana para el vie->sáb).
+
 ### RONDA 22: cosecha GitHub del usuario — vectorbt IN, patrones chartistas OUT
 - **vectorbt 1.1.0 instalado y verificado** (release de hace 2 días; numba con ruedas
   para Python 3.14) -> acelerador para futuras baterías de exploración.

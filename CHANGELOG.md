@@ -41,6 +41,25 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
   necesarios. Media pnl de los 41 trades de esta semana (no es aún la métrica del
   criterio, que promedia por semana): +0.02%. Regla y parámetros SIN TOCAR.
 
+## 2026-07-06
+
+### RONDA 22: cosecha GitHub del usuario — vectorbt IN, patrones chartistas OUT
+- **vectorbt 1.1.0 instalado y verificado** (release de hace 2 días; numba con ruedas
+  para Python 3.14) -> acelerador para futuras baterías de exploración.
+- **TradingPatternScanner (pip tradingpattern 0.0.5):** roto con pandas 4 (texto sobre
+  float64) y con LOOK-AHEAD de serie (shift(-1): la marca del día t usa t+1).
+  Replicados sus 3 detectores parcheados en explore_patterns.py con la señal
+  retrasada +1 día (corrección honesta).
+- **explore_patterns.py — los 6 patrones clásicos, enterrados:** dobles techos/suelos
+  nulos; H&S incoherente; H&S invertido PIERDE (otra vez el manual al revés en
+  cripto); cuñas incoherentes... salvo "Wedge Up->short" que brillaba (IS y OOS
+  signif.) — **analyze_wedge.py lo desmonta**: sin solapar y contra deriva corta,
+  exceso +0.96/+0.38/+0.09% por año (2026 ≈ CERO: era la caída del mercado) y
+  trimestres de +8.5% a -2.6% según régimen -> proxy de beta bajista, no edge.
+- Diagnóstico Telegram del día: el silencio desde el sáb 04:17 era el commit
+  98de744 del usuario (silenciar aperturas/cierres del paper) + ausencia de setups
+  F1-F4 nuevos; canal verificado vivo con 2 mensajes de prueba desde el PC.
+
 ## 2026-07-04
 
 ### RONDA 21: macro (SPX/DXY) nulo-refutado + kimchi aparcado

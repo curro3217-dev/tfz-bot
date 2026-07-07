@@ -1,5 +1,5 @@
 {
-  "equity": 43.03153277899834,
+  "equity": 42.788294772234565,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -77,7 +77,9 @@
     "7766a5c1-900a-4229-930a-d6c43171471a",
     "e79d0100-81df-49b8-b745-1e201c2756f8",
     "bbf98279-ac7a-4219-8ff7-e61ec198c38c",
-    "b64d4db4-d61f-4fb0-ba12-a3a79789c4ec"
+    "b64d4db4-d61f-4fb0-ba12-a3a79789c4ec",
+    "24bc7555-284e-449b-af1f-12c3b5d31378",
+    "daf54bc8-888c-4c48-91f2-08b34e82628b"
   ],
   "history": [
     {
@@ -979,6 +981,30 @@
       "equity": 43.0315,
       "reason": "sl_hit",
       "opened_at": "2026-07-07 19:24:18"
+    },
+    {
+      "id": "24bc7555-284e-449b-af1f-12c3b5d31378",
+      "symbol": "NEAR/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -1.206,
+      "lev": 0.22,
+      "throttle": 0.25,
+      "dollar": -0.1165,
+      "equity": 42.9151,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-07 19:24:18"
+    },
+    {
+      "id": "daf54bc8-888c-4c48-91f2-08b34e82628b",
+      "symbol": "SOL/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.589,
+      "lev": 0.5,
+      "throttle": 0.25,
+      "dollar": -0.1268,
+      "equity": 42.7883,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-07 20:16:16"
     }
   ],
   "peak": 55.813149100058986

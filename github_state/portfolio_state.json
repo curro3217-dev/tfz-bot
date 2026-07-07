@@ -1,5 +1,5 @@
 {
-  "equity": 42.788294772234565,
+  "equity": 42.542456687904874,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -79,7 +79,9 @@
     "bbf98279-ac7a-4219-8ff7-e61ec198c38c",
     "b64d4db4-d61f-4fb0-ba12-a3a79789c4ec",
     "24bc7555-284e-449b-af1f-12c3b5d31378",
-    "daf54bc8-888c-4c48-91f2-08b34e82628b"
+    "daf54bc8-888c-4c48-91f2-08b34e82628b",
+    "f9536eec-0a25-4ffa-ba64-e4f30cd20a97",
+    "a21e3ad0-bb58-4ab5-a16d-e82401cecb9f"
   ],
   "history": [
     {
@@ -1005,6 +1007,30 @@
       "equity": 42.7883,
       "reason": "sl_hit",
       "opened_at": "2026-07-07 20:16:16"
+    },
+    {
+      "id": "f9536eec-0a25-4ffa-ba64-e4f30cd20a97",
+      "symbol": "AVAX/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.517,
+      "lev": 0.59,
+      "throttle": 0.25,
+      "dollar": -0.1296,
+      "equity": 42.6587,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-07 20:50:57"
+    },
+    {
+      "id": "a21e3ad0-bb58-4ab5-a16d-e82401cecb9f",
+      "symbol": "SOL/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -1.11,
+      "lev": 0.25,
+      "throttle": 0.25,
+      "dollar": -0.1162,
+      "equity": 42.5425,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-07 20:50:58"
     }
   ],
   "peak": 55.813149100058986

@@ -1,5 +1,5 @@
 {
-  "equity": 41.709703673629846,
+  "equity": 42.033324558392785,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -153,7 +153,8 @@
     "7090b56e-d2e0-48d6-90f9-d0b700f1df79",
     "514afa3c-1fba-4305-89bf-efb0937f23d6",
     "2483b703-07e9-480b-975e-6f55a180887f",
-    "f0aa2e7f-2f23-4544-a21c-31cc5161e1f2"
+    "f0aa2e7f-2f23-4544-a21c-31cc5161e1f2",
+    "cf66d68b-ed00-460d-9da3-0a7e9ee340fc"
   ],
   "history": [
     {
@@ -1967,6 +1968,18 @@
       "equity": 41.7097,
       "reason": "sl_hit",
       "opened_at": "2026-07-12 12:31:37"
+    },
+    {
+      "id": "cf66d68b-ed00-460d-9da3-0a7e9ee340fc",
+      "symbol": "PENDLE/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.201,
+      "lev": 3.86,
+      "throttle": 0.25,
+      "dollar": 0.3236,
+      "equity": 42.0333,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-12 23:00:13"
     }
   ],
   "peak": 55.813149100058986

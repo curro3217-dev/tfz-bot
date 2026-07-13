@@ -1,5 +1,5 @@
 {
-  "equity": 42.90886862047982,
+  "equity": 43.06964022297291,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -167,7 +167,10 @@
     "f2c14077-ef68-46cb-95fc-3100bc8c5907",
     "3fd78712-0973-4758-9fba-bdbfa1ee8540",
     "2e9834ec-f6bc-4349-abee-4bffbb6b858d",
-    "6592bdcf-5822-4200-b423-ddb30fe3bbac"
+    "6592bdcf-5822-4200-b423-ddb30fe3bbac",
+    "ccdc3eb7-1bed-42f8-b926-c9c86bfd3053",
+    "495f0d5c-9619-4079-8aba-5324ce08e139",
+    "cf1ea864-1884-4ab2-b063-d52060abf1d4"
   ],
   "history": [
     {
@@ -2149,6 +2152,42 @@
       "equity": 42.9089,
       "reason": "tp_hit",
       "opened_at": "2026-07-13 10:35:58"
+    },
+    {
+      "id": "ccdc3eb7-1bed-42f8-b926-c9c86bfd3053",
+      "symbol": "NEAR/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.039,
+      "lev": 0.2,
+      "throttle": 0.25,
+      "dollar": -0.0033,
+      "equity": 42.9055,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 10:17:57"
+    },
+    {
+      "id": "495f0d5c-9619-4079-8aba-5324ce08e139",
+      "symbol": "LDO/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.516,
+      "lev": 0.1,
+      "throttle": 0.25,
+      "dollar": 0.0227,
+      "equity": 42.9282,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 08:30:33"
+    },
+    {
+      "id": "cf1ea864-1884-4ab2-b063-d52060abf1d4",
+      "symbol": "AAVE/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 1.048,
+      "lev": 0.31,
+      "throttle": 0.25,
+      "dollar": 0.1414,
+      "equity": 43.0696,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 11:05:34"
     }
   ],
   "peak": 55.813149100058986

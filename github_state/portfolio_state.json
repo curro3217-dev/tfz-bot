@@ -1,5 +1,5 @@
 {
-  "equity": 40.86032549943894,
+  "equity": 40.85812973588289,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -163,7 +163,9 @@
     "d542f4a6-caa5-47f3-b8f8-8e3086fefcad",
     "458946f8-b2d4-4e01-9985-0b010b0831d2",
     "0977d829-62eb-44da-a4fa-1491b9ad2892",
-    "392f5c8a-8385-4ca6-a7a4-d97e5a20cc86"
+    "392f5c8a-8385-4ca6-a7a4-d97e5a20cc86",
+    "f2c14077-ef68-46cb-95fc-3100bc8c5907",
+    "3fd78712-0973-4758-9fba-bdbfa1ee8540"
   ],
   "history": [
     {
@@ -2097,6 +2099,30 @@
       "equity": 40.8603,
       "reason": "sl_hit",
       "opened_at": "2026-07-13 09:36:11"
+    },
+    {
+      "id": "f2c14077-ef68-46cb-95fc-3100bc8c5907",
+      "symbol": "FET/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.034,
+      "lev": 0.5,
+      "throttle": 0.25,
+      "dollar": 0.007,
+      "equity": 40.8674,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 10:00:10"
+    },
+    {
+      "id": "3fd78712-0973-4758-9fba-bdbfa1ee8540",
+      "symbol": "GALA/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.09,
+      "lev": 0.25,
+      "throttle": 0.25,
+      "dollar": -0.0092,
+      "equity": 40.8581,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-13 10:00:14"
     }
   ],
   "peak": 55.813149100058986

@@ -1,5 +1,5 @@
 {
-  "equity": 42.955865099022404,
+  "equity": 42.84027082332712,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -171,7 +171,8 @@
     "ccdc3eb7-1bed-42f8-b926-c9c86bfd3053",
     "495f0d5c-9619-4079-8aba-5324ce08e139",
     "cf1ea864-1884-4ab2-b063-d52060abf1d4",
-    "17da9079-d26e-424c-b630-607d05792714"
+    "17da9079-d26e-424c-b630-607d05792714",
+    "e49d9d86-00e0-49f8-ac6f-36a965094b71"
   ],
   "history": [
     {
@@ -2201,6 +2202,18 @@
       "equity": 42.9559,
       "reason": "sl_hit",
       "opened_at": "2026-07-13 18:20:09"
+    },
+    {
+      "id": "e49d9d86-00e0-49f8-ac6f-36a965094b71",
+      "symbol": "UNI/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -1.299,
+      "lev": 0.21,
+      "throttle": 0.25,
+      "dollar": -0.1156,
+      "equity": 42.8403,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-13 18:31:42"
     }
   ],
   "peak": 55.813149100058986

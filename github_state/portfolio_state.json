@@ -1,5 +1,5 @@
 {
-  "equity": 41.00059849164628,
+  "equity": 41.03250169928153,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -160,7 +160,9 @@
     "677b97aa-df45-4524-b576-b30e4b1ba251",
     "9d400968-ae2f-4853-a8ed-717310035ec5",
     "044de20b-77f1-424e-ab77-75fd45c9dc94",
-    "d542f4a6-caa5-47f3-b8f8-8e3086fefcad"
+    "d542f4a6-caa5-47f3-b8f8-8e3086fefcad",
+    "458946f8-b2d4-4e01-9985-0b010b0831d2",
+    "0977d829-62eb-44da-a4fa-1491b9ad2892"
   ],
   "history": [
     {
@@ -2058,6 +2060,30 @@
       "equity": 41.0006,
       "reason": "sl_hit",
       "opened_at": "2026-07-13 00:30:19"
+    },
+    {
+      "id": "458946f8-b2d4-4e01-9985-0b010b0831d2",
+      "symbol": "JUP/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.058,
+      "lev": 0.42,
+      "throttle": 0.25,
+      "dollar": 0.01,
+      "equity": 41.0106,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 08:48:31"
+    },
+    {
+      "id": "0977d829-62eb-44da-a4fa-1491b9ad2892",
+      "symbol": "WIF/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.043,
+      "lev": 1.25,
+      "throttle": 0.25,
+      "dollar": 0.0219,
+      "equity": 41.0325,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-13 09:18:17"
     }
   ],
   "peak": 55.813149100058986

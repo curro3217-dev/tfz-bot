@@ -1,5 +1,5 @@
 {
-  "equity": 42.49848753718436,
+  "equity": 42.32695647125846,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -184,7 +184,10 @@
     "5ff8b81f-9031-458c-9dba-ce05b6720274",
     "3a15d92f-88dc-4b24-ab3b-96373eb18051",
     "da0a708f-2d8b-4bf3-841b-a8bdfeb9c203",
-    "05db1b50-e85f-4310-b663-c8e3887be6e6"
+    "05db1b50-e85f-4310-b663-c8e3887be6e6",
+    "85f85243-2fb6-4980-8b1f-cf4b13ff92c2",
+    "fed0de3b-eb7c-4042-9cd4-0ebbf3e7ea75",
+    "cf647e5c-a6f9-4866-9fc1-b430f614b746"
   ],
   "history": [
     {
@@ -2370,6 +2373,42 @@
       "equity": 42.4985,
       "reason": "tp_hit",
       "opened_at": "2026-07-14 10:19:17"
+    },
+    {
+      "id": "85f85243-2fb6-4980-8b1f-cf4b13ff92c2",
+      "symbol": "DOT/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 0.383,
+      "lev": 0.35,
+      "throttle": 0.25,
+      "dollar": 0.0572,
+      "equity": 42.5557,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-14 10:01:50"
+    },
+    {
+      "id": "fed0de3b-eb7c-4042-9cd4-0ebbf3e7ea75",
+      "symbol": "ENA/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.848,
+      "lev": 0.33,
+      "throttle": 0.25,
+      "dollar": -0.1191,
+      "equity": 42.4366,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-14 10:48:12"
+    },
+    {
+      "id": "cf647e5c-a6f9-4866-9fc1-b430f614b746",
+      "symbol": "WIF/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -3.123,
+      "lev": 0.08,
+      "throttle": 0.25,
+      "dollar": -0.1096,
+      "equity": 42.327,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-14 06:05:09"
     }
   ],
   "peak": 55.813149100058986

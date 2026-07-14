@@ -31,6 +31,14 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 - `.gitignore`: añadidos `ema_cross_paper.db` y `ema_log.txt` (la cuenta del PC no
   se sube; la de GitHub va con `-f` en `github_state/` como las demás).
 
+### Arreglo git: tfz_data.db fuera del índice
+- `git rm --cached tfz_data.db`: la BD viva del PC estaba trackeada pese al
+  .gitignore y su bloqueo (el bot la tiene abierta) rompía cualquier
+  pull/rebase ("unable to unlink"). El archivo sigue en disco intacto; solo
+  deja de estar en git. La cuenta de GitHub usa `github_state/tfz_data.db`,
+  que no se toca. Pull en este repo: mejor `--no-rebase` (merge, el patrón
+  de los commits previos).
+
 ### Plantilla de backtest rápido (plantilla_backtest.py + PLANTILLA_BACKTEST.md)
 - **Nuevo `plantilla_backtest.py`** (solo lectura): harness genérico para probar
   cualquier estrategia editando solo `position(df)` y `PARAM_GRID`. Fijo para

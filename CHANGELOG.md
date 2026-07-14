@@ -9,6 +9,78 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-14
+
+### Nuevo paper forward: cruce EMA 9/21 diario en BTC (ema_cross_paper.py)
+- Origen: chuleta "The Backtest Machine" (Miles Deutscher). Réplica verificada con
+  datos MEXC BTC/USDT 1d, jul-2023→hoy, comisión 0.1%/lado, fill apertura siguiente:
+  23 trades, WR 34.8%, PF 3.11, +159.8% vs +104.1% buy&hold, maxDD −27.3% vs −53.0%.
+  Meseta OK (8/20 +166%, 10/22 +193%, 12/26 +152%). PERO ojo al IS/OOS de la
+  plantilla: último año (jul-25→hoy) **−16.4%, PF 0.28, 7 trades** — todo el edge
+  vino de 2023-2024. Por eso se mide forward en vez de creérselo.
+- **Nuevo `ema_cross_paper.py`**: BD propia (`ema_cross_paper.db`, env `TFZ_EMA_DB`),
+  forward-only (pre-registro 2026-07-14; el cruce alcista del 07-10, ya abierto al
+  sellar, NO cuenta), idempotente (reconstruye desde velas cerradas, INSERT OR
+  IGNORE). Regla congelada: EMA9>EMA21 al cierre diario → largo; < → plano; solo
+  largos; fill = apertura siguiente; costes MEXC 0.09% i/v; funding NO modelado
+  (salvedad anotada). Verificado que sus cruces coinciden 1:1 con la réplica.
+  Aviso Telegram de cruce nuevo solo donde TFZ_TELEGRAM=1 (patrón premium_paper).
+- Despliegue doble como weekend/premium: tarea Windows `TFZ_EMA_Paper` (diaria
+  03:05 local, `C:\Users\jarta\run_ema_paper.cmd`, log `ema_log.txt`) + paso nuevo
+  en `.github/workflows/bot.yml` con `TFZ_EMA_DB=github_state/ema_cross_paper.db`.
+- `.gitignore`: añadidos `ema_cross_paper.db` y `ema_log.txt` (la cuenta del PC no
+  se sube; la de GitHub va con `-f` en `github_state/` como las demás).
+
+### Plantilla de backtest rápido (plantilla_backtest.py + PLANTILLA_BACKTEST.md)
+- **Nuevo `plantilla_backtest.py`** (solo lectura): harness genérico para probar
+  cualquier estrategia editando solo `position(df)` y `PARAM_GRID`. Fijo para
+  todas las pruebas: datos vía `data_fetcher` (MEXC), señal en vela cerrada, fill
+  apertura siguiente, costes 0.09% i/v, meseta automática, split IS/OOS (último
+  año) y buy&hold como listón. Comparaciones limpias entre estrategias.
+- **Nuevo `PLANTILLA_BACKTEST.md`**: los 4 prompts del PDF (articular → codificar →
+  correr → leer) adaptados a los dos caminos (plantilla del bot o TradingView/Pine)
+  + la batería de la casa (n≥20, meseta, IS/OOS, deriva, costes, forward).
+
+---
+
+## 2026-07-10
+
+### RONDA 24b: variante intradía 2h de la #40 (explore_sr_volume_intraday.py) — nada validado
+- **Nuevo `explore_sr_volume_intraday.py` (EXPLORACIÓN #41),** solo lectura. Restricción
+  del usuario: operar solo ~2h/día y cerrar todo antes de acabar la ventana. Mismos
+  niveles causales que la #40; ventana elegida por VOLUMEN (no por retornos): las 2h
+  con más volumen mediano = 14-16 UTC (16-18 Madrid verano). Entradas al cierre de la
+  vela 13h o 14h UTC, salida forzosa al cierre de 15h UTC. Filtro de volumen ajustado
+  por hora del día (>2x media de la misma hora, 20d, desplazada). 42 símbolos,
+  1h 2024-03→2026-07, costes MEXC, IS 24-25 / OOS 2026.
+- **Resultado: NINGUNA de las 8 familias da positivo.** Todas con IC95 incluyendo 0
+  o con n<30, salvo rebote long sin volumen que pierde CON significancia (−0.16%
+  total, −0.23% IS). Los costes (0.09%/trade) superan el movimiento típico de una
+  sesión de 2h (deriva incondicional ±0.02-0.05%). Con velas 1h la caché solo
+  permite 1-2 entradas/día; la caché 15m solo guarda ~20 días (insuficiente).
+- Tabla de volumen por hora impresa por el script (pico diario 14 UTC = 16 Madrid);
+  la constante `WINDOW_START_UTC` permite re-probar otra ventana sin tocar nada más.
+
+### RONDA 24: soportes/resistencias horizontales + volumen (explore_sr_volume.py) — nada validado
+- **Nuevo `explore_sr_volume.py` (EXPLORACIÓN #40),** solo lectura. Estrategia pedida por
+  el usuario: SOLO soportes, resistencias y volumen. Niveles causales (swings diarios
+  k=3 confirmados con retardo, clúster 0.5%, mín 2 toques, ventana 90d), 8 familias
+  (ruptura/rebote x long/short x con/sin filtro volumen >2x media 20d), hold 3d,
+  costes MEXC, 40 símbolos, IS 24-25 / OOS 2026, con línea de deriva incondicional.
+- **Resultado: ninguna celda pasa la batería de la casa.**
+  - Ruptura SHORT sin volumen: la única celda OOS significativa (+2.44% n=163,
+    IC95 excluye 0) pero en IS era −0.33% y la deriva 2026 es bajista (−0.67%/3d
+    long) → nace del régimen 2026, no consistente. No se abre nada con esto.
+  - Rebote LONG + volumen: +3.84% total IC95 excluye 0 pero n=37 (subperiodos
+    "pocos") → sin masa estadística.
+  - El filtro de volumen NO mejora de forma consistente: en rupturas recorta n
+    (54 vs 307) y empeora el short (−8.1% IS); en rebotes long parece ayudar
+    (+3.8% vs −0.8%) pero con n=37 no es concluyente.
+  - Rebote LONG sin volumen: pierde con significancia en total (−0.81%) — comprar
+    "porque tocó el soporte" fue negativo en este periodo.
+- Regla del proyecto respetada: parámetros pre-especificados en el docstring antes
+  de mirar resultados; no se ha re-optimizado nada después de verlos.
+
 ## 2026-07-06
 
 ### Supervisión semanal weekend_paper: 1er sábado registrado, tarea Windows no disparó

@@ -60,6 +60,20 @@ jobs:
         run: |
           python premium_paper.py || echo "premium_paper fallo, sigo"
 
+      # Cruce EMA 9/21 diario en BTC (chuleta "The Backtest Machine", replica
+      # verificada 2026-07-14). Cuenta REDUNDANTE a la del PC. Idempotente
+      # (INSERT OR IGNORE + forward-only), 1 vez por run basta.
+      - name: EMA cross paper (EMA 9/21 BTC diario, medicion forward)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_EMA_DB: github_state/ema_cross_paper.db
+          # aviso de cruce nuevo por Telegram (informativo, solo GitHub)
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TFZ_TELEGRAM: "1"
+        run: |
+          python ema_cross_paper.py || echo "ema_cross_paper fallo, sigo"
+
       - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

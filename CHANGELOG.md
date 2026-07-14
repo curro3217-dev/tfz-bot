@@ -31,6 +31,20 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 - `.gitignore`: añadidos `ema_cross_paper.db` y `ema_log.txt` (la cuenta del PC no
   se sube; la de GitHub va con `-f` en `github_state/` como las demás).
 
+### Arreglo bot.yml: los push de estado del run de GitHub fallaban en silencio
+- Detectado en el run 170 (2026-07-14): 3h de bucle SIN subir ni un commit de
+  estado. Causa: el cron fija el checkout al commit del momento de encolar, pero
+  con la concurrency el run arranca más tarde y el run anterior ha subido estado
+  entre medias → `git pull --rebase` choca en las BDs binarias de `github_state/`,
+  el rebase queda atascado y todos los push del run fallan (los `|| true` lo
+  tragaban). El estado medido en runs así se PERDÍA (afecta a weekend/premium
+  de ese run; las mediciones son idempotentes y se reconstruyen, pero los ciclos
+  de paper de ese run no se suben).
+- Arreglo doble en `.github/workflows/bot.yml`: (1) paso nuevo tras el checkout
+  que hace `git fetch` + `reset --hard origin/main` (arrancar siempre desde la
+  punta real de la rama, el pin obsoleto deja de importar); (2) en el bucle de
+  push, `git rebase --abort` antes de cada reintento para no quedar atascado.
+
 ### Arreglo git: tfz_data.db fuera del índice
 - `git rm --cached tfz_data.db`: la BD viva del PC estaba trackeada pese al
   .gitignore y su bloqueo (el bot la tiene abierta) rompía cualquier

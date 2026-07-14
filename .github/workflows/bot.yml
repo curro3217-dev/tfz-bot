@@ -28,6 +28,17 @@ jobs:
       - name: Descargar repo
         uses: actions/checkout@v4
 
+      # El cron fija el checkout al commit del momento de ENCOLAR, pero con la
+      # concurrency el run puede arrancar horas despues, con el run anterior
+      # habiendo subido estado entre medias -> pull --rebase choca en las BDs
+      # binarias de github_state/ y TODOS los push del run fallan en silencio
+      # (visto el 2026-07-14, run 170: 3h sin subir estado). Arrancar siempre
+      # desde la punta real de la rama elimina el problema de raiz.
+      - name: Sincronizar con la punta real de la rama
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Python 3.11
         uses: actions/setup-python@v5
         with:
@@ -111,7 +122,11 @@ jobs:
             if ! git diff --cached --quiet 2>/dev/null; then
               git commit -m "estado paper ciclo $i [skip ci]" || true
               for try in 1 2 3; do
-                git pull --rebase --autostash && git push && break || sleep 5
+                if git pull --rebase --autostash && git push; then break; fi
+                # un rebase atascado (conflicto binario) dejaba TODOS los push
+                # del run fallando en silencio; abortarlo antes de reintentar
+                git rebase --abort 2>/dev/null || true
+                sleep 5
               done
             fi
             [ $SECONDS -lt $END ] && sleep 300

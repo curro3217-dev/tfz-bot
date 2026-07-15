@@ -31,6 +31,8 @@ portfolio_state.json
 weekend_paper.db
 premium_paper.db
 ema_cross_paper.db
+ichimoku_paper.db
+ichimoku_log.txt
 micro_data.db
 micro_collector_log.txt
 weekend_log.txt

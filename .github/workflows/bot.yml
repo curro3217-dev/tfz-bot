@@ -85,6 +85,18 @@ jobs:
         run: |
           python ema_cross_paper.py || echo "ema_cross_paper fallo, sigo"
 
+      # Ichimoku diario en BTC (tanda de 6 clasicas 2026-07-15; edge historico
+      # defensivo). Cuenta REDUNDANTE a la del PC. Idempotente, 1 vez por run.
+      - name: Ichimoku paper (nube diaria BTC, medicion forward)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_ICHI_DB: github_state/ichimoku_paper.db
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TFZ_TELEGRAM: "1"
+        run: |
+          python ichimoku_paper.py || echo "ichimoku_paper fallo, sigo"
+
       - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

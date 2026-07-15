@@ -9,6 +9,43 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-15
+
+### Paso 4 del PDF + tanda de 6 clásicas + nuevo paper forward Ichimoku
+- **Paso 4 ("mejorar") del EMA 9/21, veredicto honesto: nada mejora lo que importa.**
+  Anatomía de perdedoras (ganadoras duran ~51 días, perdedoras ~9 = amagos; años
+  malos 2022 y 2025-26). 4 mejoras probadas en la misma tanda (SMA200, confirmación
+  2 días, separación EMAs, combinada): en el último año (jul-25→hoy) TODAS siguen
+  perdiendo (−12..−16%); en el total ganan menos que la base. La estrategia necesita
+  tendencias largas, no tiene un fallo parcheable.
+- **Tanda de 6 clásicas** (Binance 1d, 0.1%/lado, fill apertura siguiente,
+  2020→hoy; B&H BTC +834% maxDD −77%): Supertrend semanal +890% (n=3, anécdota),
+  cruce dorado 50/200 +326%, MACD +658%, Donchian 20/10 +758% — esas 3 pierden
+  contra B&H. EMA 9/21 en ETH +1745% (vs B&H ETH +1387%). **Ichimoku (cierre sobre
+  la nube 9/26/52 d26) +1218% con maxDD −35.9%** (la mitad que el resto). ÚLTIMO
+  AÑO: pierden TODAS (confirma: sin tendencia no hay familia que gane).
+- **Batería al Ichimoku: meseta OK** (7 configs vecinas +900..+1400%), IS +1393%
+  / OOS (jul-25→hoy) −10.2% con 0/5 ganadoras. Año a año su edge es DEFENSIVO:
+  2022 −22% vs −64% B&H, 2026 −1% vs −26%; en años alcistas gana MENOS que
+  aguantar (2024 +48% vs +121%). Es un paracaídas, no un cohete.
+- **Nuevo `ichimoku_paper.py`** (gemelo de ema_cross_paper.py): BD propia
+  (`ichimoku_paper.db`, env `TFZ_ICHI_DB`), pre-registro 2026-07-15 forward-only,
+  idempotente, regla congelada (largo si cierre > máx(senkouA,B) estándar 9/26/52
+  d26; fill apertura siguiente; costes MEXC 0.09% i/v; funding no modelado).
+  Verificado contra la batería (transiciones del último año coinciden). Estado al
+  sellar: BAJO la nube (65015 < techo 70964) → plano; no cuenta.
+- Despliegue doble: tarea Windows `TFZ_Ichimoku_Paper` diaria 03:07
+  (`C:\Users\jarta\run_ichimoku_paper.cmd`, log `ichimoku_log.txt`) + paso nuevo en
+  `bot.yml` (`TFZ_ICHI_DB=github_state/ichimoku_paper.db`). `.gitignore`: añadidos
+  `ichimoku_paper.db` e `ichimoku_log.txt`.
+- Validación TradingView del EMA 9/21 por el usuario (BTCUSD 1D, 2020→2026):
+  fechas de trades ~1:1 con la réplica; +1097% vs +788% B&H, maxDD −53.6%. Ojo
+  lectores de TV: micro-trades residuales del simulador (20 de 64) hunden el win
+  rate aparente (28% vs ~41% real) y su PF es en dólares compuestos (no comparable
+  al PF por % de trade).
+
+---
+
 ## 2026-07-14
 
 ### Nuevo paper forward: cruce EMA 9/21 diario en BTC (ema_cross_paper.py)

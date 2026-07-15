@@ -1,5 +1,5 @@
 {
-  "equity": 41.65029722260315,
+  "equity": 41.44052479867021,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -190,7 +190,8 @@
     "cf647e5c-a6f9-4866-9fc1-b430f614b746",
     "cd89d6dd-a1ed-4f33-84eb-87fe5e77c8da",
     "a859a4e9-b8aa-4b27-b688-6e089740fd34",
-    "b3f601b4-1958-4f0f-95c6-e48ca24ee828"
+    "b3f601b4-1958-4f0f-95c6-e48ca24ee828",
+    "add69078-6de8-4f4d-9a81-5f426cf1eec2"
   ],
   "history": [
     {
@@ -2448,6 +2449,18 @@
       "equity": 41.6503,
       "reason": "sl_hit",
       "opened_at": "2026-07-15 04:41:27"
+    },
+    {
+      "id": "add69078-6de8-4f4d-9a81-5f426cf1eec2",
+      "symbol": "CRV/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.179,
+      "lev": 2.81,
+      "throttle": 0.25,
+      "dollar": -0.2098,
+      "equity": 41.4405,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-15 06:17:59"
     }
   ],
   "peak": 55.813149100058986

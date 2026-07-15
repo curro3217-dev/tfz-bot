@@ -1,5 +1,5 @@
 {
-  "equity": 41.30343693324136,
+  "equity": 41.34749587637611,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -201,7 +201,8 @@
     "fdff116d-dc22-4e6f-b045-ef09d5a8eb5b",
     "02472644-3922-4f0f-940b-79ae36f3a598",
     "75eb3996-ccb5-4330-b1cb-8ecefebe611c",
-    "e2996529-7eb5-4bb9-ad2a-22083a3f9a19"
+    "e2996529-7eb5-4bb9-ad2a-22083a3f9a19",
+    "3f1ff9d9-10da-404f-8eb4-2a51bd841de1"
   ],
   "history": [
     {
@@ -2591,6 +2592,18 @@
       "equity": 41.3034,
       "reason": "tp_hit",
       "opened_at": "2026-07-15 16:34:47"
+    },
+    {
+      "id": "3f1ff9d9-10da-404f-8eb4-2a51bd841de1",
+      "symbol": "ONDO/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": 1.723,
+      "lev": 0.06,
+      "throttle": 0.25,
+      "dollar": 0.0441,
+      "equity": 41.3475,
+      "reason": "tp_hit",
+      "opened_at": "2026-07-15 22:03:10"
     }
   ],
   "peak": 55.813149100058986

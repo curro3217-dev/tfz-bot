@@ -1,5 +1,5 @@
 {
-  "equity": 39.33418656253761,
+  "equity": 39.128727311515355,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -224,7 +224,9 @@
     "f820a49f-4f2b-442a-938f-4503e78f573f",
     "948289f1-7f1d-4f9e-95fb-5912b1fa05d3",
     "de6a5b79-4c4a-4da3-acc8-da1c1296d7a1",
-    "146e2064-6d43-4926-a681-dafe75796d31"
+    "146e2064-6d43-4926-a681-dafe75796d31",
+    "539abd18-03de-4ee9-b6b3-31681cf2e44d",
+    "d78bcb27-a4b2-4568-99da-98367d1b5c79"
   ],
   "history": [
     {
@@ -2890,6 +2892,30 @@
       "equity": 39.3342,
       "reason": "sl_hit",
       "opened_at": "2026-07-16 22:15:51"
+    },
+    {
+      "id": "539abd18-03de-4ee9-b6b3-31681cf2e44d",
+      "symbol": "ADA/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -2.229,
+      "lev": 0.12,
+      "throttle": 0.25,
+      "dollar": -0.1059,
+      "equity": 39.2282,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-14 17:10:22"
+    },
+    {
+      "id": "d78bcb27-a4b2-4568-99da-98367d1b5c79",
+      "symbol": "ONDO/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -6.952,
+      "lev": 0.04,
+      "throttle": 0.25,
+      "dollar": -0.0995,
+      "equity": 39.1287,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-16 16:01:32"
     }
   ],
   "peak": 55.813149100058986

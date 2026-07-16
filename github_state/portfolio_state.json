@@ -1,5 +1,5 @@
 {
-  "equity": 39.90850720035178,
+  "equity": 39.79718088457381,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -220,7 +220,8 @@
     "6c3ed7bd-fe85-45aa-8102-de057b28c451",
     "f58bf79c-3e27-4e3e-8e8f-5230ecc8dbe7",
     "e9244cdf-e0a5-418a-8882-3585098f60c5",
-    "a69d7d03-603a-4d98-b30e-80ee6f915228"
+    "a69d7d03-603a-4d98-b30e-80ee6f915228",
+    "f820a49f-4f2b-442a-938f-4503e78f573f"
   ],
   "history": [
     {
@@ -2838,6 +2839,18 @@
       "equity": 39.9085,
       "reason": "tp_hit",
       "opened_at": "2026-07-16 15:02:02"
+    },
+    {
+      "id": "f820a49f-4f2b-442a-938f-4503e78f573f",
+      "symbol": "FET/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.907,
+      "lev": 0.31,
+      "throttle": 0.25,
+      "dollar": -0.1113,
+      "equity": 39.7972,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-16 16:01:33"
     }
   ],
   "peak": 55.813149100058986

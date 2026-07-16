@@ -1,5 +1,5 @@
 {
-  "equity": 39.99030832193818,
+  "equity": 39.86763820195365,
   "start_equity": 50.0,
   "excluded": [],
   "counted": [
@@ -218,7 +218,8 @@
     "33b04688-6351-4f0f-b8e2-9227034cd36a",
     "f7e11f62-99b6-4c10-9ce7-a74697ada0f0",
     "6c3ed7bd-fe85-45aa-8102-de057b28c451",
-    "f58bf79c-3e27-4e3e-8e8f-5230ecc8dbe7"
+    "f58bf79c-3e27-4e3e-8e8f-5230ecc8dbe7",
+    "e9244cdf-e0a5-418a-8882-3585098f60c5"
   ],
   "history": [
     {
@@ -2812,6 +2813,18 @@
       "equity": 39.9903,
       "reason": "sl_hit",
       "opened_at": "2026-07-16 13:19:27"
+    },
+    {
+      "id": "e9244cdf-e0a5-418a-8882-3585098f60c5",
+      "symbol": "GALA/USDT:USDT",
+      "dir": "long",
+      "pnl_pct": -0.488,
+      "lev": 0.63,
+      "throttle": 0.25,
+      "dollar": -0.1227,
+      "equity": 39.8676,
+      "reason": "sl_hit",
+      "opened_at": "2026-07-16 14:31:32"
     }
   ],
   "peak": 55.813149100058986

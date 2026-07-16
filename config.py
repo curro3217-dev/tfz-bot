@@ -94,6 +94,13 @@ class TFZConfig:
     # congelado. Poner True para volver a operar formaciones automaticamente.
     trade_formations: bool = False
 
+    # MICRO_PULLBACK RETIRADO (2026-07-07): veredicto de la medicion congelada
+    # pre-registrada -> n=384 trades (PC+GitHub), expectancy -0.405%/trade con IC95
+    # [-0.62%, -0.19%] (negativo con certeza; criterio de exito era > +0.3%). Ambas
+    # cuentas y ambas TFs (15m/1h) negativas. Se retira segun protocolo. Poner True
+    # solo si una version NUEVA valida con metodologia limpia.
+    enable_micro_pullback: bool = False
+
     # Fade-short en numero redondo: PAUSADO (sangraba en regimen de pumps fuertes, los
     # redondos rompen en vez de rechazar). Se reactiva con tope de tendencia si valida.
     enable_round_fade: bool = False

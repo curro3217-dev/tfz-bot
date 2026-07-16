@@ -9,6 +9,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-16
+
+### VEREDICTO de la medición congelada: micro_pullback RETIRADO
+- Muestra final: **n=384 trades** (PC 162 + GitHub 222, solo micro_pullback 15m/1h, medición
+  limpia post-fixes). Expectancy **−0.405%/trade, IC95 [−0.62%, −0.19%]** — negativo con
+  certeza estadística. Ambas cuentas y ambas TFs negativas (PC 15m −0.50 / 1h −0.89;
+  GitHub 15m −0.20 / 1h −0.43). La "brasa" del 1h (56% win con n=16) NO sobrevivió a la
+  muestra grande: espejismo de muestra pequeña, como advirtió el auditor.
+- Criterio pre-registrado (2026-07-03) era > +0.3% con IC95 excluyendo cero → **NO CUMPLE →
+  se retira según protocolo** (sin re-barrer parámetros, sin "aflojar para tener señales").
+- Cambios: `config.enable_micro_pullback=False` (gate nuevo, como round_fade) y
+  `paper.run_cycle` ya no lo escanea. El paper TFZ queda como **ASISTENTE puro** (solo
+  alertas F2/F3/F4 a Telegram; 8 enviadas hasta hoy). Las posiciones abiertas restantes se
+  cierran solas por SL/TP/stale con el update normal. Los otros experimentos (Ichimoku,
+  weekend_paper, EMA…) van en BDs/procesos separados y no se tocan.
+- Cuentas al cierre de la medición: PC $38.99, GitHub $39.33 (de $50). El experimento costó
+  ~$22 simulados y compró la respuesta definitiva: este setup, tal como está, no tiene edge.
+
 ## 2026-07-15
 
 ### Paso 4 del PDF + tanda de 6 clásicas + nuevo paper forward Ichimoku

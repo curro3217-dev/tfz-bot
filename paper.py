@@ -828,7 +828,11 @@ def run_cycle(symbols=None, timeframes=None, cfg: TFZConfig = None,
     print(f"  -> {n_opened} opened")
 
     # Setups APARTE (validados, RR propio, fuera del filtro de momentum):
-    _extra = [("micro-pullback", scan_micro_pullback)]
+    # micro_pullback RETIRADO por veredicto pre-registrado (2026-07-07): n=384,
+    # exp -0.405%/trade, IC95 todo negativo. Gate por config, igual que round_fade.
+    _extra = []
+    if getattr(cfg, "enable_micro_pullback", False):
+        _extra.append(("micro-pullback", scan_micro_pullback))
     if getattr(cfg, "enable_round_fade", False):
         _extra.insert(0, ("round-fade", scan_round_fade))
     for _name, _fn in _extra:

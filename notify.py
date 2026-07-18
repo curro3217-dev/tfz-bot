@@ -13,6 +13,7 @@ and handles this PC's INSECURE_SSL quirk on its own.
 Test it:  python notify.py
 """
 
+import json
 import os
 import ssl
 import urllib.request
@@ -54,11 +55,51 @@ def send_telegram(text: str) -> bool:
         return False
 
 
+# Eleccion del feed de TradingView por moneda (arreglo 2026-07-18): antes se
+# enlazaba siempre BYBIT:, pero el bot opera MEXC y varias monedas del scanner
+# no existen en Bybit (SYN...) ni todas en MEXC (AIGENSYN...) -> se pregunta al
+# buscador publico de TradingView que exchange tiene {base}USDT.P y se elige por
+# preferencia (MEXC primero: mismos precios que el bot). Cache por proceso y
+# fail-open a MEXC si la consulta falla. Los tokens 1000X (1000PEPE) se
+# reintentan sin el prefijo (en MEXC/TV el feed es PEPEUSDT.P).
+_TV_PREF = ["MEXC", "BINANCE", "BYBIT", "BITGET", "GATEIO", "OKX"]
+_TV_DISPLAY = {"MEXC": "MEXC", "Binance": "BINANCE", "Bybit": "BYBIT",
+               "Bitget": "BITGET", "Gate": "GATEIO", "OKX": "OKX"}
+_tv_cache = {}
+
+
+def _tv_feed(base: str):
+    """-> (prefijo_exchange, base_tv) para el mejor feed disponible."""
+    if base in _tv_cache:
+        return _tv_cache[base]
+    candidatos = [base] + ([base[4:]] if base.startswith("1000") else [])
+    for b in candidatos:
+        try:
+            url = ("https://symbol-search.tradingview.com/symbol_search/v3/"
+                   f"?text={b}USDT.P&hl=0&lang=es&search_type=crypto&domain=production")
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0", "Origin": "https://www.tradingview.com"})
+            with urllib.request.urlopen(req, context=_ctx(), timeout=8) as r:
+                syms = json.load(r).get("symbols", [])
+            hay = {_TV_DISPLAY[s["exchange"]] for s in syms
+                   if s.get("symbol", "").replace("<em>", "").replace("</em>", "")
+                   == f"{b}USDT.P" and s.get("exchange") in _TV_DISPLAY}
+            for e in _TV_PREF:
+                if e in hay:
+                    _tv_cache[base] = (e, b)
+                    return _tv_cache[base]
+        except Exception:
+            break  # sin red o API caida: fail-open abajo
+    _tv_cache[base] = ("MEXC", base)   # mejor apuesta (el bot opera MEXC)
+    return _tv_cache[base]
+
+
 def tv_link(symbol: str, tf: str = None) -> str:
-    """Enlace al gráfico de TradingView del MISMO contrato que opera el bot
-    (Bybit USDT perp), p.ej. XLM/USDT:USDT -> BYBIT:XLMUSDT.P."""
+    """Enlace al gráfico de TradingView de la moneda de la alerta, eligiendo un
+    exchange que de verdad la tenga (p.ej. SYN/USDT:USDT -> MEXC:SYNUSDT.P)."""
     base = symbol.split("/")[0].upper()
-    url = f"https://www.tradingview.com/chart/?symbol=BYBIT:{base}USDT.P"
+    exch, base_tv = _tv_feed(base)
+    url = f"https://www.tradingview.com/chart/?symbol={exch}:{base_tv}USDT.P"
     iv = {"1m": "1", "5m": "5", "15m": "15", "1h": "60"}.get(tf)
     if iv:
         url += f"&interval={iv}"

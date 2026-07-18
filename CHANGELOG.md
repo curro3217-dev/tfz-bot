@@ -11,6 +11,20 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-18
 
+### Arreglados los enlaces de TradingView de las alertas (pendiente del 16-jul)
+- `notify.tv_link` enlazaba siempre `BYBIT:{base}USDT.P`, pero el bot opera MEXC
+  y varias monedas del scanner no existen en Bybit (SYN…) ni todas en MEXC
+  (AIGENSYN…) → "símbolo no existe" al abrir la alerta.
+- Nuevo `notify._tv_feed`: pregunta al buscador público de TradingView qué
+  exchanges tienen `{base}USDT.P` y elige por preferencia MEXC → Binance → Bybit
+  → Bitget → Gate → OKX (MEXC primero: mismos precios que opera el bot). Caché
+  por proceso, timeout 8s, fail-open a MEXC sin red. Tokens 1000X se reintentan
+  sin prefijo. Cobertura verificada con 16 símbolos reales (Binance 15/16, MEXC
+  14/16, ningún exchange lo tiene todo → por eso la elección es por moneda).
+- Verificado en navegador: MEXC:SYNUSDT.P carga el gráfico del perpetuo con
+  precio vivo. Ejemplos del arreglo: SYN→MEXC, AIGENSYN→BINANCE,
+  1000PEPE→BINANCE (1000PEPEUSDT.P existe allí), BTC→MEXC.
+
 ### Aplicado el artículo "TradingBotV2" (Miles Deutscher): memoria + reflexión + panel
 - Gap-analysis contra lo ya montado: cerebro/paper/backtests/seguridad ya cubiertos
   (y con más rigor: pre-registro, meseta, IS/OOS, cuentas dobles). Se aplicaron las

@@ -9,6 +9,28 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-18
+
+### Aplicado el artículo "TradingBotV2" (Miles Deutscher): memoria + reflexión + panel
+- Gap-analysis contra lo ya montado: cerebro/paper/backtests/seguridad ya cubiertos
+  (y con más rigor: pre-registro, meseta, IS/OOS, cuentas dobles). Se aplicaron las
+  3 piezas que faltaban:
+- **Nuevo `LECCIONES.md`**: archivo de lecciones aprendidas (el "learnings.md" del
+  artículo), sembrado SOLO con lecciones reales ya respaldadas por datos (11, con
+  fecha y evidencia; detalle en este changelog). Regla: nada inventado, y las
+  mediciones selladas no se adaptan con lecciones hasta su veredicto.
+- **Nuevo `estado.py`**: panel de estado en un comando (la versión austera del
+  "dashboard"): corre los --status canónicos de las 4 mediciones + asistente.
+- **Revisión dominical ampliada**: la tarea programada de los domingos pasa de
+  vigilar solo el finde a las 4 mediciones + contraste PC/GitHub + mantenimiento
+  de LECCIONES.md (reflexión semanal solo con evidencia real).
+- NO aplicado, con motivo: TradingView MCP (redundante: los backtests de casa usan
+  datos reales de exchange; el MCP comunitario requiere revisión de código y la app
+  de escritorio), ejecución real con claves API (regla del usuario: nada de dinero
+  real sin veredicto forward; llegado el día, subcuenta con clave solo-trading), y
+  el "filtro adaptativo" sobre mediciones selladas (adaptarlas en marcha las
+  contamina — lección 3).
+
 ## 2026-07-16
 
 ### VEREDICTO de la medición congelada: micro_pullback RETIRADO

@@ -209,6 +209,15 @@ def _alert_once(conn, sig, entry_ts, df=None) -> bool:
     try:
         from notify import alert_entry
         ctx = _alert_context(df) if df is not None else ""
+        # Linea GARCH (vol prevista + tamaño sugerido): informativa, fail-silent,
+        # cacheada por dia. NO filtra ni altera la señal (ver garch_sizing.py).
+        try:
+            from garch_sizing import garch_context_line
+            g = garch_context_line(sig.symbol)
+            if g:
+                ctx = f"{ctx}\n{g}" if ctx else g
+        except Exception:
+            pass
         alert_entry(sig, None, context=ctx or None)
     except Exception:
         pass

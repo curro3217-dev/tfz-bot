@@ -9,6 +9,26 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-22
+
+### Línea GARCH (vol + tamaño sugerido) en las alertas F del asistente
+- **Qué**: cada alerta F de Telegram lleva ahora una línea informativa tipo
+  `GARCH: vol 42% anual ⛅NORMAL p35 | tamaño 0.36x (target 15%)` — volatilidad
+  prevista para mañana (GARCH(1,1) walk-forward sobre velas DIARIAS cerradas de
+  MEXC), percentil vs último año, régimen (calm/normal/storm) y multiplicador de
+  tamaño `target_vol / forecast_vol` recortado a [0.25x, 2.0x].
+- **Archivos**: `garch_sizing.py` (NUEVO — walk-forward copiado tal cual de
+  github.com/milesdeutscher/garchmethod, MIT, auditado sin lookahead el 22-jul;
+  caché diaria por símbolo en `garch_cache.json`), `paper.py` (`_alert_once`:
+  añade la línea al contexto, fail-silent), `requirements.txt` (+`arch>=6.0`).
+- **Valores**: MIN_TRAIN 500 días, refit cada 21, percentil sobre 365 días,
+  target vol 15% anual (cambiable con env `TFZ_GARCH_TARGET`).
+- **Qué NO toca**: nada. No filtra señales, no altera paper congelado ni
+  mediciones forward. Si el símbolo no tiene ≥510 días de historia diaria en
+  MEXC o algo falla, la alerta sale igual que antes (sin la línea).
+- **Porqué**: sizing por volatilidad (vol targeting) del método GARCH del curso;
+  el asistente sigue decidiendo el humano, esto solo añade el dato de "cuánto".
+
 ## 2026-07-19
 
 ### Revisión dominical (2ª semana) — solo lectura, sin cambios de reglas

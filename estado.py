@@ -21,6 +21,8 @@ BLOQUES = [
      ["ema_cross_paper.py", "--status"]),
     ("Ichimoku BTC diario (paracaidas, sellada 15-jul)",
      ["ichimoku_paper.py", "--status"]),
+    ("Sizing GARCH vs 1x sobre cruces EMA (sellada 22-jul)",
+     ["garch_sizing_paper.py", "--status"]),
     ("Momentum viernes->sabado (sellada 3-jul)",
      ["weekend_paper.py", "--status"]),
     ("Prima de Coinbase (sellada 3-jul)",

@@ -85,6 +85,17 @@ jobs:
         run: |
           python ema_cross_paper.py || echo "ema_cross_paper fallo, sigo"
 
+      # Comparacion forward 1x vs GARCH sizing sobre los MISMOS cruces EMA (lee la
+      # BD del EMA paper en solo-lectura, no la toca). Pre-registro 2026-07-22,
+      # target 35% risk-matched. Idempotente (mult determinista), 1 vez por run.
+      - name: GARCH sizing paper (1x vs GARCH sobre cruces EMA)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_EMA_DB: github_state/ema_cross_paper.db
+          TFZ_GARCHCMP_DB: github_state/garch_sizing_paper.db
+        run: |
+          python garch_sizing_paper.py || echo "garch_sizing_paper fallo, sigo"
+
       # Ichimoku diario en BTC (tanda de 6 clasicas 2026-07-15; edge historico
       # defensivo). Cuenta REDUNDANTE a la del PC. Idempotente, 1 vez por run.
       - name: Ichimoku paper (nube diaria BTC, medicion forward)

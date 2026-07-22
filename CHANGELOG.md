@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-22
 
+### Medición forward PRE-REGISTRADA: sizing GARCH vs 1x sobre los cruces EMA
+- **Qué**: `garch_sizing_paper.py` (NUEVO) compara, sobre los MISMOS cruces del
+  EMA paper (lee `ema_cross_paper.db` en SOLO-LECTURA, `mode=ro` — imposible
+  tocar la medición congelada), dos tamaños: fijo 1x vs GARCH
+  (`mult = 35 / vol_prevista`, recortado [0.25x, 2.0x], mult congelado al fill).
+- **Target pre-registrado**: 35% anual, risk-matched (vol realizada de la
+  estrategia a 1x en la réplica MEXC 2020→2026: 33.7%). En esa réplica SIN
+  costes el vol-targeting dio CAGR 12.3 vs 10.7, Sharpe 0.63 vs 0.47, maxDD
+  −38.6 vs −60.2 — es backtest, NO veredicto.
+- **Criterio sellado**: se reportan ambas equities y drawdowns; sin veredicto
+  hasta ≥20 trades cerrados (~3 años, mismo criterio que el EMA paper).
+  Salvedad fija: funding no modelado en ninguna variante.
+- **Sin lookahead aunque corra tarde**: el walk-forward asigna a cada fecha un
+  forecast hecho solo con datos anteriores → backfillear da el mismo número.
+- **Dónde corre**: PC (`run_ema_paper.cmd` a las 03:05, misma tarea que el EMA
+  paper) y GitHub (paso nuevo en `bot.yml`, BD en
+  `github_state/garch_sizing_paper.db`). `estado.py` lo lista (6 bloques ya).
+
 ### Línea GARCH (vol + tamaño sugerido) en las alertas F del asistente
 - **Qué**: cada alerta F de Telegram lleva ahora una línea informativa tipo
   `GARCH: vol 42% anual ⛅NORMAL p35 | tamaño 0.36x (target 15%)` — volatilidad

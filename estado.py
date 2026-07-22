@@ -27,6 +27,8 @@ BLOQUES = [
      ["weekend_paper.py", "--status"]),
     ("Prima de Coinbase (sellada 3-jul)",
      ["premium_paper.py", "--status"]),
+    ("Alertas F del asistente (sellada 22-jul)",
+     ["f_alerts_paper.py", "--status"]),
     ("Asistente TFZ (micro_pullback RETIRADO 16-jul; solo alertas F)",
      ["main.py", "paper", "--status"]),
 ]

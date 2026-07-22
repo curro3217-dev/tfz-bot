@@ -221,6 +221,13 @@ def _alert_once(conn, sig, entry_ts, df=None) -> bool:
         alert_entry(sig, None, context=ctx or None)
     except Exception:
         pass
+    # Medicion forward pre-registrada de las alertas F (f_alerts_paper.py, sellada
+    # 2026-07-22). Fail-silent: si falla, la alerta ya ha salido igual. Solo mide.
+    try:
+        from f_alerts_paper import record_alert
+        record_alert(sig, entry_ts)
+    except Exception:
+        pass
     return True
 
 

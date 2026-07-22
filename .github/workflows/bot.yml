@@ -118,6 +118,11 @@ jobs:
           # MEXC es la fuente (default en config) -> funciona desde GitHub.
           TFZ_DB: github_state/tfz_data.db
           TFZ_PORTF: github_state/portfolio_state.json
+          # La grabacion de alertas F ocurre DENTRO de main.py paper (paper.py la
+          # llama al enviar), asi que la ruta tiene que estar en el env del BUCLE,
+          # no solo en el paso que resuelve. Si no, se escribiria fuera de
+          # github_state/ y se perderia al acabar el run.
+          TFZ_FALERTS_DB: github_state/f_alerts_paper.db
           # MODO ASISTENTE: SOLO GitHub envia las alertas de setups a Telegram (el PC
           # queda mudo para no duplicar avisos). Fuerza el envio pese a ALERTS_PAUSED.
           TFZ_TELEGRAM: "1"
@@ -137,6 +142,9 @@ jobs:
             # Forward pre-registrado de fenomenos de movers (pattern lab): H1 short
             # div oculta bajista 1h, H2 long ruptura max20 con volumen 1h. Solo mide.
             python postpump_paper.py --db github_state/postpump_paper.db || echo "postpump fallo, sigo"
+            # Medicion forward de las ALERTAS F del asistente (sellada 2026-07-22).
+            # Las graba paper.py al enviarlas; aqui solo se RESUELVEN las pendientes.
+            python f_alerts_paper.py || echo "f_alerts_paper fallo, sigo"
             # Recolector de microestructura cada 3 ciclos (~15 min), cuenta propia de
             # GitHub. Asi el PC NO necesita estar encendido para recolectar.
             if [ $((i % 3)) -eq 1 ]; then

@@ -11,6 +11,52 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-22
 
+### Medición forward PRE-REGISTRADA: las ALERTAS F del asistente
+- **Agujero que tapa**: desde que se retiró `micro_pullback` (16-jul) el bot es
+  asistente puro y manda alertas F a Telegram, pero **nadie registraba si
+  aciertan**. Comprobado: `paper_trades` no tiene ni una fila posterior al
+  2026-07-16. El 35.2% de acierto del panel es del `micro_pullback` MUERTO, no de
+  lo que llega hoy al Telegram. Detectado al revisar 3 alertas de ENA del 22-jul.
+- **Qué**: `f_alerts_paper.py` (NUEVO) + BD propia `f_alerts_paper.db`
+  (env `TFZ_FALERTS_DB`). No toca nada existente ni filtra ninguna señal.
+- **Grabación**: `paper.py::_alert_once` llama a `record_alert()` **fail-silent**
+  justo tras enviar la alerta (si falla, la alerta sale igual). Clave idéntica al
+  dedup del bot → idempotente.
+- **Resolución**: se recorren velas del mismo TF ESTRICTAMENTE posteriores a la de
+  la señal; gana el primer toque de SL o TP. Si una MISMA vela toca los dos →
+  se cuenta **SL** (pesimista: dentro de la vela no se sabe el orden). Timeout a
+  `TIMEOUT_BARS=96` velas → salida a cierre. Costes `(0.02+0.025)*2 = 0.09%` i/v
+  (estándar de la casa). **Funding NO modelado.**
+- **START_TS = 2026-07-22 19:30 UTC** (21:30 Madrid). Sellado **después** de haber
+  mirado el desenlace de las 3 alertas de ENA de esa mañana (SL tocado a las 10:30
+  Madrid) → esas quedan FUERA a propósito: su resultado ya se conocía y meterlas
+  contaminaría la muestra.
+- **CRITERIO PRE-REGISTRADO** (sellado antes de la primera alerta medida):
+  - **PRIMARIO**: a **≥100 EPISODIOS** resueltos, hay edge si la media neta por
+    episodio es **> +0.20%** con IC95 excluyendo cero. Si no → se archiva.
+  - **EPISODIO**: alertas consecutivas del mismo símbolo/TF/dirección/formación
+    separadas por menos de `EPISODE_GAP=4` velas cuentan como UNA (la primera).
+    Motivo: el dedup del bot es por VELA, así que un mismo setup dispara varias
+    alertas seguidas — el 22-jul ENA disparó **3 en 27 min** con el mismo SL/TP.
+    Contarlas por separado inflaría n con datos casi idénticos. Mismo principio
+    que `weekend_paper` promediando por sábado.
+  - **SECUNDARIO** (descriptivo, NO decide): media sobre TODAS las alertas y
+    desglose por formación. Se miran para entender, no para buscar un ganador.
+  - Prohibido tocar definiciones/umbrales una vez haya el primer dato.
+- **Validación del motor** (antes de sellar, en BD desechable y ya borrada): se
+  reprodujeron las 3 alertas de ENA del 22-jul. Resultado del motor: `sl_hit` en
+  la vela `2026-07-22 08:30 UTC` (=10:30 Madrid) y −1.38/−1.36/−1.46% netos; el
+  agrupado dio **3 alertas → 1 episodio**. Coincide con la comprobación
+  independiente de precios MEXC. La BD real quedó en 0 filas.
+- **Enganche**: paso nuevo en el bucle de `.github/workflows/bot.yml` tras
+  `postpump_paper`. `TFZ_FALERTS_DB` va en el **env del BUCLE**, no solo en ese
+  paso, porque la GRABACIÓN ocurre dentro de `main.py paper` — si estuviera solo
+  en el paso que resuelve, se escribiría fuera de `github_state/` y se perdería
+  al acabar el run.
+- **Panel**: `estado.py` lo lista como bloque nuevo (antes del asistente).
+- **Pendiente conocido**: `postpump_paper.py` sigue SIN aparecer en `estado.py`
+  (no tiene `--status`); hay que consultarlo a mano.
+
 ### Medición forward PRE-REGISTRADA: sizing GARCH vs 1x sobre los cruces EMA
 - **Qué**: `garch_sizing_paper.py` (NUEVO) compara, sobre los MISMOS cruces del
   EMA paper (lee `ema_cross_paper.db` en SOLO-LECTURA, `mode=ro` — imposible

@@ -123,6 +123,9 @@ jobs:
               --timeframe 15m,1h --fresh 3 \
               --filter profit --min-score 60 --min-rr 6 \
               --enable-f1 --f1-retest || echo "ciclo fallo, sigo"
+            # Forward pre-registrado de fenomenos de movers (pattern lab): H1 short
+            # div oculta bajista 1h, H2 long ruptura max20 con volumen 1h. Solo mide.
+            python postpump_paper.py --db github_state/postpump_paper.db || echo "postpump fallo, sigo"
             # Recolector de microestructura cada 3 ciclos (~15 min), cuenta propia de
             # GitHub. Asi el PC NO necesita estar encendido para recolectar.
             if [ $((i % 3)) -eq 1 ]; then

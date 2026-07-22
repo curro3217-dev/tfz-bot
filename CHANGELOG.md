@@ -9,6 +9,33 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-19
+
+### Revisión dominical (2ª semana) — solo lectura, sin cambios de reglas
+- `estado.py`: EMA y Ichimoku siguen sin cruces/cambios medibles (normal, sellados
+  hace 4-5 días). Prima Coinbase sin episodios abiertos/cerrados (BTC/ETH 0/30).
+  Finde: 3 sábados (04, 11, 18-jul), 122 trades, PRIMARIO −0.322% [IC95 −0.874,
+  +0.230], SECUNDARIO +0.350% [IC95 −0.775,+1.475] — ninguno de los dos criterios
+  se evalúa aún (hace falta ≥20 sábados). Asistente: 165 cerrados, WR 35.2%,
+  expectancy −0.623%/trade (solo alertas F, sin acción — como desde el 16-jul).
+- Tarea Windows `TFZ_Weekend_Paper` corrió con `LastTaskResult 0` (éxito) pero
+  TARDE: programada 03:15, ejecutada 10:45 (el PC estaba apagado/dormido a esa
+  hora; Task Scheduler la lanzó al arrancar). Sin acción: el dato del sábado quedó
+  registrado igual, solo con retraso. Vigilar si se repite.
+- Contraste PC vs GitHub (`github_state/weekend_paper.db`): coinciden en los 3
+  sábados EXCEPTO `FIL/USDT:USDT`, ausente en la copia de GitHub las 3 semanas
+  (40/40/39 trades en GitHub vs 41/41/40 en PC). Un solo símbolo de 42, no cambia
+  las medias de forma relevante; parece fallo de fetch específico de GitHub
+  Actions para ese par en MEXC (misma causa que otros geo-bloqueos ya vistos, o
+  delisting regional). No se ha tocado el universo (sellado 2026-07-03) — queda
+  anotado para investigar si persiste, no es urgente con la muestra actual.
+- Workflow "TFZ Bot Paper" en GitHub Actions: activo y corriendo (commits
+  automáticos "estado paper ciclo N" cada ~15-20 min, último `ciclo 52` a las
+  10:39). Sin anomalías de infraestructura que arreglar.
+- `LECCIONES.md`: sin lección nueva. Con solo 3 sábados de finde y 0 eventos de
+  EMA/Ichimoku/prima, no hay evidencia suficiente para ninguna lección (añadir
+  una ahora sería justo el error que advierte la lección 2 de muestras pequeñas).
+
 ## 2026-07-18
 
 ### Arreglados los enlaces de TradingView de las alertas (pendiente del 16-jul)

@@ -11,6 +11,37 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### EXPLORACIÓN #44: ICT "AMD / Power of Three" — HAY EDGE BRUTO pero los costes lo matan
+- **Estrategia pedida**: rango de acumulación → "manipulación" (pinchazo fuera del
+  rango que vuelve dentro = barrido de liquidez / falso breakout) → "distribución"
+  (reversión en sentido contrario). Entrada en retest del borde (o iFVG), stop en el
+  extremo de la manipulación, objetivo 2 STDV (≥2R). Es REVERSIÓN tras barrido, un
+  patrón distinto a lo enterrado (no continuación #42 ni divergencia #43).
+- **Qué se midió** (`explore_po3.py`, retrospectivo): la premisa objetiva —¿tras el
+  barrido de rango revierte y da 2R antes del stop?—. 42 símbolos, perps MEXC, 15m,
+  ~10 días. Rango por cuerpos (K=20), pinchazo (M=3), retest del borde (5 velas),
+  stop en el extremo + colchón, objetivo 2R (break-even ~33%). n=3876.
+- **RESULTADO — el primero con señal bruta real**:
+  - Neto (coste 0.09%): acierto **38.6%** (por encima del 33% que pide el 2R),
+    media **−0.061%**, IC95 [−0.073, −0.049] → pierde en NETO.
+  - **BRUTO (sin coste): +0.32 R/trade, win 44.1% al 2R.** La premisa SÍ predice
+    reversión — a diferencia de #42 y #43, aquí hay edge de verdad.
+  - **Por qué pierde igual**: los stops son DIMINUTOS (R mediana 0.156%, media 0.206%
+    del precio). El coste i/v de 0.09% es **0.44R** → se come el +0.32R de edge.
+  - **¿Lo rescata un stop mínimo?** No: al exigir R más grande el edge se DILUYE (el
+    win baja de 44% a 34-39%, la señal vivía en los stops finos) y el neto sigue
+    negativo/insignificante en todos los cortes (R≥0.3%: −0.035% IC incluye 0;
+    R≥0.8%: +0.17% pero n=33, ruido). Con slippage realista (0.24% i/v) es claramente
+    negativo en todos (R≥0.5%: −0.19%, IC excluye 0).
+- **Conclusión**: el patrón FUNCIONA (barrido→reversión tiene edge bruto), pero es
+  **antieconómico en perps de cripto 15m**: los stops finos + fricción (comisión +
+  slippage, ver diagnóstico) se comen todo el borde. Enlaza directo con slippage_probe:
+  es justo el caso donde el slippage infravalorado más duele. NO se monta forward (la
+  aritmética de costes no cambia midiendo más). Matiz honesto: en su mercado original
+  (1m NQ futuros, fricción mucho menor) podría ser rentable; en nuestro contexto no.
+  `explore_po3.py` queda como registro. El más interesante de los 4 externos: es el
+  único con edge bruto; muere por COSTES, no por falta de señal.
+
 ### EXPLORACIÓN #43: "Quarterly Theory SSMT" — no sobrevive (muestra chica), no forward
 - **Estrategia pedida**: SSMT (divergencia SMT entre dos quarters de 90min
   consecutivos en dos activos correlacionados) predice reversión en Q3. Entrada por

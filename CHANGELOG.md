@@ -11,6 +11,28 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### Helper + diagnóstico de FUNDING (`funding.py`): ¿cuánto pesa?
+- **Motivo**: TODAS las mediciones dicen "funding NO modelado" y el usuario opera
+  perps -> un hold que cruza timestamps de funding (MEXC, cada 8h) paga/cobra.
+- **`funding.py` (NUEVO)**: (a) helper reutilizable `funding_pct(symbol, entry_ts,
+  exit_ts, dir)` que calcula la contribución del funding al PnL (convención: tasa
+  positiva -> largos pagan; funding_pct = -dir*sum(tasas cruzadas)*100); paginación
+  del histórico `fetch_funding_rate_history` con caché por símbolo. (b) diagnóstico
+  de materialidad. NO toca ninguna medición sellada (módulo aparte, informativo).
+- **Materialidad (MEXC, ~12 días, 20 símbolos)**: tasa |media| 0.0060%/8h, con signo
+  +0.0025%/8h (positivo = largos pagan; régimen actual tranquilo). Coste por hold
+  (largo, viento en contra típico) vs coste tx 0.09%:
+  - Intradía (F, postpump ~1h): ~0.0003% -> **0% del coste tx, NEGLIGIBLE**.
+  - Weekend (24h, 3 pagos): ~0.008% -> 8%.
+  - EMA/Ichimoku (~3 días, 9 pagos): ~0.023% -> 25%.
+  - **Premium Coinbase (7 días, 21 pagos): ~0.053% -> 58% del coste tx, MATERIAL**.
+- **Conclusión**: el funding NO importa para lo intradía (F alerts, f_mgmt, postpump)
+  -> no hay que modelarlo ahí. Sí importa en los holds multi-día, sobre todo premium
+  (7d): un viento en contra de ~0.05% direccional puede voltear un resultado flojo.
+  Ojo: en régimen alcista el funding puede ser 5-10x mayor y sostenido -> peor.
+  PENDIENTE de decidir: incorporar funding como línea PARALELA informativa (sin tocar
+  el PnL sellado) en premium/EMA/Ichimoku (están a 0 eventos, no altera nada sellado).
+
 ### EXPLORACIÓN #44: ICT "AMD / Power of Three" — HAY EDGE BRUTO pero los costes lo matan
 - **Estrategia pedida**: rango de acumulación → "manipulación" (pinchazo fuera del
   rango que vuelve dentro = barrido de liquidez / falso breakout) → "distribución"

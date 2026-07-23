@@ -11,6 +11,35 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### EXPLORACIÓN #43: "Quarterly Theory SSMT" — no sobrevive (muestra chica), no forward
+- **Estrategia pedida**: SSMT (divergencia SMT entre dos quarters de 90min
+  consecutivos en dos activos correlacionados) predice reversión en Q3. Entrada por
+  engulfing/PSP en el "highest probability pair", stop en el extremo del SSMT,
+  objetivo **3R**. Primera prueba CRUZADA del proyecto (dos activos) y con 3R el
+  break-even es ~25%, no 50% -> merecía medirse bien.
+- **Qué se midió** (`explore_ssmt.py`, retrospectivo): la premisa objetiva —¿SSMT
+  predice reversión en Q3?—. 4 pares muy correlacionados (BTC/ETH corr 0.86,
+  ETH/SOL, BTC/SOL, BNB/ETH), quarters 90min desde 15m, ~10 días (1 régimen:
+  jul-2026 bajista). SSMT sellada: divergencia de HH (bajista->short el más débil) o
+  de LL (alcista->long el más fuerte); filtro "conflicting SSMT" (skip si ambas).
+  Se OMITEN los filtros difusos (news 8:30 NY, "out of tandem", equal highs/lows).
+  2 anclas de quarter (0 y 45min) como robustez. Coste 0.09%.
+- **Resultado**:
+  - PRIMARIO reversión Q3 (ancla 0): todas n=196 **acierto 32.1%**, media −0.121%
+    neto (IC95 excluye 0). La reversión predicha ocurre <50% -> no predice reversión.
+  - Los longs en el par "más fuerte" (highest-prob pair) fueron los PEORES (26%,
+    −0.19%) -> la regla de selección de par no ayudó.
+  - SECUNDARIO **bracket 3R** (la forma operable): acierto **22.2%** (ancla 0) y
+    **25.1%** (ancla 45) — en/por debajo del 25% que el 3R necesita; media −0.14% y
+    −0.13% neto, **IC95 excluye 0 en las DOS anclas** -> pierde con significancia.
+- **Conclusión**: no sobrevive. La divergencia SSMT no predice reversión (acierto
+  32-38%) y el 3R pierde en ambas anclas. Matiz honesto vs #42: muestra chica
+  (~180 señales, 10 días, 1 régimen) y se omitieron los filtros "A+" difusos -> menos
+  demoledor que el No Wick (n=10k). Pero incluso el mejor corte queda plano/negativo
+  y la forma operable (3R) pierde con IC95 excluyendo 0. NO se monta forward.
+  `explore_ssmt.py` queda como registro. (Nota: la primitiva cruzada —divergencia
+  entre activos correlacionados— era lo novedoso; no dio borde en esta prueba.)
+
 ### EXPLORACIÓN #42: "The Bard FX / No Wick Strategy" — premisa FALSADA, enterrada
 - **Estrategia pedida**: FX intradía seguidora de tendencia. Espera una vela "no
   wick" (abre en su extremo, se desplaza fuerte sin mecha de un lado), entra en el

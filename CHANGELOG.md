@@ -11,6 +11,27 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### `cost_bar.py`: el LISTÓN DE COSTE reutilizable (filtro de 5 segundos)
+- **Motivo**: la lección de la semana (PO3 #44, No Wick, slippage, funding) es que en
+  cripto casi todo muere por COSTE, no por falta de señal. `cost_bar.py` (NUEVO)
+  convierte eso en herramienta: dado stop (R), R:R y hold, dice el **acierto mínimo
+  para empatar** con costes reales, y cuánto los infla vs el ideal.
+- **Junta las 3 piezas**: comisión (0.02%/lado MEXC) + slippage (default por liquidez,
+  o `--live` desde slippage_probe) + funding (`--live` desde funding.py, o estimación).
+  Matemática: break-even `p* = (R+coste)/(R·(rr+1))`; el asesino es **coste/R**.
+- **Validado contra casos conocidos**:
+  - PO3 (stop 0.156%, 2R, mover): listón **63.7%** (real fue 38.6% → murió ✓).
+  - No Wick/Bard (stop 0.2%, 1:1): listón **85.4%** → imposible para entrada mecánica ✓.
+  - Weekend (stop 2%, 2R, 24h): listón **36.0%** (ideal 33.3%) → coste casi no distorsiona
+    (coste/R 0.08) → es justo la única con estructura de coste viable ✓.
+  - BTC 7d --live (stop 0.5%, 3R): slippage real ~0% (major) + funding 0.09% → listón
+    31.5%. Muestra que en majors con stop decente el coste apenas pesa.
+- **La regla que cristaliza**: viabilidad = **coste/R**. Stops finos (scalping) → el
+  coste manda → hacen falta aciertos absurdos (>60-85%). Movimientos grandes / stops
+  anchos (swing, weekend) → coste despreciable → alcanzable. A partir de ahora toda
+  idea nueva se pasa por aquí ANTES de medir; el No Wick a 1:1 se habría descartado al
+  instante. `cost_bar.py` uso: `python cost_bar.py --stop 0.156 --rr 2 --hold 3`.
+
 ### ANÁLISIS: el micro_pullback falla UNIFORME (decide el futuro de las alertas F)
 - **Motivo**: las alertas F que manda el bot son el MISMO detector sin auto-trade.
   Si el micro_pullback falla en todo, las F están condenadas; si solo en ciertos

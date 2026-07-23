@@ -48,87 +48,90 @@ SYMS = ["AAVE","ADA","ATOM","AVAX","DOT","INJ","NEAR","OP","UNI","SOL",
         "BTC","ETH","BNB","XRP"]
 
 
-def _bracket(H, L, start, d, entry, stop, target):
+def _bracket(H, L, start, d, entry, stop, target, cost):
+    """Devuelve (net_pct, win_bool, gross_R) o None."""
     n = len(H)
+    R = abs(entry - stop)
     for j in range(start, n):
         hi, lo = H[j], L[j]
         hit_stop = (lo <= stop) if d == 1 else (hi >= stop)
         hit_tp = (hi >= target) if d == 1 else (lo <= target)
         if hit_stop:
-            return d * (stop - entry) / entry * 100 - COST
+            return -R / entry * 100 - cost, False, -1.0
         if hit_tp:
-            return d * (target - entry) / entry * 100 - COST
+            return d * (target - entry) / entry * 100 - cost, True, RR
     return None
 
 
-def main():
-    res, res_dir = [], {1: [], -1: []}
-    n_sig = 0
-    tfc = config_for_timeframe(TFZConfig(), "15m")
+def _signals(df):
+    """Devuelve lista de trades: (R_pct, net_gross_cost0_pct, win_bool, gross_R)."""
+    O = df["open"].values.astype(float); H = df["high"].values.astype(float)
+    L = df["low"].values.astype(float); C = df["close"].values.astype(float)
+    bodyhi = np.maximum(O, C); bodylo = np.minimum(O, C)
+    n = len(C); out = []
+    for i in range(K + M, n - 1):
+        rhigh = bodyhi[i - K:i].max(); rlow = bodylo[i - K:i].min()
+        width = rhigh - rlow
+        if width <= 0 or abs(C[i - 1] - C[i - K]) > 0.5 * width:
+            continue
+        poke = range(i - M, i)
+        mh = max((H[j] for j in poke if H[j] > rhigh), default=None)
+        if mh is not None and C[i] < rhigh:
+            for j in range(i + 1, min(i + 1 + RETEST, n)):
+                if H[j] >= rhigh:
+                    entry = rhigh; stop = mh * (1 + BUFFER / 100); R = stop - entry
+                    if R <= 0:
+                        break
+                    b = _bracket(H, L, j + 1, -1, entry, stop, entry - RR * R, 0.0)
+                    if b:
+                        out.append((R / entry * 100, b[0], b[1], b[2]))
+                    break
+            continue
+        ml = min((L[j] for j in poke if L[j] < rlow), default=None)
+        if ml is not None and C[i] > rlow:
+            for j in range(i + 1, min(i + 1 + RETEST, n)):
+                if L[j] <= rlow:
+                    entry = rlow; stop = ml * (1 - BUFFER / 100); R = entry - stop
+                    if R <= 0:
+                        break
+                    b = _bracket(H, L, j + 1, 1, entry, stop, entry + RR * R, 0.0)
+                    if b:
+                        out.append((R / entry * 100, b[0], b[1], b[2]))
+                    break
+    return out
+
+
+def run(tf):
+    rows = []
+    tfc = config_for_timeframe(TFZConfig(), tf)
     for sym in SYMS:
         try:
-            df = fetch_ohlcv(sym + "/USDT:USDT", "15m", limit=1000, config=tfc)
+            df = fetch_ohlcv(sym + "/USDT:USDT", tf, limit=1000, config=tfc)
         except Exception:
             continue
-        O = df["open"].values.astype(float); H = df["high"].values.astype(float)
-        L = df["low"].values.astype(float); C = df["close"].values.astype(float)
-        bodyhi = np.maximum(O, C); bodylo = np.minimum(O, C)
-        n = len(C)
-        for i in range(K + M, n - 1):
-            w0, w1 = i - K, i               # ventana del rango [i-K, i-1]
-            rhigh = bodyhi[w0:w1].max(); rlow = bodylo[w0:w1].min()
-            width = rhigh - rlow
-            if width <= 0:
-                continue
-            if abs(C[i - 1] - C[w0]) > 0.5 * width:   # filtro: debe ser rango, no tendencia
-                continue
-            poke = range(i - M, i)          # velas del pinchazo (antes de i)
-            # manipulación ARRIBA -> short
-            mh = max((H[j] for j in poke if H[j] > rhigh), default=None)
-            if mh is not None and C[i] < rhigh:
-                d = -1
-                # retest del borde rhigh dentro de RETEST velas
-                for j in range(i + 1, min(i + 1 + RETEST, n)):
-                    if H[j] >= rhigh:
-                        entry = rhigh; stop = mh * (1 + BUFFER / 100)
-                        R = stop - entry
-                        if R <= 0:
-                            break
-                        target = entry - RR * R
-                        r = _bracket(H, L, j + 1, d, entry, stop, target)
-                        if r is not None:
-                            res.append(r); res_dir[d].append(r); n_sig += 1
-                        break
-                continue
-            # manipulación ABAJO -> long
-            ml = min((L[j] for j in poke if L[j] < rlow), default=None)
-            if ml is not None and C[i] > rlow:
-                d = 1
-                for j in range(i + 1, min(i + 1 + RETEST, n)):
-                    if L[j] <= rlow:
-                        entry = rlow; stop = ml * (1 - BUFFER / 100)
-                        R = entry - stop
-                        if R <= 0:
-                            break
-                        target = entry + RR * R
-                        r = _bracket(H, L, j + 1, d, entry, stop, target)
-                        if r is not None:
-                            res.append(r); res_dir[d].append(r); n_sig += 1
-                        break
+        rows += _signals(df)
+    if not rows:
+        print(f"  {tf}: sin datos"); return
+    a = np.array(rows)                 # cols: R_pct, gross_pct(cost0), win, gross_R
+    Rp = a[:, 0]; grossR = a[:, 3]; win = a[:, 2]
+    def net(cost):
+        x = a[:, 1] - cost             # aplicar coste i/v sobre el bruto sin coste
+        se = x.std(ddof=1) / np.sqrt(len(x)) if len(x) > 1 else 0
+        return x.mean(), x.mean() - 1.96 * se, x.mean() + 1.96 * se
+    print(f"\n=== {tf} (n={len(a)}) ===")
+    print(f"  R (stop) mediana {np.median(Rp):.3f}% | bruto {grossR.mean():+.3f} R/trade "
+          f"| win {win.mean()*100:.1f}% (2R -> be 33%)")
+    for cost, lab in [(COST, "coste 0.09% (optimista)"),
+                      (0.24, "coste 0.24% (slippage realista)")]:
+        m, lo, hi = net(cost)
+        print(f"  neto {lab:32s}: {m:+.4f}% | IC95 [{lo:+.4f}, {hi:+.4f}] "
+              f"| coste/R {cost/np.median(Rp):.2f}")
 
-    def line(name, arr):
-        if not arr:
-            print(f"  {name}: sin datos"); return
-        x = np.array(arr); se = x.std(ddof=1) / np.sqrt(len(x)) if len(x) > 1 else 0
-        print(f"  {name:30s} n={len(x):4d} | acierto {(x>0).mean()*100:4.1f}% | "
-              f"media {x.mean():+.4f}% | IC95 [{x.mean()-1.96*se:+.4f}, {x.mean()+1.96*se:+.4f}]")
 
-    print(f"=== EXPLORACION PO3 (retrospectiva, 42 symbols, 15m, ~10 dias) ===")
-    print(f"señales (manipulacion+retest resueltas): {n_sig}")
-    print(f"objetivo 2R -> break-even ~33.3% acierto ANTES de costes:")
-    line("todas", res)
-    line("distribucion abajo (short)", res_dir[-1])
-    line("distribucion arriba (long)", res_dir[1])
+def main():
+    print("=== PO3 por timeframe (42 symbols, ~1000 velas c/u, objetivo 2R) ===")
+    for tf in ("15m", "1h", "4h", "1d"):
+        run(tf)
 
 
 if __name__ == "__main__":

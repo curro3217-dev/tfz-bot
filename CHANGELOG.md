@@ -21,26 +21,30 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
   barrido de rango revierte y da 2R antes del stop?—. 42 símbolos, perps MEXC, 15m,
   ~10 días. Rango por cuerpos (K=20), pinchazo (M=3), retest del borde (5 velas),
   stop en el extremo + colchón, objetivo 2R (break-even ~33%). n=3876.
-- **RESULTADO — el primero con señal bruta real**:
+- **RESULTADO — el único con algo de señal bruta**:
   - Neto (coste 0.09%): acierto **38.6%** (por encima del 33% que pide el 2R),
     media **−0.061%**, IC95 [−0.073, −0.049] → pierde en NETO.
-  - **BRUTO (sin coste): +0.32 R/trade, win 44.1% al 2R.** La premisa SÍ predice
-    reversión — a diferencia de #42 y #43, aquí hay edge de verdad.
-  - **Por qué pierde igual**: los stops son DIMINUTOS (R mediana 0.156%, media 0.206%
-    del precio). El coste i/v de 0.09% es **0.44R** → se come el +0.32R de edge.
-  - **¿Lo rescata un stop mínimo?** No: al exigir R más grande el edge se DILUYE (el
-    win baja de 44% a 34-39%, la señal vivía en los stops finos) y el neto sigue
-    negativo/insignificante en todos los cortes (R≥0.3%: −0.035% IC incluye 0;
-    R≥0.8%: +0.17% pero n=33, ruido). Con slippage realista (0.24% i/v) es claramente
-    negativo en todos (R≥0.5%: −0.19%, IC excluye 0).
-- **Conclusión**: el patrón FUNCIONA (barrido→reversión tiene edge bruto), pero es
-  **antieconómico en perps de cripto 15m**: los stops finos + fricción (comisión +
-  slippage, ver diagnóstico) se comen todo el borde. Enlaza directo con slippage_probe:
-  es justo el caso donde el slippage infravalorado más duele. NO se monta forward (la
-  aritmética de costes no cambia midiendo más). Matiz honesto: en su mercado original
-  (1m NQ futuros, fricción mucho menor) podría ser rentable; en nuestro contexto no.
-  `explore_po3.py` queda como registro. El más interesante de los 4 externos: es el
-  único con edge bruto; muere por COSTES, no por falta de señal.
+  - **BRUTO (sin coste, resolución PESIMISTA de empates): +0.157 R/trade, win 38.6%
+    al 2R.** Positivo en bruto (a diferencia de #42/#43), pero pequeño.
+    (CORRECCIÓN: un primer script rápido dio +0.32R/win 44% por resolver los empates
+    stop+target de la misma vela a favor del TARGET — optimista. Con la resolución
+    pesimista pre-registrada el edge bruto real es la MITAD: +0.157R.)
+  - **Por qué pierde en neto**: stops DIMINUTOS (R mediana 0.156% del precio). El coste
+    i/v 0.09% es ~0.58R → se come el +0.157R de edge.
+- **TEST TIMEFRAME ALTO (hipótesis: stops más grandes → coste pesa menos → sobrevive)
+  — FALLA**. Barrido 15m/1h/4h/1d (1000 velas c/u, hasta ~2.7 años en 1d):
+  - R mediana sube 0.156%→0.34%→0.64%→1.86% (cost/R baja 0.58→0.26→0.14→0.05) ✓
+  - pero el **edge bruto se EVAPORA al subir de TF**: +0.157R (15m) → +0.073R (1h) →
+    **−0.044R (4h) → −0.015R (1d)**. El barrido→reversión es un fenómeno de TF BAJO;
+    en TF alto ya no predice.
+  - Neto NEGATIVO en los 4 TF y con los 2 costes. No existe TF donde coincidan "hay
+    edge" y "el coste cabe".
+- **Conclusión**: enterrada. El patrón tiene un edge bruto PEQUEÑO y solo en TF bajo,
+  justo donde los costes (comisión + slippage, ver slippage_probe) lo matan; subir de
+  TF elimina el edge. Antieconómico en perps de cripto por los dos lados. NO forward.
+  Matiz: en su mercado original (1m NQ futuros, fricción mucho menor) podría funcionar;
+  en cripto no. `explore_po3.py` (barrido multi-TF) queda como registro. El más
+  interesante de los 4 externos, pero igualmente inviable aquí.
 
 ### EXPLORACIÓN #43: "Quarterly Theory SSMT" — no sobrevive (muestra chica), no forward
 - **Estrategia pedida**: SSMT (divergencia SMT entre dos quarters de 90min

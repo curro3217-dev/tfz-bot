@@ -11,6 +11,31 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### ANÁLISIS: el micro_pullback falla UNIFORME (decide el futuro de las alertas F)
+- **Motivo**: las alertas F que manda el bot son el MISMO detector sin auto-trade.
+  Si el micro_pullback falla en todo, las F están condenadas; si solo en ciertos
+  regímenes, quizá valgan en otros. `analyze_mpb_conditions.py` (NUEVO) trocea los
+  389 trades cerrados (PC+GitHub) por hora, régimen BTC, día y símbolo (lee el PnL ya
+  calculado, no recalcula).
+- **Resultado — pierde en TODAS las condiciones**:
+  - **Hora (Madrid)**: las 15 horas con n≥15 salen negativas o ~0; ninguna positiva
+    con significancia (las "mejores" 23h/19h son +0.13% con n=15-16, ruido). Falla a
+    todas horas.
+  - **Régimen BTC**: día bajista −0.586% (win 29%) Y **día alcista −0.313% (win 39%),
+    AMBOS con IC95 excluyendo 0.** Clave: es long-only y **pierde incluso con el viento
+    a favor** (BTC subiendo). No es "falla en bear market": no tiene edge en ningún
+    régimen.
+  - **Día de semana**: mar/sáb/mié negativos con significancia; ninguno positivo. Con
+    solo 2 semanas, el día ≈ fechas concretas (ruido de régimen).
+  - **Símbolo**: las pérdidas se concentran en movers sueltos (EVAA −28.75%/10, AAVE
+    −19.3%/21…); los "ganadores" son n=4-8 = azar de 71 símbolos. Sin señal.
+- **Conclusión (con la cautela de comparaciones múltiples: el mejor corte es mirage,
+  lo que vale es que NO hay condición ganadora)**: el detector no predice dirección en
+  ningún contexto — ni siquiera con BTC a favor. Implica que **las alertas F (mismo
+  motor) tampoco tienen razón para funcionar**; confirma tenerlas como PURA información
+  y la decisión de bot-asistente. La medición forward `f_alerts_paper` lo verificará en
+  vivo, pero el prior es fuerte: sin edge.
+
 ### Helper + diagnóstico de FUNDING (`funding.py`): ¿cuánto pesa?
 - **Motivo**: TODAS las mediciones dicen "funding NO modelado" y el usuario opera
   perps -> un hold que cruza timestamps de funding (MEXC, cada 8h) paga/cobra.

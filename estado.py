@@ -29,6 +29,8 @@ BLOQUES = [
      ["premium_paper.py", "--status"]),
     ("Alertas F del asistente (sellada 22-jul)",
      ["f_alerts_paper.py", "--status"]),
+    ("Gestion fijo vs 1R+BE+EMA9 sobre alertas F (sellada 22-jul)",
+     ["f_mgmt_paper.py", "--status"]),
     ("Asistente TFZ (micro_pullback RETIRADO 16-jul; solo alertas F)",
      ["main.py", "paper", "--status"]),
 ]

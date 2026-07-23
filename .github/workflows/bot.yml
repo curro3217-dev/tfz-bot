@@ -145,6 +145,10 @@ jobs:
             # Medicion forward de las ALERTAS F del asistente (sellada 2026-07-22).
             # Las graba paper.py al enviarlas; aqui solo se RESUELVEN las pendientes.
             python f_alerts_paper.py || echo "f_alerts_paper fallo, sigo"
+            # Comparacion forward de GESTION (fijo vs parcial 1R+breakeven+EMA9)
+            # sobre las MISMAS alertas F (lee f_alerts_paper.db en solo-lectura).
+            TFZ_FMGMT_DB=github_state/f_mgmt_paper.db python f_mgmt_paper.py \
+              || echo "f_mgmt_paper fallo, sigo"
             # Recolector de microestructura cada 3 ciclos (~15 min), cuenta propia de
             # GitHub. Asi el PC NO necesita estar encendido para recolectar.
             if [ $((i % 3)) -eq 1 ]; then

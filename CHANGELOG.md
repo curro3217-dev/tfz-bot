@@ -11,6 +11,41 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### Medición forward PRE-REGISTRADA: gestión de la operación (fijo vs 1R+BE+EMA9)
+- **De dónde sale**: lectura completa del libro "How To Day Trade" de Ross Cameron
+  (128 págs). Casi todo es day-trading de acciones USA y NO aplica a perps de
+  cripto (float, halts, SSR, Level2/ECN, apertura 9:30, dólar redondo), y los
+  setups que sí mapean (bull flag, breakout con volumen, pullback a EMA9,
+  reversión Bollinger+RSI) ya están medidos y muertos en este proyecto. Lo único
+  aprovechable y OBJETIVO: su regla de GESTIÓN (parcial a 1R + breakeven + salir
+  por pérdida de EMA9). Se prueba si esa gestión rescata una señal floja.
+- **Qué**: `f_mgmt_paper.py` (NUEVO) + BD propia `f_mgmt_paper.db` (env
+  `TFZ_FMGMT_DB`). Lee las alertas de `f_alerts_paper.db` en SOLO-LECTURA
+  (`mode=ro`) — mismo universo y mismo `START_TS`; imposible tocar esa medición
+  ni generar señales nuevas.
+- **Dos estilos sobre la MISMA alerta** (entry/SL/TP/dir/TF vienen de la alerta):
+  - **FIJO** (baseline): primer toque de SL o TP; vela ambigua → SL (pesimista).
+  - **GESTIONADO**: vender la MITAD al llegar a 1R (`precio 1R = 2*entry - SL`),
+    mover el stop de la otra mitad a breakeven, y salir de esa mitad cuando el
+    precio cierra al otro lado de la **EMA9** del propio TF, o si toca breakeven,
+    lo que pase antes. Si el SL se toca ANTES que 1R → posición entera para en SL
+    (= pérdida del baseline). Timeout a `TIMEOUT_BARS`.
+- **Costes**: `(0.02+0.025)*2 = 0.09%` i/v en AMBOS estilos (las comisiones son
+  proporcionales al tamaño: entrada 100% + dos salidas del 50% = mismo 0.09% que
+  una salida del 100%), así la comparación es limpia. **Funding NO modelado.**
+- **CRITERIO PRE-REGISTRADO** (sellado antes del primer dato): a **≥100
+  EPISODIOS** (mismo agrupado que `f_alerts_paper`), hay mejora de la gestión si
+  la media de la **diferencia PAREADA por episodio (gestionado − fijo)** es > 0
+  con IC95 excluyendo cero. Si no → la gestión no aporta y se archiva. Prohibido
+  tocar definiciones/umbrales una vez haya el primer dato.
+- **Validación del motor** (BD desechable, ya borrada): 3 casos sintéticos
+  deterministas (1R+trailing, SL antes de 1R, vela ambigua SL+1R) + el caso real
+  de ENA del 22-jul. En ENA el SL se toca antes que 1R → gestionado = fijo
+  (−1.38/−1.36/−1.46%) y 3 alertas → 1 episodio. Todo correcto. BD real en 0.
+- **Enganche**: paso nuevo en el bucle de `bot.yml` tras `f_alerts_paper`
+  (`TFZ_FMGMT_DB=github_state/f_mgmt_paper.db`; la fuente `TFZ_FALERTS_DB` ya está
+  en el env del bucle). `estado.py` lo lista como bloque nuevo.
+
 ### Observación (NO cambia nada): el mal sábado del weekend (11-jul) fue MACRO
 - **Contexto**: al revisar los 122 trades del `weekend_paper`, el negativo de las 3
   semanas (media −0.32%/semana) lo arrastra **un solo sábado, el 11-jul**

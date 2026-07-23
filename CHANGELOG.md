@@ -11,6 +11,34 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### EXPLORACIÓN #42: "The Bard FX / No Wick Strategy" — premisa FALSADA, enterrada
+- **Estrategia pedida**: FX intradía seguidora de tendencia. Espera una vela "no
+  wick" (abre en su extremo, se desplaza fuerte sin mecha de un lado), entra en el
+  retest en ≤9 velas, stop tras estructura + colchón, objetivo **1:1**. Filtros
+  discrecionales (market structure, swing highs, imbalances/FVG).
+- **Qué se midió** (`explore_nowick.py`, retrospectivo, solo lectura): la premisa
+  OBJETIVA y falsable de la que depende todo — *¿una vela no-wick predice
+  continuación?* Sin las partes discrecionales (no reproducibles sin inventarlas).
+  Universo FIJO (42 símbolos del weekend, sin sesgo de selección), perps MEXC,
+  15m, ~10 días (1 régimen: julio-2026 bajista → es un primer read). Coste 0.09%.
+  no-wick sellada: cuerpo ≥50% del rango, mecha del lado "sin mecha" ≤10% del rango.
+- **Resultado (n≈10.000 señales)**:
+  - PRIMARIO continuación a 9 velas: **acierto 39.4%**, media **−0.152%** neto,
+    IC95 [−0.168, −0.135] (excluye 0). Long y short, los dos negativos.
+  - SECUNDARIO bracket 1:1: **acierto 49.2%** (por debajo del 50% que necesita el
+    1:1 solo para empatar), media −0.122% neto, IC95 excluye 0.
+  - **Robustez**: barrido de wick≤{0.02,0.05,0.10}, cuerpo≥{0.5,0.7}, horizonte
+    {4,9,20} → TODAS pierden (acierto 37-44%, IC95 siempre negativo). No es cosa
+    de la definición.
+- **Conclusión**: la vela no-wick **NO predice continuación** (si acaso, leve deriva
+  EN CONTRA, ~ruido comido por el coste). Con 1:1 el acierto es una moneda al aire
+  (49%) que pierde contra costes. Encaja con lo ya enterrado (micro_pullback, #40/#41
+  soportes/resistencias, Pattern Lab): entradas de retest de tendencia en cripto no
+  dan borde. Además "no wick" pierde sentido en cripto 24/7 (sin apertura de sesión).
+  NO se monta medición forward (premisa clara con n=10k). `explore_nowick.py` queda
+  como registro (como los demás explore_*.py). Slippage real (ver diagnóstico abajo)
+  lo haría aún peor.
+
 ### Diagnóstico: ¿es realista el supuesto de slippage (0.025%/lado)?
 - **De dónde sale**: lectura del sample "How To Day Trade: The Plain Truth" (Ross
   Cameron, 2023). Su intento de bot automático: el backtest daba +20k pero en real

@@ -108,6 +108,16 @@ jobs:
         run: |
           python ichimoku_paper.py || echo "ichimoku_paper fallo, sigo"
 
+      # Diagnostico del supuesto de slippage (0.025%/lado del modelo de costes).
+      # Un snapshot de la watchlist de movers por run, para acumular datos aunque
+      # no salten alertas. Los sondeos EN alerta los captura el bucle (record_for_alert).
+      - name: Slippage snapshot (order book MEXC, diagnostico)
+        env:
+          PYTHONIOENCODING: utf-8
+          TFZ_SLIP_DB: github_state/slippage_probe.db
+        run: |
+          python slippage_probe.py --snapshot || echo "slippage snapshot fallo, sigo"
+
       - name: Bucle de paper (~5h40m, un ciclo cada 5 min)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -123,6 +133,9 @@ jobs:
           # no solo en el paso que resuelve. Si no, se escribiria fuera de
           # github_state/ y se perderia al acabar el run.
           TFZ_FALERTS_DB: github_state/f_alerts_paper.db
+          # Sondeo de slippage al disparar cada alerta F (record_for_alert dentro de
+          # main.py paper) -> la ruta tiene que estar en el env del BUCLE.
+          TFZ_SLIP_DB: github_state/slippage_probe.db
           # MODO ASISTENTE: SOLO GitHub envia las alertas de setups a Telegram (el PC
           # queda mudo para no duplicar avisos). Fuerza el envio pese a ALERTS_PAUSED.
           TFZ_TELEGRAM: "1"

@@ -11,6 +11,37 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### Diagnóstico: ¿es realista el supuesto de slippage (0.025%/lado)?
+- **De dónde sale**: lectura del sample "How To Day Trade: The Plain Truth" (Ross
+  Cameron, 2023). Su intento de bot automático: el backtest daba +20k pero en real
+  "el slippage era la mayor variable" y se lo comía. Nuestro `COST =
+  (0.02+0.025)*2 = 0.09%` i/v asume **0.025% de slippage POR LADO**, igual para BTC
+  que para una alt fina recién movida (justo lo que alerta el scanner).
+- **Qué**: `slippage_probe.py` (NUEVO) + BD `slippage_probe.db` (env `TFZ_SLIP_DB`).
+  NO es medición de edge (sin veredicto): es un diagnóstico del supuesto de coste.
+  Solo lee order books de MEXC; no toca ninguna medición.
+- **Qué mide** (por sondeo del order book, `limit=200`):
+  - **half-spread** = `(ask-bid)/2/mid*100` (coste mínimo de cruzar, por lado).
+  - **impacto por tamaño**: recorre el libro para llenar 250/500/1000 USD (compra y
+    venta), VWAP vs mid → slippage %/lado. Notional de cada nivel =
+    `precio * contratos * contractSize` (MEXC da el libro en CONTRATOS, niveles
+    `[precio, contratos, nº órdenes]`).
+- **Fuentes**: `alert` (capturado al disparar la alerta F, `paper.py::_alert_once`
+  llama `record_for_alert` fail-silent — el momento representativo) y `snapshot`
+  (sondeo de la watchlist de movers de ahora; menos representativo pero da datos ya).
+- **Primer dato (snapshot de 7 movers, 23-jul, tamaño 500$)**:
+  - half-spread/lado: mediana 0.0150%, p90 0.0367%, max 0.0489%.
+  - slippage real/lado (peor lado, half-spread + impacto): **mediana 0.0271%**,
+    **p90 0.117%**, **max 0.20%** (B2 en compra).
+  - **Conclusión preliminar: el supuesto de 0.025%/lado SE QUEDA CORTO** ya en la
+    mediana, y en la cola (alts finas: ON, B2) se dispara 4-8x. Es decir, en las
+    monedas movidas nuestras mediciones paper son OPTIMISTAS en coste; un resultado
+    positivo flojo podría no sobrevivir al slippage real.
+  - Matiz honesto: es a 500$ de notional y en un momento semi-tranquilo, no en el
+    instante exacto de la alerta. La fuente `alert` capturará ese instante (peor).
+- **Enganche**: paso `Slippage snapshot` (1 por run) en `bot.yml` + captura en
+  alerta dentro del bucle (`TFZ_SLIP_DB` en el env del bucle). `estado.py` lo lista.
+
 ### Medición forward PRE-REGISTRADA: gestión de la operación (fijo vs 1R+BE+EMA9)
 - **De dónde sale**: lectura completa del libro "How To Day Trade" de Ross Cameron
   (128 págs). Casi todo es day-trading de acciones USA y NO aplica a perps de

@@ -228,6 +228,13 @@ def _alert_once(conn, sig, entry_ts, df=None) -> bool:
         record_alert(sig, entry_ts)
     except Exception:
         pass
+    # Sondeo de slippage REAL en el momento de la alerta (order book MEXC).
+    # Diagnostico del supuesto de coste 0.025%/lado. Fail-silent: la alerta ya salio.
+    try:
+        from slippage_probe import record_for_alert
+        record_for_alert(sig)
+    except Exception:
+        pass
     return True
 
 

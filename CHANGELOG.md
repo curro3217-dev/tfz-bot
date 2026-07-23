@@ -30,8 +30,20 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
   -> no hay que modelarlo ahí. Sí importa en los holds multi-día, sobre todo premium
   (7d): un viento en contra de ~0.05% direccional puede voltear un resultado flojo.
   Ojo: en régimen alcista el funding puede ser 5-10x mayor y sostenido -> peor.
-  PENDIENTE de decidir: incorporar funding como línea PARALELA informativa (sin tocar
-  el PnL sellado) en premium/EMA/Ichimoku (están a 0 eventos, no altera nada sellado).
+  Incorporado como línea PARALELA informativa (ver `funding_impact.py`).
+
+### `funding_impact.py`: lector del impacto del funding (sin tocar sellos)
+- **Qué**: lee en SOLO-LECTURA las BD de premium/EMA/Ichimoku, reconstruye sus trades
+  CERRADOS y reporta el PnL SELLADO junto a un PnL "con funding" (informativo, usando
+  `funding.funding_pct`). El primario sellado NO se altera — columna paralela, como
+  GARCH del EMA. Sin trades cerrados no hace ninguna llamada de red.
+- **Elegido lector aparte** (no editar premium/ema/ichimoku) para respetar los sellos
+  al 100%: ni un carácter de las mediciones congeladas cambia.
+- **Verificado**: funding_pct correcto (long paga con tasa positiva; long/short
+  opuestos). Un LONG BTC a 7d ahora paga −0.09% de funding = el coste tx entero ->
+  confirma que en premium el funding es material.
+- Añadido a `estado.py` como bloque informativo (las 3 mediciones a 0 eventos, así que
+  hoy sale "0 trades cerrados"; queda listo para cuando cierren).
 
 ### EXPLORACIÓN #44: ICT "AMD / Power of Three" — HAY EDGE BRUTO pero los costes lo matan
 - **Estrategia pedida**: rango de acumulación → "manipulación" (pinchazo fuera del

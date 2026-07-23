@@ -33,6 +33,8 @@ BLOQUES = [
      ["f_mgmt_paper.py", "--status"]),
     ("Slippage real vs supuesto 0.025%/lado (diagnostico 23-jul)",
      ["slippage_probe.py", "--status"]),
+    ("Impacto del funding en holds multi-dia (informativo 23-jul)",
+     ["funding_impact.py"]),
     ("Asistente TFZ (micro_pullback RETIRADO 16-jul; solo alertas F)",
      ["main.py", "paper", "--status"]),
 ]

@@ -9,6 +9,32 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-07-23
+
+### Observación (NO cambia nada): el mal sábado del weekend (11-jul) fue MACRO
+- **Contexto**: al revisar los 122 trades del `weekend_paper`, el negativo de las 3
+  semanas (media −0.32%/semana) lo arrastra **un solo sábado, el 11-jul**
+  (−0.880%, 24% aciertos; los otros dos: +0.022% y −0.108%).
+- **Dónde falló**: ese sábado, 34 de 41 monedas venían de viernes alcista → 34
+  largos; el sábado el mercado se giró y esos largos hicieron −0.91% de media. Los
+  8 peores fueron largos que se dieron la vuelta (DOT vie +6.05%→sáb −2.51%,
+  1000PEPE +7.42%→−3.22%, GALA +1.89%→−3.39%…): cuanto más fuerte el viernes, más
+  brusca la reversión.
+- **¿Fue de las alts o macro? → MACRO**. Comprobado en BTC (velas 1h MEXC, retorno
+  00:00→24:00 UTC): el mismo patrón en los 3 findes.
+  - 03-jul vie +2.37% → sáb 04 +0.36% (siguió; buen sábado)
+  - **10-jul vie +1.59% → sáb 11 −0.46% (SE GIRÓ; sábado malo)**
+  - 17-jul vie +0.03% → sáb 18 +1.37% (siguió)
+  BTC también venía de viernes verde y el sábado se puso rojo. No fue selección de
+  monedas: el mercado entero revirtió. Las alts amplificaron (−0.91% vs −0.46% BTC),
+  lo normal por su mayor beta.
+- **Lado**: todo el negativo es del lado LARGO (96 largos, media −0.441%, 40%
+  aciertos) vs SHORT (26, +0.107%, 50%). Coherente con un julio-2026 bajista:
+  "seguir al viernes alcista" mete largo antes de que el finde retome la caída.
+- **Conclusión**: NO se toca nada. Es 1 de 3 sábados; que el fallo sea macro
+  explica el porqué pero no adelanta el veredicto (criterio sellado: 20 sábados,
+  precisamente para que un día así no decida). Registro solo la observación.
+
 ## 2026-07-22
 
 ### Medición forward PRE-REGISTRADA: las ALERTAS F del asistente

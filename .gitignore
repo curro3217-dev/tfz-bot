@@ -25,7 +25,10 @@ paper_log.txt
 tfz_data.db.bak*
 
 # Estado del paper: lo gestiona el workflow con `git add -f` en la nube,
-# pero el de tu PC (con trades locales) NO debe subirse.
+# pero el de tu PC (con trades locales) NO debe subirse. Todas las *.db de la
+# RAIZ son estado local; las de github_state/ ya estan trackeadas y el workflow
+# las fuerza con `git add -f` (gitignore no desrastrea lo ya trackeado).
+*.db
 tfz_data.db
 portfolio_state.json
 weekend_paper.db

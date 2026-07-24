@@ -11,6 +11,24 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### EXPLORACIÓN #45: el TIMING de Mark (entrar pronto vs ruptura confirmada)
+- **De dónde sale**: DODOX y SKL (mismo coin/día/dirección, el bot entró pronto y
+  perdió, Mark esperó la ruptura y ganó +6/+7%). ¿La diferencia es el timing?
+- **Qué se midió** (`explore_timing.py`): EARLY (entrar al primer toque del nivel) vs
+  CONFIRMED (entrar al cierre de la vela que rompe). MISMO stop y MISMO objetivo (3R);
+  solo cambia el timing/precio de entrada. 42 símbolos, 15m, ~10 días, coste 0.09%.
+- **Resultado (n=2601 early / 1655 confirmed)**:
+  - EARLY: acierto 14.4%, media −0.581% (IC95 excluye 0).
+  - CONFIRMED: acierto **17.2%** (sube ~3 pts → SÍ filtra fakeouts, la lógica de Mark
+    es real), media −0.642%. Diferencia CONFIRMED−EARLY = **−0.06%** → esperar NO
+    ayuda netamente (el mejor acierto no compensa el peor precio de entrada). Ambas
+    pierden feo (acierto << 25% que pide el 3R).
+- **Conclusión**: el timing es una palanca PEQUEÑA. Confirmar el cierre reduce
+  fakeouts (medible) pero no rescata una ruptura mecánica. **El edge de Mark está
+  sobre todo en la SELECCIÓN (qué rupturas tomar), no en el timing** — las 2 anécdotas
+  DODOX/SKL sobrevaloraban el timing (n=2). Refina MARK-METODO.md: el trabajo
+  importante para el bot es el FILTRO de contexto (selección), no el timing.
+
 ### Alertas F: guardar el CONTEXTO para poder medir si filtrar por él ayuda
 - **De dónde sale**: el usuario detectó a ojo dos alertas SHORT (ENA, LDO) contra un
   soporte, en sobreventa (RSI 17/25) y volumen bajo (RVOL 1.3x/0.6x). Pregunta legítima:

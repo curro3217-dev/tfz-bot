@@ -63,6 +63,13 @@ TARGET_EPISODES = 100          # evaluacion UNICA al llegar aqui
 UMBRAL = 0.20                  # % neto por episodio
 
 
+# Columnas de CONTEXTO (2026-07-23): guardadas para MEDIR luego si filtrar por
+# contexto ayuda (RSI/RVOL/lado EMA200/room a estructura). NO cambian la señal ni el
+# criterio sellado; son informativas. Idea nacida de dos alertas short contra soporte
+# en sobreventa y volumen bajo (ENA/LDO) que el usuario detectó a ojo.
+_CTX_COLS = ["rsi", "rvol", "ema200_dist", "room_pct"]
+
+
 def _conn(db=None):
     c = sqlite3.connect(db or DB)
     c.row_factory = sqlite3.Row
@@ -72,23 +79,32 @@ def _conn(db=None):
         sent_at TEXT, exit_price REAL, exit_reason TEXT, exit_ts TEXT,
         pnl_net REAL, status TEXT DEFAULT 'open',
         PRIMARY KEY (symbol, timeframe, entry_ts, direction, formation))""")
+    # Migracion: añade las columnas de contexto si la BD es de antes (0 filas o no).
+    existing = {r[1] for r in c.execute("PRAGMA table_info(alertas)")}
+    for col in _CTX_COLS:
+        if col not in existing:
+            c.execute(f"ALTER TABLE alertas ADD COLUMN {col} REAL")
+    c.commit()
     return c
 
 
-def record_alert(sig, entry_ts) -> bool:
+def record_alert(sig, entry_ts, context=None) -> bool:
     """Graba una alerta F recien enviada. La llama paper.py fail-silent. Idempotente
-    (misma clave que el dedup del bot). Devuelve True si se grabo."""
+    (misma clave que el dedup del bot). `context` = dict de _context_features (opcional,
+    informativo). Devuelve True si se grabo."""
     try:
         if pd.Timestamp(str(entry_ts)) < START_TS:
             return False
+        ctx = context or {}
         c = _conn()
         cur = c.execute(
             "INSERT OR IGNORE INTO alertas(symbol,timeframe,entry_ts,direction,"
-            "formation,entry,sl,tp,score,rr,sent_at) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,datetime('now'))",
+            "formation,entry,sl,tp,score,rr,sent_at,rsi,rvol,ema200_dist,room_pct) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,datetime('now'),?,?,?,?)",
             (sig.symbol, sig.timeframe, str(entry_ts), sig.direction,
              sig.formation_type, float(sig.entry_price), float(sig.stop_loss),
-             float(sig.take_profit), float(sig.total_score), float(sig.rr_ratio)))
+             float(sig.take_profit), float(sig.total_score), float(sig.rr_ratio),
+             ctx.get("rsi"), ctx.get("rvol"), ctx.get("ema200_dist"), ctx.get("room_pct")))
         c.commit()
         n = cur.rowcount
         c.close()

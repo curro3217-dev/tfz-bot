@@ -161,16 +161,17 @@ def _check_exit(trade: dict, df, cfg: TFZConfig):
     return None  # unresolved -> still open
 
 
-def _alert_context(df) -> str:
-    """Contexto objetivo para la alerta del modo asistente (patron de CryptoSignal,
-    github.com/CryptoSignal/Crypto-Signal: la alerta lleva varios indicadores y decide
-    el humano). SOLO velas CERRADAS (la ultima del df puede estar en formacion).
-    Es informativo: NO filtra ni altera ninguna señal ni el paper congelado."""
+def _context_features(df, sig=None):
+    """Contexto objetivo NUMERICO de la alerta (RSI14, RVOL, distancia a EMA200, y
+    'room' = distancia al extremo reciente en la direccion del trade, un proxy de
+    'operar contra un soporte/resistencia cercano'). SOLO velas CERRADAS. Devuelve
+    dict o None. Es informativo: NO filtra ni altera ninguna señal.
+    Se guarda en f_alerts_paper para PODER MEDIR si filtrar por contexto ayuda."""
     try:
         d = df.iloc[:-1]
         closes = d["close"].values.astype(float)
         if len(closes) < 30:
-            return ""
+            return None
         # RSI-14 Wilder (misma formula que explore_meanrev.rsi)
         delta = np.diff(closes, prepend=closes[0])
         gain = np.where(delta > 0, delta, 0.0)
@@ -178,21 +179,41 @@ def _alert_context(df) -> str:
         ag = pd.Series(gain).ewm(alpha=1 / 14, adjust=False).mean().values
         al = pd.Series(loss).ewm(alpha=1 / 14, adjust=False).mean().values
         rs = np.divide(ag, al, out=np.zeros_like(ag), where=al != 0)
-        rsi = (100 - 100 / (1 + rs))[-1]
+        rsi = float((100 - 100 / (1 + rs))[-1])
         # RVOL: volumen de la ultima vela cerrada vs media de las 20 anteriores
         vols = d["volume"].values.astype(float)
         vol_ma = vols[-21:-1].mean()
-        rvol = vols[-1] / vol_ma if vol_ma > 0 else 0.0
-        parts = [f"RSI14 {rsi:.0f}", f"RVOL {rvol:.1f}x"]
-        # Lado de la EMA200 (tendencia de fondo), solo si hay historia suficiente
+        rvol = float(vols[-1] / vol_ma) if vol_ma > 0 else 0.0
+        f = {"rsi": rsi, "rvol": rvol, "ema200_dist": None, "room_pct": None}
         if len(closes) >= 200:
             ema200 = pd.Series(closes).ewm(span=200, adjust=False).mean().values[-1]
-            dist = (closes[-1] - ema200) / ema200 * 100
-            side = "sobre" if dist >= 0 else "bajo"
-            parts.append(f"{side} EMA200 ({dist:+.1f}%)")
-        return " | ".join(parts)
+            f["ema200_dist"] = float((closes[-1] - ema200) / ema200 * 100)
+        # 'room' a la estructura reciente (50 velas cerradas) en la direccion del trade:
+        # short -> distancia HACIA ABAJO al minimo (soporte); long -> al maximo. Poco
+        # room = operar pegado a un nivel que el precio respeta (lo que marca el usuario).
+        if sig is not None and len(closes) >= 20:
+            K = 50
+            if sig.direction == "short":
+                lo = float(d["low"].values.astype(float)[-K:].min())
+                f["room_pct"] = (float(sig.entry_price) - lo) / float(sig.entry_price) * 100
+            else:
+                hi = float(d["high"].values.astype(float)[-K:].max())
+                f["room_pct"] = (hi - float(sig.entry_price)) / float(sig.entry_price) * 100
+        return f
     except Exception:
+        return None
+
+
+def _alert_context(df, sig=None) -> str:
+    """Version texto (para el Telegram) del contexto numerico. Informativo."""
+    f = _context_features(df, sig)
+    if not f:
         return ""
+    parts = [f"RSI14 {f['rsi']:.0f}", f"RVOL {f['rvol']:.1f}x"]
+    if f["ema200_dist"] is not None:
+        side = "sobre" if f["ema200_dist"] >= 0 else "bajo"
+        parts.append(f"{side} EMA200 ({f['ema200_dist']:+.1f}%)")
+    return " | ".join(parts)
 
 
 def _alert_once(conn, sig, entry_ts, df=None) -> bool:
@@ -206,9 +227,10 @@ def _alert_once(conn, sig, entry_ts, df=None) -> bool:
     conn.commit()
     if cur.rowcount == 0:
         return False
+    feat = _context_features(df, sig) if df is not None else None
     try:
         from notify import alert_entry
-        ctx = _alert_context(df) if df is not None else ""
+        ctx = _alert_context(df, sig) if df is not None else ""
         # Linea GARCH (vol prevista + tamaño sugerido): informativa, fail-silent,
         # cacheada por dia. NO filtra ni altera la señal (ver garch_sizing.py).
         try:
@@ -225,7 +247,7 @@ def _alert_once(conn, sig, entry_ts, df=None) -> bool:
     # 2026-07-22). Fail-silent: si falla, la alerta ya ha salido igual. Solo mide.
     try:
         from f_alerts_paper import record_alert
-        record_alert(sig, entry_ts)
+        record_alert(sig, entry_ts, feat)
     except Exception:
         pass
     # Sondeo de slippage REAL en el momento de la alerta (order book MEXC).

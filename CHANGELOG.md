@@ -11,6 +11,27 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### Alertas F: guardar el CONTEXTO para poder medir si filtrar por él ayuda
+- **De dónde sale**: el usuario detectó a ojo dos alertas SHORT (ENA, LDO) contra un
+  soporte, en sobreventa (RSI 17/25) y volumen bajo (RVOL 1.3x/0.6x). Pregunta legítima:
+  ¿no debería el bot tener en cuenta ese contexto? Respuesta honesta: no asumir que
+  ayuda (S/R ya murió en #40/#41), sino GUARDARLO y MEDIRLO.
+- **Qué**: `paper.py::_context_features(df, sig)` (refactor de `_alert_context`) expone
+  el contexto NUMÉRICO de cada alerta: RSI14, RVOL, distancia a EMA200, y `room_pct`
+  (distancia al extremo reciente de 50 velas en la dirección del trade = proxy de
+  "operar pegado a un soporte/resistencia"). `f_alerts_paper.record_alert` ahora los
+  guarda (4 columnas nuevas: rsi, rvol, ema200_dist, room_pct).
+- **Migración segura**: `_conn` añade las columnas con `ALTER TABLE` si la BD es vieja
+  (PRAGMA table_info); no borra datos. Verificado: BD vieja con 1 fila → migra y
+  conserva la fila; alerta nueva guarda el contexto. La señal, el criterio sellado y el
+  PnL NO cambian — el contexto es informativo.
+- **Para qué**: cuando haya suficientes alertas F cerradas, se podrá medir si algún
+  filtro separa ganadores de perdedores: shorts con RVOL bajo (el curso dice que sí
+  deberían rendir peor), shorts en RSI sobrevendido, o shorts con poco `room` (pegados
+  a soporte). Si el dato lo confirma, el filtro entra CON PRUEBAS, no a ojo.
+- **Aviso honesto**: la señal base ya no tiene edge en ningún contexto (autopsia
+  micro_pullback); el filtro puede que tampoco lo cree, pero al menos se sabrá con datos.
+
 ### `cost_bar.py`: el LISTÓN DE COSTE reutilizable (filtro de 5 segundos)
 - **Motivo**: la lección de la semana (PO3 #44, No Wick, slippage, funding) es que en
   cripto casi todo muere por COSTE, no por falta de señal. `cost_bar.py` (NUEVO)

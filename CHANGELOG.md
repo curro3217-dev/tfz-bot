@@ -11,6 +11,25 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### EXPLORACIÓN #46: el FILTRO de selección de Krasnov aplicado al bot — LO EMPEORA
+- **Idea**: del reverse-engineering (krasnov-tracker/reverse_features.py) sacamos que
+  Krasnov OPERA movers extremos (mov_24h ~59% vs 15% de los que descarta) cerca de
+  máximos (pos_rango 0.77 vs 0.56). ¿Aplicar ese filtro a los 389 trades del bot los
+  mejora? (`explore_krasnov_filter.py`, retrospectivo; usa el pnl ya calculado).
+- **Resultado — lo contrario**: cuanto más extremo el mover, PEOR el bot (monótono):
+  global −0.44%; mov24≥20%&pos≥0.7 −1.0%; mov24≥40% −3.2%; **mov24≥50% −5.0% (win 12%)**.
+  El universo del bot son movers modestos (mediana 2.3% en 24h); los pocos extremos son
+  justo donde una entrada MECÁNICA (pullback long) más se destroza (volatilidad/latigazo).
+- **Conclusión (definitiva del hilo Krasnov)**: el "mover extremo" NO es el edge, es el
+  TERRENO. Krasnov gana ahí por su ejecución discrecional, no por elegir la moneda.
+  Juntando todo lo medido: sus niveles a lo bruto 35%; +timing+gestión 43%; su selección
+  aplicada al bot lo EMPEORA; Krasnov 79%. **Ninguna combinación mecánica de sus features
+  observables reproduce su edge -> es genuinamente discrecional, no bot-ificable.** Copiar
+  su selección de monedas sin su ojo es peor que no filtrar. Resultado negativo valioso:
+  recalibra la expectativa (el bot no puede "ser" Krasnov copiando reglas).
+- Datos de Krasnov (6 meses, 41 trades, 79% acierto) en `Krasnov Trading Course/
+  KRASNOV-CALLS.md` y `krasnov-tracker/` (Telethon, fuera del repo).
+
 ### EXPLORACIÓN #45: el TIMING de Mark (entrar pronto vs ruptura confirmada)
 - **De dónde sale**: DODOX y SKL (mismo coin/día/dirección, el bot entró pronto y
   perdió, Mark esperó la ruptura y ganó +6/+7%). ¿La diferencia es el timing?

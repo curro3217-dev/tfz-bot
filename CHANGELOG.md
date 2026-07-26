@@ -11,6 +11,27 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ## 2026-07-23
 
+### CORRECCIÓN DE ALCANCE de #42–#46 (lección 12): lo que estos tests SÍ prueban
+Al concluir #46 me salí de lo que el test medía (dije "el edge de Krasnov no es
+bot-ificable, es discrecional" cuando solo probé un proxy mecánico). Re-escribo el
+alcance de las 5 exploraciones de estrategias externas/discrecionales. **NO cambian
+los NÚMEROS** (son los que son); cambia qué se puede AFIRMAR con ellos:
+- **#42 No Wick, #43 SSMT, #44 PO3, #45 timing, #46 filtro Krasnov**: en todas probé
+  una VERSIÓN MECÁNICA (mi encoding) de una estrategia que puede tener partes
+  discrecionales/de patrón que NO codifiqué. Por tanto la afirmación válida es:
+  **"nuestra versión mecánica de X no da edge / no mejora al bot"**, NO **"la
+  estrategia X no tiene edge / está muerta"**. La versión completa y fiel está SIN
+  PROBAR en todas ellas.
+- Concretamente #46: prueba solo que *la selección de monedas de Krasnov, enchufada a
+  la ENTRADA MECÁNICA (pullback) del bot, no ayuda (empeora)*. NO prueba nada sobre su
+  método completo. Grafté una pieza suya a la entrada rota del bot = test inválido
+  para su sistema.
+- **Sólido y no afectado** (miden la cosa REAL, no un proxy): autopsia micro_pullback
+  (389 trades reales), las 7 mediciones forward selladas, slippage/funding/cost_bar.
+- **Acción**: se monta el encoding FIEL y COMPLETO del sistema de Krasnov y se testea
+  de una pieza (contra sus 41 calls + forward). Hasta entonces, #42–#46 solo dicen
+  "el proxy mecánico no funciona", nada más.
+
 ### EXPLORACIÓN #46: el FILTRO de selección de Krasnov aplicado al bot — LO EMPEORA
 - **Idea**: del reverse-engineering (krasnov-tracker/reverse_features.py) sacamos que
   Krasnov OPERA movers extremos (mov_24h ~59% vs 15% de los que descarta) cerca de

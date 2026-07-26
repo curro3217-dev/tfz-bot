@@ -54,6 +54,21 @@ cualquier experimento nuevo.
     Ichimoku ganó la tanda de 6, PERO elegir al ganador de una comparación es
     sesgo de selección. Por eso se mide forward antes de creérselo.
 
+12. **La conclusión NO puede salirse de lo que el test mide (regla de alcance).** (2026-07-23)
+    Al probar el filtro de Krasnov, medí algo estrecho ("su selección enchufada a
+    la entrada rota del bot no ayuda") y salté a una afirmación enorme ("su edge no
+    es bot-ificable, es discrecional"). Falso: solo probé un PROXY mecánico, no su
+    método. Regla obligatoria antes de concluir cualquier medición, sobre todo las
+    NEGATIVAS de estrategias externas/discrecionales:
+    - Escribir 3 líneas: *este test mide EXACTAMENTE ___ | solo puede afirmar ___ |
+      NO puede afirmar ___*. La conclusión tiene que caber en la 2ª línea.
+    - Nunca "la estrategia está muerta" → "nuestra VERSIÓN MECÁNICA murió; la
+      completa/discrecional está SIN PROBAR". Separar el proxy del método real.
+    - Red-team antes de todo veredicto negativo: *si esto SÍ tuviera edge, ¿mi test
+      pudo perdérselo? ¿cómo?* Si sí → el test no lo mata, solo "no lo encuentra así".
+    - Probar el SISTEMA COMPLETO de una pieza, no fragmentos sueltos (el todo puede
+      tener edge emergente que las piezas por separado no muestran).
+
 ---
 
 *Mantenimiento: la revisión de los domingos añade lecciones nuevas SOLO si los

@@ -69,6 +69,18 @@ cualquier experimento nuevo.
     - Probar el SISTEMA COMPLETO de una pieza, no fragmentos sueltos (el todo puede
       tener edge emergente que las piezas por separado no muestran).
 
+13. **Antes de concluir sobre una fuente, consúmela ENTERA (no a medias).** (2026-07-23)
+    Concluí "no podemos reproducir la selección de Krasnov" habiendo leído solo el
+    TEXTO de su manual y **saltándome las 40+ imágenes** (donde están dibujados los
+    niveles y los setups). Es el mismo error dos veces: opinar sin usar todo lo que
+    tengo (antes: sin leer el PDF; luego: sin ver las imágenes). Regla obligatoria:
+    - Antes de cualquier conclusión sobre una fuente (documento, estrategia, dataset),
+      **inventariar TODAS sus partes** (texto, IMÁGENES, tablas, todas las páginas) y
+      **confirmar que se leyó cada una**. Un PDF con imágenes = renderizar y VER las
+      imágenes, no solo el texto (pdfplumber da texto; hay que rasterizar y leerlas).
+    - Si una conclusión depende de una fuente que no he consumido entera, la conclusión
+      NO se emite: primero se consume la fuente. "No lo he mirado todavía" ≠ "no se puede".
+
 ---
 
 *Mantenimiento: la revisión de los domingos añade lecciones nuevas SOLO si los

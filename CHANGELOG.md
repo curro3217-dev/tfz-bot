@@ -9,6 +9,103 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-08-02
+
+### Revisión semanal domingo — hallazgo infra (sin tocar parámetros)
+- **Contraste PC vs GitHub (weekend_paper.db)**: coinciden en fechas y en los 40 símbolos
+  comunes (misma dirección, mismo PnL, sábado 2026-08-01 incluido en las dos). Pero PC lleva
+  **1 símbolo más que GitHub cada semana desde el inicio** (FIL/USDT:USDT): 41 vs 40 en las
+  5 semanas medidas. No cambia el veredicto (agregado semanal, no por símbolo) pero es
+  sistemático, no ruido — no se pudo confirmar la causa (API de logs de Actions dio 403 sin
+  token). Pendiente de investigar si se repite la próxima semana.
+- **Cola de GitHub Actions**: varios runs "cancelled" el 2026-08-01 (concurrency sin
+  cancel-in-progress) son el comportamiento normal de GitHub al descartar runs en cola
+  reemplazados por un cron más nuevo — no es una anomalía, no se tocó nada.
+- Sin lección nueva en LECCIONES.md esta semana (nada respaldado por evidencia suficiente
+  todavía; weekend_paper sigue en 5/20 sábados).
+
+## 2026-07-27
+
+### Leídas TODAS las imágenes del manual de Krasnov + detector de niveles v3 (medido)
+- **Contexto (lección 13)**: había concluido sobre su selección leyendo solo el TEXTO del
+  PDF, saltándome las 40+ imágenes. Se leyeron las **25 páginas con gráfico** (p04, p06–p09,
+  p11, p13, p15, p16, p18, p19, p21, p22, p24–p31, p33, p34, p36, p37). Hallazgos que el texto
+  no fijaba, guardados en `KRASNOV-SISTEMA.md` (sección "Lo que añaden las imágenes"):
+  nivel = máximo REVISITADO (no cualquier pico); distancia en "movimiento limpio"; 3 tipos de
+  nivel (horizontal/cascada/diagonal); consolidación debajo como precondición; nivel único
+  solo en pump 30–50%.
+- **Detector v3** (`krasnov-tracker/reverse_structure3.py`): encodea esos hallazgos —
+  niveles revisitados (equal highs, clúster ≥2 toques), cascada (≥3 juntos ≤6%), diagonal
+  (trendline ≥3 toques), consolidación reciente, clean_ratio (movimiento limpio).
+- **Resultado sobre 288 watches (23 operados)**:
+  - AUC coarse (mover%+posición) = **0.722** | v3 estructura sola = **0.730** (NO mejora) |
+    coarse+v3 = 0.774.
+  - Regla dura (≥2 revisitados & spacing≤3% & dist≤15%): **recall 4%** (1/23), precisión 5%.
+  - `n_revis` va al REVÉS: operados 0.26 < descartados 0.52.
+- **ALCANCE (lección 12)**: esto dice de MI detección v3, NO de si su criterio es encodeable.
+  Van 3 detectores (v1 K=3, v2 K=5+toques, v3 imágenes) SIN mover el AUC → el cuello de botella
+  es **detectar el nivel como él lo ve a ojo**, no la definición. Vías por las que el test pudo
+  perdérselo: ventana de swing highs tosca, "movimiento limpio" aproximado, 15m fijo (él mezcla
+  5m/15m/1h), emparejamiento watch→trade a 48h. **Lo encodeable con edge probado sigue siendo
+  la EJECUCIÓN (acierto estricto 56%, esperanza +0.17R/trade — ver corrección abajo); la
+  SELECCIÓN fina no se reproduce mecánicamente.**
+
+### TRIANGULACIÓN de TODAS las comprobaciones (3 métodos c/u) — 2 estaban mal
+El usuario dejó de fiarse de las verificaciones. Rehechas con 3 métodos independientes cada
+una (`krasnov-tracker/tri_check1..5.py`). Resultado:
+- **#1 Trading ~90%**: pérdidas SÓLIDAS (M1 emoji ❌=13, M3 mensajes=13; M2 frases=19 con
+  falsos+ explicables). Ganados NO robustos (M1=148, M2=91, M3=204 msgs) → "140" era blando.
+  Éxito robusto ~88–92% pero es AUTO-REPORTE, no verificado con precio.
+- **#2 nivel alcanzado 54% → NO CONVERGE** (M1 sus palabras 54% / M2 precio-vs-su-TP 85% /
+  M3 proxy 98%). **El "54%" NO es fiable.** Lo verificado con precio: TP de calls formales
+  alcanzado 22/26 = **85%**. CORREGIDO.
+- **#3 ejecución 56%/+0.17R → CONVERGE** (M1 estructura+BE=56%, M2 copiloto=56% EXACTO,
+  M3 stop 2% fijo=44%). Banda 44–56%, muy lejos del 90%. Firme.
+- **#4 "seguidor suelto pierde" → NO ROBUSTO.** Con stop pierde (M1 −0.10R, M2 −0.04R); SIN
+  stop, hold 24h, la DIRECCIÓN acierta (M3 media +2.9%, **mediana +4.2%, 61% ganadores**).
+  Pero cola brutal (peor −56%, p10 −26%; sin el top5% media +0.13%). **Mi "pierde en todo"
+  estaba MAL.** Corregido: la dirección tiene edge real pero no se captura con stop naive
+  (te sacan) ni sin stop (te liquidan) → ahí vive su gestión discrecional.
+- **#5 selección AUC 0.72 → CONVERGE** (M1 logística 0.78 / M2 mov_24h solo 0.80 / M3 RF
+  0.64). Selección gruesa predecible (mov_24h). Firme.
+Scorecard: 2 sólidas (#3,#5), 1 a medias (#1), 2 mal planteadas (#2,#4).
+
+### EXPLORACIÓN: "seguidor suelto" — entrar en TODOS sus setups con SL ajustado → PIERDE
+- Idea (a petición): tradear los setups que Mark marca en 'X Setups' SIN esperar su
+  consolidación/entry point, con SL más ajustado (como hacen algunos seguidores).
+  `krasnov-tracker/explore_setups_loose.py`. Dirección parseada de sus posts: nivel
+  "above"→long, "below"→short; excluidos los ✔️/"swept" (retrospectivos). 251 entradas.
+- **Resultado — negativo en toda la rejilla** (SL 1/1.5/2% × TP 2R/3R), coste en R incluido:
+  - TODOS: mejor SL2%/2R = **−0.05R/trade** (−11.5R). LONGS mejor −0.04R. SHORTS mejor −0.03R.
+  - **Cuanto más ajustado el SL, PEOR** (SL1% = −0.25R): el stop apretado salta en el chop.
+  - Smoke-test n=15 daba +0.30R (SL1%/2R) → con n=251 = −0.25R. Lección 2 en acción.
+- **Lectura clave**: su ejecución FILTRADA (calls formales) daba +0.17R; entrar en los setups
+  CRUDOS da −0.05R. → **esperar consolidación/entry point ES el edge**; saltárselo lo destruye.
+- **ALCANCE (lección 12)**: mide SOLO "entrar en todos los setups con SL fijo". NO prueba que
+  ninguna versión suelta funcione; sí que ESTA (la descrita) pierde en su histórico.
+
+### COPILOTO con diario FORWARD (`copiloto.py add` / `status`)
+- El copiloto ahora mide **hacia adelante**, no en el pasado: apuntas cada trade real que
+  entra y `status` lo resuelve solo contra el precio de MEXC según cierra.
+- Uso: `python copiloto.py add COIN long|short ENTRY STOP TP [fuente]` para apuntar;
+  `python copiloto.py status` para resolver abiertos y ver acumulado (acierto + esperanza R).
+- Gestión encodeada = la de Krasnov: breakeven a +1R → WIN/LOSS/SCRATCH/OPEN. Diario en
+  `copiloto_journal.json` (empieza vacío; probado y limpiado el trade de prueba).
+- Criterio a batir (referencia, no sellado aún): esperanza > 0 y comparable al +0.17R que
+  dio su ejecución sobre sus propias calls.
+
+### CORRECCIÓN: el "81%" de la ejecución de Krasnov estaba INFLADO (lección 1)
+- Al montar el copiloto (`tfz-bot/copiloto.py`) y su comprobador (`krasnov-tracker/
+  copiloto_check.py`) se reconció con `krasnov_system.py`: **coinciden exacto** (5 WIN, 4 LOSS,
+  12 SCRATCH sobre 21 resueltos).
+- El "81%" que teníamos apuntado = (WIN+SCRATCH)/(WIN+SCRATCH+LOSS) = 17/21 → **contaba los 12
+  breakeven como si fueran wins**. Engañoso: un scratch es ~0R, no una ganancia.
+- **Cifras honestas**: acierto estricto win/(win+loss) = **5/9 = 56%**; **esperanza +0.17R/
+  trade** (+0.12R tras coste 0.05R); total ≈ +3.5R (+2.5R neto) sobre 21. Positivo pero
+  modesto, y sobre SUS picks (no valida picks propios). Corregido en KRASNOV-CALLS/SISTEMA.md.
+
+---
+
 ## 2026-07-23
 
 ### CORRECCIÓN DE ALCANCE de #42–#46 (lección 12): lo que estos tests SÍ prueban

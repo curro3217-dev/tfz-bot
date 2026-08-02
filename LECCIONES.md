@@ -81,6 +81,16 @@ cualquier experimento nuevo.
     - Si una conclusión depende de una fuente que no he consumido entera, la conclusión
       NO se emite: primero se consume la fuente. "No lo he mirado todavía" ≠ "no se puede".
 
+14. **Un número de un solo método no es de fiar: triangular con 3 vías.** (2026-07-27)
+    Al desconfiar el usuario, rehíce las 5 comprobaciones con 3 métodos independientes cada
+    una. Dos no aguantaron: el "54% de niveles alcanzados" daba 54/85/98% según el método
+    (no fiable), y el "seguidor suelto pierde en todo" era falso (con stop pierde, pero SIN
+    stop la dirección acierta: 61% ganadores, mediana +4%). Las que sí convergieron (ejecución
+    44–56%, AUC 0.64–0.80) quedaron reforzadas. Regla: para toda cifra que sostenga una
+    decisión, calcularla por ≥2–3 caminos que NO compartan código/supuestos. Si divergen, la
+    cifra no vale; si convergen, es sólida. Y separar SIEMPRE "media" de "mediana + % ganadores
+    + colas" (una media +2.9% con mediana +4% pero peor −56% no es tradeable en apalancado).
+
 ---
 
 *Mantenimiento: la revisión de los domingos añade lecciones nuevas SOLO si los

@@ -9,6 +9,26 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-08-23
+
+### Revisión semanal domingo — sin tocar parámetros
+- **TFZ_Weekend_Paper corrió tarde**: `NextRunTime` esperaba 03:15 pero `LastRunTime` marcaba
+  14:48:58 y a esa hora la BD local aún no tenía el sábado 2026-08-22. Por precaución ejecuté
+  `python weekend_paper.py` a mano — es idempotente (`PRIMARY KEY (symbol, sabado)` +
+  `INSERT OR IGNORE`), así que no hay riesgo de duplicar aunque la tarea programada también
+  hubiera escrito. Resultado: 41 símbolos para 2026-08-22 (mismo patrón que semanas previas).
+  No se tocó la tarea programada; solo vigilar si se repite el retraso.
+- **PC vs GitHub, contraste de las 4 mediciones selladas**: weekend (8/8 sábados presentes en
+  las dos cuentas, sigue el patrón conocido 41 PC vs 40 GitHub por FIL/USDT bloqueado, ya
+  documentado el 2026-08-02), EMA (4/4 eventos iguales), Ichimoku (1/1 evento igual) — todo
+  cuadra. **Premium**: la BD local está vacía por diseño (`gitignored local`, solo corre en
+  `bot.yml`, ver CHANGELOG 2026-07-16 "NUEVO premium_paper.py") — el estado real hay que leerlo
+  de `github_state/premium_paper.db`, no del `--status` local. No es una anomalía.
+- Runs "cancelled" en Actions hoy: mismo patrón ya documentado el 2026-08-02 (normal, no
+  anomalía).
+- Sin lección nueva en LECCIONES.md esta semana (ninguna medición sellada llega aún a su
+  umbral de veredicto).
+
 ## 2026-08-02
 
 ### Revisión semanal domingo — hallazgo infra (sin tocar parámetros)

@@ -9,6 +9,158 @@ porqué. Lo más reciente arriba del todo de cada día. Fechas en formato AAAA-M
 
 ---
 
+## 2026-08-30
+
+### Revisión semanal domingo — sin tocar parámetros
+- **Tareas Windows corrieron tarde otra vez**: `TFZ_Weekend_Paper`, `TFZ_EMA_Paper` y
+  `TFZ_Ichimoku_Paper` marcan `LastRunTime` 2026-08-30 08:52:07 con `LastTaskResult=0`
+  (esperadas 03:15/03:05/03:07 — PC apagado a esa hora, se pusieron al día al arrancar).
+  Mismo patrón ya visto el 2026-08-22. No se tocó nada; solo vigilar si se repite.
+- **PC vs GitHub, contraste de las 4 mediciones selladas**:
+  - weekend: 9/9 sábados en las dos cuentas, sábado 2026-08-29 presente en ambas; sigue
+    el patrón conocido 41 PC vs 40 GitHub (FIL/USDT bloqueado, documentado 2026-08-02).
+  - EMA: 4/4 eventos idénticos (último cruce 'up' 2026-08-19 fill 69310.1, sigue abierto).
+  - Ichimoku: 1/1 evento idéntico (abierto desde 2026-08-19 fill 64694.1).
+  - Premium: BD local vacía por diseño (solo corre en `bot.yml`); estado real en
+    `github_state/premium_paper.db` = 3 episodios cerrados (ver abajo). No es anomalía.
+- **Workflow "TFZ Bot Paper"**: corriendo con normalidad (runs `success` durante la noche,
+  1 `in_progress` a las 07:53 hora Madrid). Algún run `cancelled` el 2026-08-29 = patrón
+  normal de solapes, ya documentado.
+- **Estado de las mediciones** (nada es dinero real):
+  - Momentum viernes→sábado: 9 sábados / criterio ≥20. Media semanal PRIMARIO −0.416%
+    [IC95 −0.971,+0.140]. Nuevo sábado 2026-08-29 grabado (41 símbolos, patrón normal).
+  - Prima Coinbase: 3/30 episodios cerrados (BTC 08-07→08-14 −2.99%; ETH 08-18→08-25
+    +27.29%; BTC 08-19→08-26 +13.88%). +2 cerrados esta semana (rally cripto 18→26 ago).
+  - EMA 9/21 BTC: 4 eventos, 1 cerrado (−2.30%), 1 abierto desde 08-20. Sin cruce nuevo.
+  - Ichimoku BTC: 1 evento, abierto desde 08-19. Sin señal nueva.
+  - (GARCH sizing: 1 cerrado comparable, sin veredicto hasta ≥20.)
+- Sin lección nueva en LECCIONES.md: ninguna medición sellada llega aún a su umbral de
+  veredicto (regla de la casa: no se inventan lecciones).
+
+## 2026-08-29
+
+### Medido: filtro NASDAQ diario para BTC → NO ayuda (va al revés) + BTC empieza a grabarse en microestructura
+- **explore_nasdaq.py (nuevo, 2174 días de bolsa 2018-26, ^IXIC vs BTC):** prueba la
+  idea de la guía (correlación alta + NASDAQ rompiendo soporte → reducir largos BTC),
+  versión DIARIA (la semanal S&P/DXY ya salió nula en #37). Hipótesis pre-registradas:
+  - H1 contagio (NASDAQ rojo → BTC día+1 negativo): **REFUTADO** — BTC día+1 es
+    +0.288% (IC95 excluye 0 en total), lo CONTRARIO; tras debilidad del NASDAQ, BTC
+    tiende a REBOTAR, no a seguir cayendo.
+  - H2 ruptura mín20 → BTC día+1: +0.548%, positivo, IC incluye 0 (no direccional).
+  - H3 ruptura & corr≥0.5: OOS +1.27% (n=20, IC excluye 0) pero POSITIVO y IS no
+    significativo → no sostiene un filtro protector.
+  - H4 filtro real (plano tras ruptura&corr alta): comprar-y-aguantar **x5.47** vs
+    con filtro **x3.69** → el filtro RECORTA (quita días de subida).
+  - **Conclusión (alcance):** el filtro de riesgo NASDAQ→BTC diario NO ayuda; de
+    hecho iría al revés (BTC rebota tras la debilidad). NO prueba la reacción
+    intradía en tiempo real ni el caso de cascada de liquidaciones — eso es otra cosa.
+- **micro_collector.py:** añadido **BTC** a SYMS (antes solo alts). Empieza a grabar
+  microestructura de BTC (mid, spread, imbalance, funding) hoy → dato útil en semanas
+  (hueco #1). Verificado: 21/21 símbolos, 1ª fila BTC a 2026-08-29 12:18 UTC.
+
+### Validado (en seco) el cierre del kill-switch + script de prueba real para Oracle
+- **Mock test:** con un exchange simulado (sin red ni dinero), `close_all_positions()`
+  construye bien las órdenes: LONG → SELL reduceOnly, SHORT → BUY reduceOnly, cantidades
+  correctas. La lógica del cierre queda verificada.
+- **En este PC NO hay claves de testnet** (solo Hyperliquid = dinero REAL, intocable) →
+  la prueba real de punta a punta no se puede hacer aquí.
+- **test_killswitch_live.py (nuevo):** script SOLO-TESTNET para correr en Oracle (donde
+  están las claves Bybit testnet): abre posición mínima ficticia, dispara close_all y
+  comprueba que la cartera queda a cero. Se niega a correr si no es testnet. PENDIENTE
+  ejecutarlo en Oracle para el veredicto final del cierre real.
+
+### NUEVO: paper forward de la prima BTC x régimen (premium_regime_paper.py) — sellado hoy
+- **Qué:** tracker que mide EN VIVO el combo hallado hoy (prima BTC LONG solo en
+  régimen de tendencia R²). Registra cada episodio nuevo con su régimen al entrar.
+  Forward-only, START 2026-08-29. NO toca el premium_paper.py sellado ni los bots.
+- **Criterio pre-registrado (sellado hoy):** a ≥30 episodios EN TENDENCIA cerrados,
+  edge si media > +1.0%/7d con IC95 excluyendo 0. Subconjunto lateral solo para
+  contraste. Ritmo esperado lento (~2-3 años hasta 30 en tendencia).
+- **Detalle técnico:** prima = Coinbase vs MEXC (como premium_paper). Régimen R²
+  necesita historia larga → se calcula con Binance (1000 velas; funciona en Oracle),
+  MEXC de respaldo (solo da ~349 días, insuficiente para el percentil 365).
+- **Programado:** tarea Windows `TFZ_PremiumRegime_Paper` (diaria 03:20 local) +
+  wrapper `C:\Users\jarta\run_premium_regime_paper.cmd`. Verificado: corre, R² pctl
+  hoy 71 → TENDENCIA. PENDIENTE llevarlo también a Oracle/GitHub para 24/7 como los otros.
+
+### Medido: prima LONG x régimen R² → filtrar por TENDENCIA la hace fiable OOS (candidato fuerte)
+- **explore_premium_regime.py (nuevo):** operar la prima LONG solo en régimen de
+  tendencia (R² 30d, percentil>=66, solo pasado). Exceso (sobre estar comprado):
+  - Sin filtro: OOS +1.47% (IC incluye 0, no fiable).
+  - **Solo TENDENCIA: OOS +3.82% (IC95 EXCLUYE 0), win 67%, n=24** + total +2.46% fiable.
+  - Solo LATERAL: OOS −0.14% (muerta).
+  → filtrar la prima por régimen R² CONVIERTE su exceso en fiable fuera de muestra.
+  - **Cautela (lección 11/14):** n=24 en la caja OOS; el R² se eligió por ser el mejor
+    de 3 (sesgo de selección) → candidato FUERTE a validar forward, NO sellado. No se
+    toca ningún bot; siguiente paso lógico = recoger la señal prima+régimen en vivo.
+
+### Medido: NASDAQ intradía (apertura NY) → nada (muestra minúscula)
+- **explore_nasdaq_intraday.py (nuevo):** versión intradía que pedía el amigo (la
+  diaria ya murió). Lead-lag: retorno NQ [13:30-13:45 UTC] -> BTC [13:45-14:00].
+  n=42 aperturas (yfinance solo ~60d de 5m). corr −0.03; en días de NQ fuerte BTC
+  "sigue" −0.081% (IC incluye 0, acierto dirección 36% < azar). **Sin señal**, con la
+  advertencia de muestra minúscula (no es veredicto firme). Reintentar con más historia
+  intradía si algún día se recoge.
+
+### Medido: base de futuros CME → nula (demanda USA proxy #2)
+- **explore_cme_basis.py (nuevo):** base = (CME BTC=F / spot - 1), z-score 90d
+  solo-pasado, LONG base alta / SHORT base baja, neto. Muestra corta (yfinance solo
+  da BTC=F desde 2024). H1 LONG: 2024 +2.58% pero comprobación 2025-26 +0.05% (muerto,
+  IC incluye 0). H2 SHORT: nada. **Nula.** Flujos netos de ETF (IBIT) NO salen de
+  yfinance → haría falta otra fuente (Farside/emisor) si se retoma.
+
+### Medido: detector de régimen — el R² de 30d es el que separa (ADX flojo, dist/ATR nada)
+- **explore_regime.py (nuevo):** compara 3 semáforos de tendencia/lateral en BTC diario,
+  clasificando por percentil del último año (solo pasado, sin umbrales mágicos). Prueba
+  de utilidad pre-registrada: ¿la EMA 9/21 (bruto) gana en TENDENCIA y no en LATERAL?
+  - A) ADX(14): tendencia +0.167 vs lateral +0.099 %/d → separa POCO, ninguna fiable.
+  - B) |close-EMA200|/ATR: +0.122 vs +0.126 → NO separa (cajas idénticas). Descartado.
+  - C) **R² regresión 30d: tendencia +0.293%/d (IC95 EXCLUYE 0) vs lateral +0.133** →
+    el mejor; en TENDENCIA la EMA gana casi el triple y con certeza (total e IS).
+  - Matices: en NINGÚN régimen el lateral es negativo (sesgo alcista de BTC) → el
+    detector dice "operar tendencia MÁS cuando R² alto", no "evitar zona perdedora".
+    OOS: R² sigue mejor (+0.215 vs +0.060) pero pierde significancia. Persistencia
+    ~10-16 días (usable). Retornos BRUTOS (diagnóstico, no PnL tradeable).
+  - **Uso propuesto:** si se activa un filtro de régimen, usar el R² de 30d.
+
+### Medido: prima de Coinbase — prueba de "exceso" (viento de cola). Aguanta menos de lo que parecía
+- **explore_premium_excess.py (nuevo, reusa la señal sellada):** a raíz de la crítica
+  de un amigo (el +2%/7d puede ser solo estar comprado en un mercado alcista), se
+  resta a cada episodio LONG el retorno medio de BTC a 7d del mismo sub-periodo.
+  - BTC subía +0.77%/7d de media SIN señal (el viento de cola).
+  - Exceso: TOTAL +1.73% (IC95 excluye 0); IS +1.84% (IC [0.00,3.68], al límite);
+    **OOS 2024-26 +1.47% pero IC [-0.21,3.15] INCLUYE 0** → deja de ser fiable fuera
+    de muestra al quitar el viento de cola.
+  - **Conclusión:** la prima NO es puro humo (queda ~+1.5% de exceso), pero su
+    solidez forward baja: no llamarla "sólida" ni bajarle el listón (≥100 episodios,
+    >+0.20%, IC excluye 0 — y ahora además exigir el EXCESO positivo y fiable).
+
+### NUEVO: kill-switch de protección (volatilidad + eventos macro) → cierra todo
+- **Qué:** freno nuevo en `execution.py` que, además del ya existente por pérdida
+  diaria (5%, solo bloquea entradas), **CIERRA TODAS las posiciones** y no abre nuevas
+  cuando salta cualquiera de dos disparadores (decisión del usuario: cerrar todo,
+  ambos disparadores, reanudar al bajar):
+  1. **Volatilidad extrema:** DVOL de BTC (Deribit) en el **top 10%** del último año
+     (por encima del percentil 90 calculado SOLO con el pasado → sin look-ahead).
+  2. **Evento macro:** dentro de **±60 min** de un **FOMC / CPI / NFP**.
+- **Ficheros nuevos:**
+  - `killswitch.py` — `dvol_status()`, `macro_status()`, `killswitch_status()`.
+    Parámetros arriba (DVOL_PCTL=90, DVOL_WINDOW_DAYS=365, ventana ±60). Fail-safe:
+    si el DVOL no se lee (red caída) NO frena por vol (un corte no debe vaciar la
+    cartera), solo avisa; el disparador por fecha funciona sin red.
+  - `macro_events.json` — calendario editable en horas UTC. FOMC verificado en
+    federalreserve.gov; CPI/NFP del resto de 2026 vía BLS (usinflationcalculator).
+    **OJO: las fechas de CPI a veces se REVISAN → editar este archivo.** Falta 2027.
+- **Cambios en `execution.py`:** método `Executor.close_all_positions()` (órdenes
+  market reduceOnly; en dry-run solo lista) y llamada al `killswitch_status()` en
+  `run_execution_cycle()` tras el freno de pérdida diaria.
+- **Sin estado:** cada ciclo re-evalúa, así que reanuda solo cuando el DVOL baja o
+  se sale de la ventana del evento (no hay que rearmarlo).
+- **Verificado:** DVOL en vivo (hoy 37.6 < p90 53.5 → inactivo), evento CPI+15min
+  → activo, fuera de ventana → inactivo, cierre dry-run cierra un long simulado.
+- **PENDIENTE:** no validado para dinero real (todo sigue dry-run/testnet); el
+  `close_all` no está probado contra un exchange real todavía.
+
 ## 2026-08-23
 
 ### Revisión semanal domingo — sin tocar parámetros
